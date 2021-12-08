@@ -7,8 +7,8 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import *
-from selenium import webdriver
-from bs4 import BeautifulSoup
+#from selenium import webdriver
+#from bs4 import BeautifulSoup
 
 #======這裡是呼叫的檔案內容=====
 from message import *
@@ -54,7 +54,7 @@ def handle_message(event):
         message = "this is website"
         line_bot_api.reply_message(event.reply_token, message)
     else:
-        message = "i don't know"
+        message = "我不知道你在說什麼欸"
         line_bot_api.reply_message(event.reply_token, message)
 
 
