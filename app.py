@@ -1,3 +1,4 @@
+sudo pip3 install selenium
 from flask import Flask, request, abort
 
 from linebot import (
