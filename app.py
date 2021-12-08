@@ -52,10 +52,10 @@ def handle_message(event):
     msg = event.message.text
     if 'https://' in msg:
         message = "this is website"
-        line_bot_api.reply_message(event.reply_token, message)
+        line_bot_api.reply_message(event.reply_token, TextSendMessage('this is website'))
     else:
         message = TextSendMessage(text=msg)
-        line_bot_api.reply_message(event.reply_token, message)
+        line_bot_api.reply_message(event.reply_token, TextSendMessage('這是非網址'))
 
 
 
