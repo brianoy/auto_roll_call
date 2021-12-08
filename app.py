@@ -1,34 +1,24 @@
-sudo pip3 install selenium
 from flask import Flask, request, abort
-
-from linebot import (
-    LineBotApi, WebhookHandler
-)
-from linebot.exceptions import (
-    InvalidSignatureError
-)
+from linebot import (LineBotApi, WebhookHandler)
+from linebot.exceptions import (InvalidSignatureError)
+#from selenium
+#import webdriver
+#import os
+#chrome_options = webdriver.ChromeOptions()
+#chrome_options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+#chrome_options.add_argument("--headless")
+#chrome_options.add_argument("--disable-dev-shm-usage")
+#chrome_options.add_argument("--no-sandbox")
+#wd = webdriver.Chrome('chromedriver',chrome_options=chrome_options)
 from linebot.models import *
-
-
-#======這裡是呼叫的檔案內容=====
-from message import *
-from new import *
-from Function import *
-#======這裡是呼叫的檔案內容=====
 
 #======python的函數庫==========
 import tempfile, os
 import datetime
 import time
 #======python的函數庫==========
-from selenium import webdriver #有問題
-from bs4 import BeautifulSoup #有問題
-
-
-chrome_options = webdriver.ChromeOptions()
-chrome_options.add_argument('--headless')
-chrome_options.add_argument('--no-sandbox')
-chrome_options.add_argument('--disable-dev-shm-usage')
+#from selenium import webdriver #有問題
+#from bs4 import BeautifulSoup #有問題
 
 app = Flask(__name__)
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
@@ -39,7 +29,7 @@ line_bot_api = LineBotApi('mn0w8gkHEbWQQAbRC7sw1F1J9SFegKNHPVDsRfsAsuOJ2vgQPgx0/
 handler = WebhookHandler('3e6656d8b069ab3bf6c057c1e1a84018')
 
 url = str("")
-wd = webdriver.Chrome('chromedriver',chrome_options=chrome_options)
+
 
 
 # 監聽所有來自 /callback 的 Post Request
@@ -63,22 +53,21 @@ def callback():
 def handle_message(event):
     msg = event.message.text
     if 'https://' in msg:
-        
         url = msg
-        wd.get(url)
-        wd.execute_script("document.getElementById('UserNm').value =" + username)
-        wd.execute_script("document.getElementById('UserPasswd').value =" + password)
-        wd.execute_script("document.getElementsByClassName('w3-button w3-block w3-green w3-section w3-padding')[0].click();")
-        soup = BeautifulSoup(wd.page_source, 'html.parser')
+        #wd.get(url)
+        #wd.execute_script("document.getElementById('UserNm').value =" + username)
+        #wd.execute_script("document.getElementById('UserPasswd').value =" + password)
+        #wd.execute_script("document.getElementsByClassName('w3-button w3-block w3-green w3-section w3-padding')[0].click();")
+        #soup = BeautifulSoup(wd.page_source, 'html.parser')
 
-        if (soup.find_all(stroke="#D06079") != []):#fail
-            msg = ("點名失敗 好可憐" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text)
-        elif (soup.find_all(stroke="#73af55") != []):#pass
-            msg = ("點名成功 歐陽非常感謝你" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text)
-        else:
-            msg = ("ERROR")
+        #if (soup.find_all(stroke="#D06079") != []):#fail
+        #    msg = ("點名失敗 好可憐" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text)
+        #elif (soup.find_all(stroke="#73af55") != []):#pass
+        #    msg = ("點名成功 歐陽非常感謝你" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text)
+        #else:
+        #    msg = ("ERROR")
         line_bot_api.reply_message(event.reply_token, TextSendMessage(msg))
-        wd.quit()
+        #wd.quit()
     else:
         message = TextSendMessage(text=msg)
         line_bot_api.reply_message(event.reply_token, TextSendMessage('這是非網址'))
