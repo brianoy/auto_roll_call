@@ -2,10 +2,14 @@ from flask import Flask, request, abort
 from linebot import (LineBotApi, WebhookHandler)
 from linebot.exceptions import (InvalidSignatureError)
 from linebot.models import *
-from urlfetch import *
 import tempfile, os
 import datetime
 import time
+from selenium import webdriver
+from bs4 import BeautifulSoup
+
+import sys
+sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
 
 app = Flask(__name__)
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
@@ -64,3 +68,32 @@ import os
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
+
+def url_login(msg):
+  chrome_options = webdriver.ChromeOptions()
+  chrome_options.add_argument('--headless')
+  chrome_options.add_argument('--no-sandbox')
+  chrome_options.add_argument('--disable-dev-shm-usage')
+  username = str('"11021340"')
+  password = str('"Aa123456789"')
+  url = str(msg)
+  messageout = ""
+  wd = webdriver.Chrome('chromedriver',chrome_options=chrome_options)
+
+  wd.get(url)
+  wd.execute_script("document.getElementById('UserNm').value =" + username)
+  wd.execute_script("document.getElementById('UserPasswd').value =" + password)
+  wd.execute_script("document.getElementsByClassName('w3-button w3-block w3-green w3-section w3-padding')[0].click();")
+
+  soup = BeautifulSoup(wd.page_source, 'html.parser')
+  #print(soup.prettify())
+  if (soup.find_all(stroke="#D06079") != []):#fail
+      messageout =("點名失敗 好可憐" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text)
+
+  elif (soup.find_all(stroke="#73af55") != []):#pass
+      messageout =("點名成功 歐陽非常感謝你" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text)
+
+  else:
+      messageout = ("ERROR")
+  message = TextSendMessage(messageout)
+  return message
