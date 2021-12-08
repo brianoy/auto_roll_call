@@ -51,10 +51,10 @@ def callback():
 def handle_message(event):
     msg = event.message.text
     if 'https://' in msg:
-        message = "這是網址"
+        message = "this is website"
         line_bot_api.reply_message(event.reply_token, message)
     else:
-        message = "我現在還聽不懂你在說什麼欸"
+        message = "i don't know"
         line_bot_api.reply_message(event.reply_token, message)
 
 
