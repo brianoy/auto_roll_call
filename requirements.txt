@@ -2,3 +2,4 @@ line-bot-sdk
 flask
 selenium
 beautifulsoup4
+lxml
