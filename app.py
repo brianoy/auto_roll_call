@@ -7,6 +7,7 @@ import datetime
 import time
 from selenium import webdriver
 from bs4 import BeautifulSoup
+from selenium.webdriver.common.by import By
 
 import sys
 sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
@@ -88,12 +89,12 @@ def url_login(msg):
   soup = BeautifulSoup(wd.page_source, 'html.parser')
   #print(soup.prettify())
   if (soup.find_all(stroke="#D06079") != []):#fail
-      messageout =("點名失敗 好可憐" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text)
+      messageout =("點名失敗 好可憐 " + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text)
 
   elif (soup.find_all(stroke="#73af55") != []):#pass
-      messageout =("點名成功 歐陽非常感謝你" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text)
+      messageout =("點名成功 歐陽非常感謝你 " + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text)
 
   else:
       messageout = ("ERROR")
-  message = TextSendMessage(messageout)
-  return message
+  wd.quit()
+  return messageout
