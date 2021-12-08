@@ -54,7 +54,7 @@ def handle_message(event):
         message = "this is website"
         line_bot_api.reply_message(event.reply_token, message)
     else:
-        message = "我不知道你在說什麼欸"
+        message = TextSendMessage(text=msg)
         line_bot_api.reply_message(event.reply_token, message)
 
 
