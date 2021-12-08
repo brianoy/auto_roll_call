@@ -7,7 +7,7 @@ from linebot.exceptions import (
     InvalidSignatureError
 )
 from linebot.models import *
-#from selenium import webdriver
+from selenium import webdriver
 #from bs4 import BeautifulSoup
 
 #======這裡是呼叫的檔案內容=====
