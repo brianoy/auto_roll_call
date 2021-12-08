@@ -1,7 +1,7 @@
 from flask import Flask, request, abort
 from linebot import (LineBotApi, WebhookHandler)
 from linebot.exceptions import (InvalidSignatureError)
-#from selenium
+from selenium
 #import webdriver
 #import os
 #chrome_options = webdriver.ChromeOptions()
