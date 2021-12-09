@@ -30,17 +30,18 @@ def url_login(msg):
   url = str(msg)
   messageout = ""
   wd = webdriver.Chrome('chromedriver',chrome_options=chrome_options)
-
   wd.get(url)
   wd.execute_script("document.getElementById('UserNm').value =" + username)
   wd.execute_script("document.getElementById('UserPasswd').value =" + password)
   wd.execute_script("document.getElementsByClassName('w3-button w3-block w3-green w3-section w3-padding')[0].click();")
+  from selenium.webdriver.support import expected_conditions as EC
+  fail = EC.alert_is_present()(wd)#如果有錯誤訊息
   
-  failmsg = EC.alert_is_present()(wd)#如果有錯誤訊息
-  if resu:
-    failmsg = resu.text
-    resu.accept()
+  if fail:
+    failmsg = fail.text
+    fail.accept()
     messageout = ("點名錯誤，錯誤訊息:" + failmsg)#error login
+    wd.quit()
   else:
     soup = BeautifulSoup(wd.page_source, 'html.parser')
     #print(soup.prettify()) #html details
@@ -78,7 +79,7 @@ def handle_message(event) :
     msg = event.message.text
     if 'itouch.cycu.edu.tw' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage(url_login(msg)))
-    elif 'https://' or '.com' in msg:
+    elif 'https://' in msg or '.com' in msg:
         line_bot_api.reply_message(event.reply_token, TextSendMessage('此非itouch網域'))   
     else:
         message = TextSendMessage(text=msg)
