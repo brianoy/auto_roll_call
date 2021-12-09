@@ -29,8 +29,8 @@ def url_login(msg):
   chrome_options.add_argument('--disable-dev-shm-usage')
   url = str(msg)
   messageout = ""
-  success_login_status = int(0)
-  fail_login_status = int(0)
+  success_login_status = 0
+  fail_login_status = 0
   for i in range(0,len(userlist),1):
      usr =  userlist[i]
      pwd = pwlist[i]
@@ -60,7 +60,7 @@ def url_login(msg):
            messageout = (messageout + "學號:" + usr + "\n發生未知的錯誤點名失敗，趕快聯繫管理員"+'\n\n')#unknown failure
            fail_login_status = fail_login_status +1
   wd.quit()
-  messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n')
+  messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人")
   return messageout
 
 
@@ -88,8 +88,7 @@ def handle_message(event) :
       if 'learning_activity' in msg :
           #line_bot_api.reply_message(event.reply_token, TextSendMessage('請稍後，正在點名中\n過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n建議不要離開本對話框'))
           msgbuffer = url_login(msg)
-          msgtotal = ("本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人")
-          line_bot_api.reply_message(event.reply_token, TextSendMessage(msgbuffer + msgtotal))
+          line_bot_api.reply_message(event.reply_token, TextSendMessage(msgbuffer))
       else:
          line_bot_api.reply_message(event.reply_token, TextSendMessage('請輸入正確的點名網址'))
     elif 'https://' in msg or '.com' in msg:
