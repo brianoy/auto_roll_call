@@ -87,7 +87,7 @@ def handle_message(event) :
               usr = userlist[i]
               pwd = pwlist[i]
               #msgbuffer = (msgbuffer + url_login(msg,usr,pwd))
-              TextSendMessage(url_login(msg,usr,pwd))
+              line_bot_api.reply_message(event.reply_token, TextSendMessage(url_login(msg,usr,pwd)))
               msgbuffer = (msgbuffer + '--------------------' + '%0D%0A')
           msgbuffer = (msgbuffer + "本次點名人數:" + len(userlist) + "人" + '%0D%0A')
           msgbuffer = (msgbuffer + "成功點名人數:" + login_status_list.count("1") + "人" + '%0D%0A')
