@@ -84,7 +84,7 @@ def handle_message(event) :
     login_status_list = []
     if 'itouch.cycu.edu.tw' in msg :
       if 'learning_activity' in msg :
-          msgtotal = ("本次點名人數:" + len(userlist) + "人\n " + "成功點名人數:" + login_status_list.count("1") + "人\n "+ "失敗點名人數:" + login_status_list.count("0"))
+          msgtotal = ("本次點名人數:" + str(len(userlist)) + "人\n " + "成功點名人數:" + str(login_status_list.count("1")) + "人\n "+ "失敗點名人數:" + str(login_status_list.count("0")))
           line_bot_api.reply_message(event.reply_token, TextSendMessage(url_login(msg) + msgtotal))
       else:
          line_bot_api.reply_message(event.reply_token, TextSendMessage('請輸入正確的點名網址'))
