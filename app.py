@@ -9,34 +9,32 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-
 import sys
 sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
-
 app = Flask(__name__)
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
-
 line_bot_api = LineBotApi('mn0w8gkHEbWQQAbRC7sw1F1J9SFegKNHPVDsRfsAsuOJ2vgQPgx0/zB/ZeB6sM2ybrFrLh8qKKKsc97iPyW5/qUg0mPp7Tpfhkc9+RncWfdW4TUmscADLAW4FfurNsKgdElaTaLlzDA39SJG357lFgdB04t89/1O/w1cDnyilFU=')# Channel Access Token
 handler = WebhookHandler('3e6656d8b069ab3bf6c057c1e1a84018')# Channel Secret
 url = str("")
+msgbuffer = str("")
+userlist = ["11021340","10922248"]
+pwlist = ["Aa123456789","Opl5931665"]
+login_status_list = []
 
-def url_login(msg):
+def url_login(msg,usr,pwd):
   chrome_options = webdriver.ChromeOptions()
   chrome_options.add_argument('--headless')
   chrome_options.add_argument('--no-sandbox')
   chrome_options.add_argument('--disable-dev-shm-usage')
-  username = str('"11021340"')
-  password = str('"Aa123456789"')
   url = str(msg)
   messageout = ""
   wd = webdriver.Chrome('chromedriver',chrome_options=chrome_options)
   wd.get(url)
-  wd.execute_script("document.getElementById('UserNm').value =" + username)
-  wd.execute_script("document.getElementById('UserPasswd').value =" + password)
-  wd.execute_script("document.getElementsByClassName('w3-button w3-block w3-green w3-section w3-padding')[0].click();")
+  wd.execute_script('document.getElementById("UserNm").value ="' + usr + '"')
+  wd.execute_script('document.getElementById("UserPasswd").value ="' + pwd + '"')
+  wd.execute_script('document.getElementsByClassName("w3-button w3-block w3-green w3-section w3-padding")[0].click();')
   from selenium.webdriver.support import expected_conditions as EC
   fail = EC.alert_is_present()(wd)#如果有錯誤訊息
-
   if fail:
     failmsg = fail.text
     fail.accept()
@@ -46,13 +44,15 @@ def url_login(msg):
     soup = BeautifulSoup(wd.page_source, 'html.parser')
     #print(soup.prettify()) #html details
     if (soup.find_all(stroke="#D06079") != []):#fail
-        messageout =("點名失敗，好可憐喔，失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text)
-
+        messageout = ("學號:" + usr + '\\n' +"點名失敗，好可憐喔，失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text + '\\n')
+        login_status_list.append("0")
     elif (soup.find_all(stroke="#73AF55") != []):#success
-        messageout =("點名成功，歐陽非常感謝你，成功訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text)
-
+        detailmsg = wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text
+        messageout = ("學號:" + usr + '\\n' +"點名成功，歐陽非常感謝你，成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':') + '\\n')
+        login_status_list.append("1")
     else:
-        messageout = ("發生未知的錯誤，點名失敗，趕快聯繫管理員")#unknown failure
+        messageout = ("學號:" + usr + '\\n' +"發生未知的錯誤，點名失敗，趕快聯繫管理員" + '\\n')#unknown failure
+        login_status_list.append("0")
     wd.quit()
     return messageout
 
@@ -77,13 +77,27 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event) :
     msg = event.message.text
+    usr = ""
+    pwd = ""
+    msgbuffer = "" 
+    login_status_list = []
     if 'itouch.cycu.edu.tw' in msg :
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(url_login(msg)))
+      line_bot_api.reply_message(event.reply_token, TextSendMessage('請輸入正確的點名網址'))
+      if 'itouch.cycu.edu.tw/active_system/query_course/learning_activity_stulogin' in msg :
+        for i in range(0,len(userlist),1):
+          usr = userlist[i]
+          pwd = pwlist[i]
+          msgbuffer = (msgbuffer + url_login(msg,usr,pwd))
+          msgbuffer = (msgbuffer + '--------------------' + '\\n')
+        msgbuffer = (msgbuffer + "本次點名人數:" + len(userlist) + "人" + '\\n')
+        msgbuffer = (msgbuffer + "成功點名人數:" + login_status_list.count("1") + "人" + '\\n')
+        msgbuffer = (msgbuffer + "失敗點名人數:" + login_status_list.count("0") + "人" + '\\n')
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(msgbuffer))
     elif 'https://' in msg or '.com' in msg:
         line_bot_api.reply_message(event.reply_token, TextSendMessage('此非itouch網域'))   
     else:
-        message = TextSendMessage(text=msg)
         line_bot_api.reply_message(event.reply_token, TextSendMessage('無法對這則訊息做出任何動作，如要完成點名，請傳送該網址即可'))
+    return 
 
 
 @handler.add(PostbackEvent)
