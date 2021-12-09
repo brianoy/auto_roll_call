@@ -36,7 +36,7 @@ def url_login(msg):
   wd.execute_script("document.getElementsByClassName('w3-button w3-block w3-green w3-section w3-padding')[0].click();")
   from selenium.webdriver.support import expected_conditions as EC
   fail = EC.alert_is_present()(wd)#如果有錯誤訊息
-  
+
   if fail:
     failmsg = fail.text
     fail.accept()
@@ -48,7 +48,7 @@ def url_login(msg):
     if (soup.find_all(stroke="#D06079") != []):#fail
         messageout =("點名失敗，好可憐喔，失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text)
 
-    elif (soup.find_all(stroke="#73af55") != []):#success
+    elif (soup.find_all(stroke="#73AF55") != []):#success
         messageout =("點名成功，歐陽非常感謝你，成功訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text)
 
     else:
