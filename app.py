@@ -17,8 +17,8 @@ line_bot_api = LineBotApi('mn0w8gkHEbWQQAbRC7sw1F1J9SFegKNHPVDsRfsAsuOJ2vgQPgx0/
 handler = WebhookHandler('3e6656d8b069ab3bf6c057c1e1a84018')# Channel Secret
 url = str("")
 msgbuffer = str("")
-userlist = ["11021340"]
-pwlist = ["Aa123456789"]
+userlist = ["11021340","10922248"]
+pwlist = ["Aa123456789","Opl5931665"]
 login_status_list = []
 
 def url_login(msg,usr,pwd):
@@ -44,14 +44,14 @@ def url_login(msg,usr,pwd):
     soup = BeautifulSoup(wd.page_source, 'html.parser')
     #print(soup.prettify()) #html details
     if (soup.find_all(stroke="#D06079") != []):#fail
-        messageout = ("學號:" + usr + '%0D%0A' +"點名失敗，好可憐喔，失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text + '%0D%0A')
+        messageout = ("學號:" + usr + "\n " +"點名失敗，好可憐喔，失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text + '\n ')
         login_status_list.append("0")
     elif (soup.find_all(stroke="#73AF55") != []):#success
         detailmsg = wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text
         messageout = ("學號:" + usr + '%0D%0A' +"點名成功，歐陽非常感謝你，成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':') + '%0D%0A')
         login_status_list.append("1")
     else:
-        messageout = ("學號:" + usr + '%0D%0A' +"發生未知的錯誤"+ '%0D%0A' + "點名失敗，趕快聯繫管理員" + '%0D%0A')#unknown failure
+        messageout = ("學號:" + usr + "\n " +"發生未知的錯誤"+ '%0D%0A' + "點名失敗，趕快聯繫管理員" + '%0D%0A')#unknown failure
         login_status_list.append("0")
     wd.quit()
     return messageout
@@ -87,19 +87,17 @@ def handle_message(event) :
               usr = userlist[i]
               pwd = pwlist[i]
               msgbuffer = (msgbuffer + url_login(msg,usr,pwd))
-              msgbuffer = (msgbuffer + '--------------------' + '%0D%0A')
-              line_bot_api.reply_message(event.reply_token, TextSendMessage(msgbuffer))
-              
-          msgbuffer = (msgbuffer + "本次點名人數:" + len(userlist) + "人" + '%0D%0A')
-          msgbuffer = (msgbuffer + "成功點名人數:" + login_status_list.count("1") + "人" + '%0D%0A')
-          msgbuffer = (msgbuffer + "失敗點名人數:" + login_status_list.count("0") + "人" + '%0D%0A')
+              msgbuffer = (msgbuffer + '--------------------\n ')
+          msgbuffer = (msgbuffer + "本次點名人數:" + len(userlist) + "人\n ")
+          msgbuffer = (msgbuffer + "成功點名人數:" + login_status_list.count("1") + "人\n ")
+          msgbuffer = (msgbuffer + "失敗點名人數:" + login_status_list.count("0") + "人\n ")
           line_bot_api.reply_message(event.reply_token, TextSendMessage(msgbuffer))
       else:
          line_bot_api.reply_message(event.reply_token, TextSendMessage('請輸入正確的點名網址'))
     elif 'https://' in msg or '.com' in msg:
         line_bot_api.reply_message(event.reply_token, TextSendMessage('此非itouch網域'))   
     else:
-        line_bot_api.reply_message(event.reply_token, TextSendMessage('無法對這則訊息做出任何動作+ "\\n" +如要完成點名，請傳送該網址即可'))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage('無法對這則訊息做出任何動作\n 如要完成點名，請傳送該網址即可'))
     return 
 
 
