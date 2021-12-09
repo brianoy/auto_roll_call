@@ -2,9 +2,6 @@ from flask import Flask, request, abort
 from linebot import (LineBotApi, WebhookHandler)
 from linebot.exceptions import (InvalidSignatureError)
 from linebot.models import *
-import tempfile, os
-import datetime
-import time
 from selenium import webdriver
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
@@ -86,7 +83,7 @@ def handle_message(event) :
     msg = event.message.text
     if 'itouch.cycu.edu.tw' in msg :
       if 'learning_activity' in msg :
-          line_bot_api.reply_message(event.reply_token, TextSendMessage('請稍後，正在點名中\n過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n建議不要離開本對話框'))
+          #line_bot_api.reply_message(event.reply_token, TextSendMessage('請稍後，正在點名中\n過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n建議不要離開本對話框'))
           msgbuffer = url_login(msg)
           msgtotal = ("本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人")
           line_bot_api.reply_message(event.reply_token, TextSendMessage(msgbuffer + msgtotal))
@@ -112,10 +109,4 @@ def welcome(event):
     name = profile.display_name
     message = TextSendMessage(text=f'{name}歡迎加入歐陽急難救助會~')
     line_bot_api.reply_message(event.reply_token, message)
-        
-        
-import os
-if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
 
