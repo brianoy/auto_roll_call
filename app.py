@@ -21,40 +21,44 @@ userlist = ["11021340","10922248"]
 pwlist = ["Aa123456789","Opl5931665"]
 login_status_list = []
 
-def url_login(msg,usr,pwd):
+def url_login(msg):
   chrome_options = webdriver.ChromeOptions()
   chrome_options.add_argument('--headless')
   chrome_options.add_argument('--no-sandbox')
   chrome_options.add_argument('--disable-dev-shm-usage')
-  url = str(msg)
+  url = str(msg)               
   messageout = ""
-  wd = webdriver.Chrome('chromedriver',chrome_options=chrome_options)
-  wd.get(url)
-  wd.execute_script('document.getElementById("UserNm").value ="' + usr + '"')
-  wd.execute_script('document.getElementById("UserPasswd").value ="' + pwd + '"')
-  wd.execute_script('document.getElementsByClassName("w3-button w3-block w3-green w3-section w3-padding")[0].click();')
-  from selenium.webdriver.support import expected_conditions as EC
-  fail = EC.alert_is_present()(wd)#如果有錯誤訊息
-  if fail:
-    failmsg = fail.text
-    fail.accept()
-    messageout = ("學號:" + usr + "\n點名錯誤，錯誤訊息:" + failmsg)#error login
-    wd.quit()
-  else:
-    soup = BeautifulSoup(wd.page_source, 'html.parser')
-    #print(soup.prettify()) #html details
-    if (soup.find_all(stroke="#D06079") != []):#fail
-        messageout = ("學號:" + usr + "\n點名失敗，好可憐喔\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text + '\n ')
-        login_status_list.append("0")
-    elif (soup.find_all(stroke="#73AF55") != []):#success
-        detailmsg = wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text
-        messageout = ("學號:" + usr + "\n點名成功，歐陽非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':') + '\n')
-        login_status_list.append("1")
-    else:
-        messageout = ("學號:" + usr + "\n發生未知的錯誤點名失敗，趕快聯繫管理員\n")#unknown failure
-        login_status_list.append("0")
-    wd.quit()
-    return messageout
+  for i in range(0,len(userlist),1):
+     usr =  userlist[i]
+     pwd = pwlist[i]
+     wd = webdriver.Chrome('chromedriver',chrome_options=chrome_options)
+     wd.get(url)
+     wd.execute_script('document.getElementById("UserNm").value ="' + usr + '"')
+     wd.execute_script('document.getElementById("UserPasswd").value ="' + pwd + '"')
+     wd.execute_script('document.getElementsByClassName("w3-button w3-block w3-green w3-section w3-padding")[0].click();')
+     from selenium.webdriver.support import expected_conditions as EC
+     fail = EC.alert_is_present()(wd)#如果有錯誤訊息
+     if fail:
+       failmsg = fail.text
+       fail.accept()
+       messageout = (messageout + "學號:" + usr + "\n點名錯誤，錯誤訊息:" + failmsg)#error login
+       wd.quit()
+     else:
+       soup = BeautifulSoup(wd.page_source, 'html.parser')
+       #print(soup.prettify()) #html details
+       if (soup.find_all(stroke="#D06079") != []):#fail
+           messageout = (messageout + "學號:" + usr + "\n點名失敗，好可憐喔\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text)
+           login_status_list.append("0")
+       elif (soup.find_all(stroke="#73AF55") != []):#success
+           detailmsg = wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text
+           messageout = (messageout + "學號:" + usr + "\n點名成功，歐陽非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':'))
+           login_status_list.append("1")
+       else:
+           messageout = (messageout + "學號:" + usr + "\n發生未知的錯誤點名失敗，趕快聯繫管理員")#unknown failure
+           login_status_list.append("0")
+  wd.quit()
+  messageout = (messageout + '\n--------------------')
+  return messageout
 
 
 # 監聽所有來自 /callback 的 Post Request
@@ -77,19 +81,11 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event) :
     msg = event.message.text
-    usr = ""
-    pwd = ""
-    msgbuffer = "" 
     login_status_list = []
     if 'itouch.cycu.edu.tw' in msg :
       if 'learning_activity' in msg :
-          for i in range(0,len(userlist),1):
-              usr = userlist[i]
-              pwd = pwlist[i]
-              line_bot_api.reply_message(event.reply_token, TextSendMessage(url_login(msg,usr,pwd)))
-              msgbuffer = (msgbuffer + '--------------------\n ')
           msgtotal = ("本次點名人數:" + len(userlist) + "人\n " + "成功點名人數:" + login_status_list.count("1") + "人\n "+ "失敗點名人數:" + login_status_list.count("0"))
-          line_bot_api.reply_message(event.reply_token, TextSendMessage(msgtotal))
+          line_bot_api.reply_message(event.reply_token, TextSendMessage(url_login(msg) + msgtotal))
       else:
          line_bot_api.reply_message(event.reply_token, TextSendMessage('請輸入正確的點名網址'))
     elif 'https://' in msg or '.com' in msg:
