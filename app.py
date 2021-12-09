@@ -17,8 +17,8 @@ line_bot_api = LineBotApi('mn0w8gkHEbWQQAbRC7sw1F1J9SFegKNHPVDsRfsAsuOJ2vgQPgx0/
 handler = WebhookHandler('3e6656d8b069ab3bf6c057c1e1a84018')# Channel Secret
 url = str("")
 msgbuffer = str("")
-userlist = ["11021340","10922248"]
-pwlist = ["Aa123456789","Opl5931665"]
+userlist = ["11021340"]
+pwlist = ["Aa123456789"]
 login_status_list = []
 
 def url_login(msg,usr,pwd):
