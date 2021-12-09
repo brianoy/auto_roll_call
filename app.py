@@ -38,7 +38,7 @@ def url_login(msg,usr,pwd):
   if fail:
     failmsg = fail.text
     fail.accept()
-    messageout = ("點名錯誤，錯誤訊息:" + failmsg)#error login
+    messageout = ("學號:" + usr + '\\n' + "點名錯誤，錯誤訊息:" + failmsg)#error login
     wd.quit()
   else:
     soup = BeautifulSoup(wd.page_source, 'html.parser')
@@ -51,7 +51,7 @@ def url_login(msg,usr,pwd):
         messageout = ("學號:" + usr + '\\n' +"點名成功，歐陽非常感謝你，成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':') + '\\n')
         login_status_list.append("1")
     else:
-        messageout = ("學號:" + usr + '\\n' +"發生未知的錯誤，點名失敗，趕快聯繫管理員" + '\\n')#unknown failure
+        messageout = ("學號:" + usr + '\\n' +"發生未知的錯誤"+ '\\n' + "點名失敗，趕快聯繫管理員" + '\\n')#unknown failure
         login_status_list.append("0")
     wd.quit()
     return messageout
@@ -97,7 +97,7 @@ def handle_message(event) :
     elif 'https://' in msg or '.com' in msg:
         line_bot_api.reply_message(event.reply_token, TextSendMessage('此非itouch網域'))   
     else:
-        line_bot_api.reply_message(event.reply_token, TextSendMessage('無法對這則訊息做出任何動作，如要完成點名，請傳送該網址即可'))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage('無法對這則訊息做出任何動作' + '\\n' + '如要完成點名，請傳送該網址即可'))
     return 
 
 
