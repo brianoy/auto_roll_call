@@ -86,9 +86,10 @@ def handle_message(event) :
           for i in range(0,len(userlist),1):
               usr = userlist[i]
               pwd = pwlist[i]
-              #msgbuffer = (msgbuffer + url_login(msg,usr,pwd))
-              line_bot_api.reply_message(event.reply_token, TextSendMessage(url_login(msg,usr,pwd)))
+              msgbuffer = (msgbuffer + url_login(msg,usr,pwd))
               msgbuffer = (msgbuffer + '--------------------' + '%0D%0A')
+              line_bot_api.reply_message(event.reply_token, TextSendMessage(msgbuffer))
+              
           msgbuffer = (msgbuffer + "本次點名人數:" + len(userlist) + "人" + '%0D%0A')
           msgbuffer = (msgbuffer + "成功點名人數:" + login_status_list.count("1") + "人" + '%0D%0A')
           msgbuffer = (msgbuffer + "失敗點名人數:" + login_status_list.count("0") + "人" + '%0D%0A')
@@ -98,7 +99,7 @@ def handle_message(event) :
     elif 'https://' in msg or '.com' in msg:
         line_bot_api.reply_message(event.reply_token, TextSendMessage('此非itouch網域'))   
     else:
-        line_bot_api.reply_message(event.reply_token, TextSendMessage('無法對這則訊息做出任何動作' + '%0D%0A' + '如要完成點名，請傳送該網址即可'))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage('無法對這則訊息做出任何動作+ "\\n" +如要完成點名，請傳送該網址即可'))
     return 
 
 
