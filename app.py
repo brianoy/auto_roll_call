@@ -83,16 +83,16 @@ def handle_message(event) :
     login_status_list = []
     if 'itouch.cycu.edu.tw' in msg :
       if 'learning_activity' in msg :
-         for i in range(0,len(userlist),1):
-           usr = userlist[i]
-           pwd = pwlist[i]
-           #msgbuffer = (msgbuffer + url_login(msg,usr,pwd))
-           TextSendMessage(url_login(msg,usr,pwd))
-           msgbuffer = (msgbuffer + '--------------------' + '%0D%0A')
-         msgbuffer = (msgbuffer + "本次點名人數:" + len(userlist) + "人" + '%0D%0A')
-         msgbuffer = (msgbuffer + "成功點名人數:" + login_status_list.count("1") + "人" + '%0D%0A')
-         msgbuffer = (msgbuffer + "失敗點名人數:" + login_status_list.count("0") + "人" + '%0D%0A')
-         line_bot_api.reply_message(event.reply_token, TextSendMessage(msgbuffer))
+          for i in range(0,len(userlist),1):
+              usr = userlist[i]
+              pwd = pwlist[i]
+              #msgbuffer = (msgbuffer + url_login(msg,usr,pwd))
+              TextSendMessage(url_login(msg,usr,pwd))
+              msgbuffer = (msgbuffer + '--------------------' + '%0D%0A')
+          msgbuffer = (msgbuffer + "本次點名人數:" + len(userlist) + "人" + '%0D%0A')
+          msgbuffer = (msgbuffer + "成功點名人數:" + login_status_list.count("1") + "人" + '%0D%0A')
+          msgbuffer = (msgbuffer + "失敗點名人數:" + login_status_list.count("0") + "人" + '%0D%0A')
+          line_bot_api.reply_message(event.reply_token, TextSendMessage(msgbuffer))
       else:
          line_bot_api.reply_message(event.reply_token, TextSendMessage('請輸入正確的點名網址'))
     elif 'https://' in msg or '.com' in msg:
