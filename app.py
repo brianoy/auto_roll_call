@@ -47,17 +47,17 @@ def url_login(msg):
        soup = BeautifulSoup(wd.page_source, 'html.parser')
        #print(soup.prettify()) #html details
        if (soup.find_all(stroke="#D06079") != []):#fail
-           messageout = (messageout + "學號:" + usr + "\n點名失敗，好可憐喔\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text)
+           messageout = (messageout + "學號:" + usr + "\n點名失敗，好可憐喔\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text +'\n')
            login_status_list.append("0")
        elif (soup.find_all(stroke="#73AF55") != []):#success
            detailmsg = wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text
-           messageout = (messageout + "學號:" + usr + "\n點名成功，歐陽非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':'))
+           messageout = (messageout + "學號:" + usr + "\n點名成功，歐陽非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':')+'\n')
            login_status_list.append("1")
        else:
-           messageout = (messageout + "學號:" + usr + "\n發生未知的錯誤點名失敗，趕快聯繫管理員")#unknown failure
+           messageout = (messageout + "學號:" + usr + "\n發生未知的錯誤點名失敗，趕快聯繫管理員"+'\n')#unknown failure
            login_status_list.append("0")
   wd.quit()
-  messageout = (messageout + '\n--------------------')
+  messageout = (messageout + '\n-------------------------\n')
   return messageout
 
 
@@ -84,8 +84,9 @@ def handle_message(event) :
     login_status_list = []
     if 'itouch.cycu.edu.tw' in msg :
       if 'learning_activity' in msg :
-          msgtotal = ("本次點名人數:" + str(len(userlist)) + "人\n " + "成功點名人數:" + str(login_status_list.count("1")) + "人\n "+ "失敗點名人數:" + str(login_status_list.count("0")))
-          line_bot_api.reply_message(event.reply_token, TextSendMessage(url_login(msg) + msgtotal))
+          msgbuffer = url_login(msg)
+          msgtotal = ("本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(login_status_list.count("1")) + "人\n"+ "失敗點名人數:" + str(login_status_list.count("0")))
+          line_bot_api.reply_message(event.reply_token, TextSendMessage(msgbuffer + msgtotal))
       else:
          line_bot_api.reply_message(event.reply_token, TextSendMessage('請輸入正確的點名網址'))
     elif 'https://' in msg or '.com' in msg:
