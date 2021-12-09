@@ -41,13 +41,13 @@ def url_login(msg):
   soup = BeautifulSoup(wd.page_source, 'html.parser')
   #print(soup.prettify())
   if (soup.find_all(stroke="#D06079") != []):#fail
-      messageout =("點名失敗 好可憐 " + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text)
+      messageout =("點名失敗，好可憐，消息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text)
 
   elif (soup.find_all(stroke="#73af55") != []):#pass
-      messageout =("點名成功 歐陽非常感謝你 " + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text)
+      messageout =("點名成功，歐陽非常感謝你，消息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text)
 
   else:
-      messageout = ("ERROR")
+      messageout = ("發生未知的錯誤，點名失敗")
   wd.quit()
   return messageout
 
@@ -72,11 +72,13 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event) :
     msg = event.message.text
-    if 'https://' in msg :
+    if 'itouch.cycu.edu.tw' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage(url_login(msg)))
+    elif 'https://' in msg:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage('此非itouch網域'))   
     else:
         message = TextSendMessage(text=msg)
-        line_bot_api.reply_message(event.reply_token, TextSendMessage('這是非網址'))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage('此非網址，請再試一次'))
 
 
 @handler.add(PostbackEvent)
@@ -90,7 +92,7 @@ def welcome(event):
     gid = event.source.group_id
     profile = line_bot_api.get_group_member_profile(gid, uid)
     name = profile.display_name
-    message = TextSendMessage(text=f'{name}歡迎加入急難救助會')
+    message = TextSendMessage(text=f'{name}歡迎加入歐陽急難救助會')
     line_bot_api.reply_message(event.reply_token, message)
         
         
