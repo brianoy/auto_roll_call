@@ -8,6 +8,7 @@ import time
 from selenium import webdriver
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 
 import sys
 sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
@@ -15,12 +16,9 @@ sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
 app = Flask(__name__)
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
 
-# Channel Access Token
-line_bot_api = LineBotApi('mn0w8gkHEbWQQAbRC7sw1F1J9SFegKNHPVDsRfsAsuOJ2vgQPgx0/zB/ZeB6sM2ybrFrLh8qKKKsc97iPyW5/qUg0mPp7Tpfhkc9+RncWfdW4TUmscADLAW4FfurNsKgdElaTaLlzDA39SJG357lFgdB04t89/1O/w1cDnyilFU=')
-# Channel Secret
-handler = WebhookHandler('3e6656d8b069ab3bf6c057c1e1a84018')
+line_bot_api = LineBotApi('mn0w8gkHEbWQQAbRC7sw1F1J9SFegKNHPVDsRfsAsuOJ2vgQPgx0/zB/ZeB6sM2ybrFrLh8qKKKsc97iPyW5/qUg0mPp7Tpfhkc9+RncWfdW4TUmscADLAW4FfurNsKgdElaTaLlzDA39SJG357lFgdB04t89/1O/w1cDnyilFU=')# Channel Access Token
+handler = WebhookHandler('3e6656d8b069ab3bf6c057c1e1a84018')# Channel Secret
 url = str("")
-
 
 def url_login(msg):
   chrome_options = webdriver.ChromeOptions()
@@ -37,19 +35,25 @@ def url_login(msg):
   wd.execute_script("document.getElementById('UserNm').value =" + username)
   wd.execute_script("document.getElementById('UserPasswd').value =" + password)
   wd.execute_script("document.getElementsByClassName('w3-button w3-block w3-green w3-section w3-padding')[0].click();")
-
-  soup = BeautifulSoup(wd.page_source, 'html.parser')
-  #print(soup.prettify())
-  if (soup.find_all(stroke="#D06079") != []):#fail
-      messageout =("點名失敗，好可憐，消息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text)
-
-  elif (soup.find_all(stroke="#73af55") != []):#pass
-      messageout =("點名成功，歐陽非常感謝你，消息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text)
-
+  
+  failmsg = EC.alert_is_present()(wd)#如果有錯誤訊息
+  if resu:
+    failmsg = resu.text
+    resu.accept()
+    messageout = ("點名錯誤，錯誤訊息:" + failmsg)#error login
   else:
-      messageout = ("發生未知的錯誤，點名失敗")
-  wd.quit()
-  return messageout
+    soup = BeautifulSoup(wd.page_source, 'html.parser')
+    #print(soup.prettify()) #html details
+    if (soup.find_all(stroke="#D06079") != []):#fail
+        messageout =("點名失敗，好可憐喔，失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text)
+
+    elif (soup.find_all(stroke="#73af55") != []):#success
+        messageout =("點名成功，歐陽非常感謝你，成功訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text)
+
+    else:
+        messageout = ("發生未知的錯誤，點名失敗，趕快聯繫管理員")#unknown failure
+    wd.quit()
+    return messageout
 
 
 # 監聽所有來自 /callback 的 Post Request
@@ -74,11 +78,11 @@ def handle_message(event) :
     msg = event.message.text
     if 'itouch.cycu.edu.tw' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage(url_login(msg)))
-    elif 'https://' in msg:
+    elif 'https://' or '.com' in msg:
         line_bot_api.reply_message(event.reply_token, TextSendMessage('此非itouch網域'))   
     else:
         message = TextSendMessage(text=msg)
-        line_bot_api.reply_message(event.reply_token, TextSendMessage('此非網址，請再試一次'))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage('無法對這則訊息做出任何動作，如要完成點名，請傳送該網址即可'))
 
 
 @handler.add(PostbackEvent)
@@ -92,7 +96,7 @@ def welcome(event):
     gid = event.source.group_id
     profile = line_bot_api.get_group_member_profile(gid, uid)
     name = profile.display_name
-    message = TextSendMessage(text=f'{name}歡迎加入歐陽急難救助會')
+    message = TextSendMessage(text=f'{name}歡迎加入歐陽急難救助會~')
     line_bot_api.reply_message(event.reply_token, message)
         
         
