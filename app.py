@@ -10,6 +10,7 @@ from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 import sys
+
 sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
 app = Flask(__name__)
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
@@ -45,6 +46,7 @@ def url_login(msg):
        failmsg = fail.text
        fail.accept()
        messageout = (messageout + "學號:" + usr + "\n點名失敗\n錯誤訊息:密碼錯誤" + failmsg +'\n\n')#error login
+       print("密碼錯誤")
        fail_login_status = fail_login_status +1
        wd.quit()
      else:
@@ -52,13 +54,16 @@ def url_login(msg):
        #print(soup.prettify()) #html details
        if (soup.find_all(stroke="#D06079") != []):#fail
            messageout = (messageout + "學號:" + usr + "\n點名失敗，好可憐喔\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text +'\n\n')
+           print("點名失敗" + messageout)
            fail_login_status = fail_login_status +1
        elif (soup.find_all(stroke="#73AF55") != []):#success
            detailmsg = wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text
            messageout = (messageout + "學號:" + usr + "\n點名成功，歐陽非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':')+'\n\n')
+           print("點名成功" + messageout)
            success_login_status = success_login_status +1
        else:
            messageout = (messageout + "學號:" + usr + "\n發生未知的錯誤點名失敗，趕快聯繫管理員"+'\n\n')#unknown failure
+           print("點名失敗" + messageout)
            fail_login_status = fail_login_status +1
   wd.quit()
   messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人")
@@ -68,9 +73,7 @@ def url_login(msg):
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
 def callback():
-    # get X-Line-Signature header value
     signature = request.headers['X-Line-Signature']
-    # get request body as text
     body = request.get_data(as_text=True)
     app.logger.info("Request body: " + body)
     print(body)
@@ -81,8 +84,6 @@ def callback():
         abort(400)
     return 'OK'
 
-
-# 處理訊息
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event) :
     msg = event.message.text
@@ -95,7 +96,7 @@ def handle_message(event) :
     elif 'https://' in msg or '.com' in msg:
         line_bot_api.reply_message(event.reply_token, TextSendMessage('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n此非itouch網域'))   
     else:
-        line_bot_api.reply_message(event.reply_token, TextSendMessage('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可'))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n系統若超過30分鐘無人使用會進入休眠模式，輸入的第一則連結會無法回覆，建議傳兩次'))
     return 
 
 
@@ -110,7 +111,7 @@ def welcome(event):
     gid = event.source.group_id
     profile = line_bot_api.get_group_member_profile(gid, uid)
     name = profile.display_name
-    message = TextSendMessage(text=f'{name}歡迎加入歐陽急難救助會~')
+    message = TextSendMessage(text=f'{name}歡迎加入急難救助會~ \n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n如要完成點名，請傳送該網址即可')
     line_bot_api.reply_message(event.reply_token, message)
 
 import os
