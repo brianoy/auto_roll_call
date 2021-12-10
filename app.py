@@ -19,8 +19,8 @@ url = str("")
 msgbuffer = str("")
 success_login_status = int(0)
 fail_login_status = int(0)
-userlist = ["11021340","10922248","11021339"]
-pwlist = ["Aa123456789","Opl5931665","Aa0123456789"]
+userlist = ["11021340","10922248","11021339","11052132"]
+pwlist = ["Aa123456789","Opl5931665","Aa0123456789","Howard22922"]
 
 def url_login(msg):
   chrome_options = webdriver.ChromeOptions()
@@ -88,7 +88,7 @@ def handle_message(event) :
     if 'itouch.cycu.edu.tw' in msg :
       if 'learning_activity' in msg :
           msgbuffer = url_login(msg)
-          line_bot_api.reply_message(event.reply_token, TextSendMessage('點名結束\n每次過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n在系統回覆點名狀態前建議不要離開本對話框\n若超過30分鐘無人使用，伺服器將會增加約10秒的開啟時間，請見諒\n' + msgbuffer))
+          line_bot_api.reply_message(event.reply_token, TextSendMessage('點名結束\n每次過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n在系統回覆點名狀態前建議不要離開本對話框\n若超過30分鐘無人使用，伺服器將會增加約10秒的開啟時間，請見諒\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + msgbuffer))
       else:
          line_bot_api.reply_message(event.reply_token, TextSendMessage('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n請輸入正確的點名網址'))
     elif 'https://' in msg or '.com' in msg:
