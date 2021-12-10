@@ -44,7 +44,8 @@ def url_login(msg):
      if fail:
        failmsg = fail.text
        fail.accept()
-       messageout = (messageout + "學號:" + usr + "\n點名錯誤，錯誤訊息:" + failmsg)#error login
+       messageout = (messageout + "學號:" + usr + "\n點名錯誤\n錯誤訊息:" + failmsg +'\n\n')#error login
+       fail_login_status = fail_login_status +1
        wd.quit()
      else:
        soup = BeautifulSoup(wd.page_source, 'html.parser')
@@ -86,15 +87,14 @@ def handle_message(event) :
     msg = event.message.text
     if 'itouch.cycu.edu.tw' in msg :
       if 'learning_activity' in msg :
-          #line_bot_api.reply_message(event.reply_token, TextSendMessage('請稍後，正在點名中\n過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n建議不要離開本對話框'))
           msgbuffer = url_login(msg)
-          line_bot_api.reply_message(event.reply_token, [TextSendMessage('請稍後，正在點名中\n過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n建議不要離開本對話框'),TextSendMessage(msgbuffer)])
+          line_bot_api.reply_message(event.reply_token, [TextSendMessage('點名結束\n每次過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n在系統回覆點名狀態前建議不要離開本對話框\n若超過30分鐘無人使用，伺服器將會增加約10秒的延遲時間，請見諒'),TextSendMessage(msgbuffer)])
       else:
-         line_bot_api.reply_message(event.reply_token, TextSendMessage('請輸入正確的點名網址'))
+         line_bot_api.reply_message(event.reply_token, TextSendMessage('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n\n請輸入正確的點名網址'))
     elif 'https://' in msg or '.com' in msg:
-        line_bot_api.reply_message(event.reply_token, TextSendMessage('此非itouch網域'))   
+        line_bot_api.reply_message(event.reply_token, TextSendMessage('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n\n此非itouch網域'))   
     else:
-        line_bot_api.reply_message(event.reply_token, TextSendMessage('無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可'))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n\n無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可'))
     return 
 
 
