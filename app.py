@@ -19,8 +19,8 @@ url = str("")
 msgbuffer = str("")
 success_login_status = int(0)
 fail_login_status = int(0)
-userlist = ["11021340","10922248"]
-pwlist = ["Aa123456789","Opl5931665"]
+userlist = ["11021340","10922248","11021339"]
+pwlist = ["Aa123456789","Opl59316","Aa0123456789"]
 
 def url_login(msg):
   chrome_options = webdriver.ChromeOptions()
@@ -88,7 +88,7 @@ def handle_message(event) :
       if 'learning_activity' in msg :
           #line_bot_api.reply_message(event.reply_token, TextSendMessage('請稍後，正在點名中\n過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n建議不要離開本對話框'))
           msgbuffer = url_login(msg)
-          line_bot_api.reply_message(event.reply_token, TextSendMessage(msgbuffer))
+          line_bot_api.reply_message(event.reply_token, [TextSendMessage('請稍後，正在點名中\n過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n建議不要離開本對話框'),TextSendMessage(msgbuffer)])
       else:
          line_bot_api.reply_message(event.reply_token, TextSendMessage('請輸入正確的點名網址'))
     elif 'https://' in msg or '.com' in msg:
