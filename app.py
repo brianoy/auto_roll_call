@@ -73,6 +73,7 @@ def callback():
     # get request body as text
     body = request.get_data(as_text=True)
     app.logger.info("Request body: " + body)
+    print(body)
     # handle webhook body
     try:
         handler.handle(body, signature)
@@ -88,7 +89,7 @@ def handle_message(event) :
     if 'itouch.cycu.edu.tw' in msg :
       if 'learning_activity' in msg :
           msgbuffer = url_login(msg)
-          line_bot_api.reply_message(event.reply_token, TextSendMessage('點名結束\n每次過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n在系統回覆點名狀態前建議不要離開本對話框\n若超過30分鐘無人使用，伺服器將會增加約10秒的開啟時間，請見諒\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + msgbuffer))
+          line_bot_api.reply_message(event.reply_token, TextSendMessage('點名結束\n每次過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n仍在測試中，不建議將此系統作為正式使用，在系統回覆點名狀態前建議不要離開本對話框，以免失效時來不及通知其他人手動點名\n若超過30分鐘無人使用，伺服器將會增加約10秒的開啟時間，請見諒\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + msgbuffer))
       else:
          line_bot_api.reply_message(event.reply_token, TextSendMessage('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n請輸入正確的點名網址'))
     elif 'https://' in msg or '.com' in msg:
