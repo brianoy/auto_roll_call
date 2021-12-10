@@ -20,7 +20,7 @@ msgbuffer = str("")
 success_login_status = int(0)
 fail_login_status = int(0)
 userlist = ["11021340","10922248","11021339"]
-pwlist = ["Aa123456789","Opl59316","Aa0123456789"]
+pwlist = ["Aa123456789","Opl5931665","Aa0123456789"]
 
 def url_login(msg):
   chrome_options = webdriver.ChromeOptions()
@@ -44,7 +44,7 @@ def url_login(msg):
      if fail:
        failmsg = fail.text
        fail.accept()
-       messageout = (messageout + "學號:" + usr + "\n點名錯誤\n錯誤訊息:" + failmsg +'\n\n')#error login
+       messageout = (messageout + "學號:" + usr + "\n點名失敗\n錯誤訊息:密碼錯誤" + failmsg +'\n\n')#error login
        fail_login_status = fail_login_status +1
        wd.quit()
      else:
@@ -61,7 +61,7 @@ def url_login(msg):
            messageout = (messageout + "學號:" + usr + "\n發生未知的錯誤點名失敗，趕快聯繫管理員"+'\n\n')#unknown failure
            fail_login_status = fail_login_status +1
   wd.quit()
-  messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人")
+  messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人")
   return messageout
 
 
@@ -88,13 +88,13 @@ def handle_message(event) :
     if 'itouch.cycu.edu.tw' in msg :
       if 'learning_activity' in msg :
           msgbuffer = url_login(msg)
-          line_bot_api.reply_message(event.reply_token, [TextSendMessage('點名結束\n每次過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n在系統回覆點名狀態前建議不要離開本對話框\n若超過30分鐘無人使用，伺服器將會增加約10秒的延遲時間，請見諒'),TextSendMessage(msgbuffer)])
+          line_bot_api.reply_message(event.reply_token, TextSendMessage('點名結束\n每次過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n在系統回覆點名狀態前建議不要離開本對話框\n若超過30分鐘無人使用，伺服器將會增加約10秒的開啟時間，請見諒\n' , msgbuffer)
       else:
-         line_bot_api.reply_message(event.reply_token, TextSendMessage('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n\n請輸入正確的點名網址'))
+         line_bot_api.reply_message(event.reply_token, TextSendMessage('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n請輸入正確的點名網址'))
     elif 'https://' in msg or '.com' in msg:
-        line_bot_api.reply_message(event.reply_token, TextSendMessage('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n\n此非itouch網域'))   
+        line_bot_api.reply_message(event.reply_token, TextSendMessage('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n此非itouch網域'))   
     else:
-        line_bot_api.reply_message(event.reply_token, TextSendMessage('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n\n無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可'))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可'))
     return 
 
 
