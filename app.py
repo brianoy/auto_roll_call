@@ -94,7 +94,7 @@ def callback():
 def deliver_data(event, public_msgbuffer, text=None) -> dict:
     profile = line_bot_api.get_group_member_profile(event.source.group_id,event.source.user_id)
     request_data = {
-        "content":"------------------------------------------" + "傳入機器人的訊息:\n" + text + "\n" + "傳出的訊息:\n" + public_msgbuffer + "------------------------------------------" ,
+        "content":"------------------------------------------\n\n" + "傳入機器人的訊息:\n" + text + "\n" + "傳出的訊息:\n" + public_msgbuffer + "\n\n------------------------------------------" ,
         "username":"<line 同步訊息>   " + profile.display_name,
         "avatar_url":profile.picture_url
     }
