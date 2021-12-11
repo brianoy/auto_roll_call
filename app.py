@@ -12,8 +12,10 @@ import datetime
 import time
 import json
 import sys
+import discord
 
 sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
+client = discord.Client()
 app = Flask(__name__)
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
 line_bot_api = LineBotApi('mn0w8gkHEbWQQAbRC7sw1F1J9SFegKNHPVDsRfsAsuOJ2vgQPgx0/zB/ZeB6sM2ybrFrLh8qKKKsc97iPyW5/qUg0mPp7Tpfhkc9+RncWfdW4TUmscADLAW4FfurNsKgdElaTaLlzDA39SJG357lFgdB04t89/1O/w1cDnyilFU=')# Channel Access Token
@@ -25,6 +27,10 @@ fail_login_status = int(0)
 discord_webhook = 'https://discord.com/api/webhooks/919022348433231925/qROUJ50jdA40eL6dF7opy9dHOEKtq7cc9kDqi-qTSTcEZX73NHTdu3endVbJq5e0M4OR'
 userlist = ["11021340","10922248","11021339","11052132"]
 pwlist = ["Aa123456789","Opl5931665","Aa0123456789","Howard22922"]
+
+@client.event
+async def on_ready():
+    print('目前登入身份：', client.user)
 
 def url_login(msg):
   chrome_options = webdriver.ChromeOptions()
