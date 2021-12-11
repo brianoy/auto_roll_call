@@ -20,17 +20,13 @@ app = Flask(__name__)
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
 line_bot_api = LineBotApi('mn0w8gkHEbWQQAbRC7sw1F1J9SFegKNHPVDsRfsAsuOJ2vgQPgx0/zB/ZeB6sM2ybrFrLh8qKKKsc97iPyW5/qUg0mPp7Tpfhkc9+RncWfdW4TUmscADLAW4FfurNsKgdElaTaLlzDA39SJG357lFgdB04t89/1O/w1cDnyilFU=')# Channel Access Token
 handler = WebhookHandler('3e6656d8b069ab3bf6c057c1e1a84018')# Channel Secret
+discord_webhook = 'https://discord.com/api/webhooks/919053709307179029/5whB53gtFXSykfAVcqsFOSSMA6-b_Y1yk4koHC0fx3snjTIweNuAz4qgGlYtIdVvHlev'
+userlist = ["11021340","10922248","11021339","11052132"]
+pwlist = ["Aa123456789","Opl5931665","Aa0123456789","Howard22922"]
 url = str("")
 msgbuffer = str("")
 success_login_status = int(0)
 fail_login_status = int(0)
-discord_webhook = 'https://discord.com/api/webhooks/919022348433231925/qROUJ50jdA40eL6dF7opy9dHOEKtq7cc9kDqi-qTSTcEZX73NHTdu3endVbJq5e0M4OR'
-userlist = ["11021340","10922248","11021339","11052132"]
-pwlist = ["Aa123456789","Opl5931665","Aa0123456789","Howard22922"]
-
-@client.event
-async def on_ready():
-    print('目前登入身份：', client.user)
 
 def url_login(msg):
   chrome_options = webdriver.ChromeOptions()
@@ -55,7 +51,7 @@ def url_login(msg):
        failmsg = fail.text
        fail.accept()
        messageout = (messageout + "學號:" + usr + "\n點名失敗\n錯誤訊息:密碼錯誤" + failmsg +'\n\n')#error login
-       print("密碼錯誤")
+       print("密碼錯誤" + messageout)
        fail_login_status = fail_login_status +1
        wd.quit()
      else:
@@ -85,7 +81,7 @@ def callback():
     signature = request.headers['X-Line-Signature']
     body = request.get_data(as_text=True)
     app.logger.info("Request body: " + body)
-    print("訊息:" + body)
+    print("訊息從line進入:\n" + body)
     # handle webhook body
     try:
         handler.handle(body, signature)
@@ -94,11 +90,11 @@ def callback():
         abort(400)
     return 'OK'
 
-def create_request_data(event, text=None) -> dict:
+def deliver_data(event, text=None) -> dict:
     profile = line_bot_api.get_group_member_profile(event.source.group_id,event.source.user_id)
     request_data = {
-        "content":text,
-        "username":profile.display_name + " from LINE",
+        "content":"傳入機器人:\n" + text + "\n" + msgbuffer,
+        "username":"<line 同步訊息>" + profile.display_name + "機器人",
         "avatar_url":profile.picture_url
     }
     return request_data
@@ -116,7 +112,7 @@ def handle_message(event) :
         line_bot_api.reply_message(event.reply_token, TextSendMessage('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n此非itouch網域'))   
     else:
         line_bot_api.reply_message(event.reply_token, TextSendMessage('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n系統若超過30分鐘無人使用會進入休眠模式，輸入的第一則連結會無法回覆，建議傳兩次'))
-    request_data = create_request_data(event, event.message.text)
+    request_data = deliver_data(event, event.message.text)
     requests.post(url=discord_webhook, data=request_data)
     return 
 
@@ -128,6 +124,10 @@ def welcome(event):
     name = profile.display_name
     message = TextSendMessage(text=f'{name}歡迎加入急難救助會~ \n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n如要完成點名，請傳送該網址即可')
     line_bot_api.reply_message(event.reply_token, message)
+
+@client.event
+async def on_ready():
+    print('目前discord登入身份：', client.user)
 
 import os
 if __name__ == "__main__":
