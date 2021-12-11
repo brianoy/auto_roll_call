@@ -91,7 +91,7 @@ def callback():
         abort(400)
     return 'OK'
 
-def deliver_data(event, public_msgbuffer, text=None) -> dict
+def deliver_data(event, public_msgbuffer, text=None) -> dict:
     profile = line_bot_api.get_group_member_profile(event.source.group_id,event.source.user_id)
     request_data = {
         "content":"傳入機器人的訊息:\n" + text + "\n" + "傳出的訊息:\n" + public_msgbuffer ,
