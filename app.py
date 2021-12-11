@@ -133,7 +133,7 @@ def welcome(event):
 
 @client.event
 async def on_ready():
-    print('目前discord登入身份：', client.user)
+    print('目前discord登入身份:', client.user)
 
 import os
 if __name__ == "__main__":
