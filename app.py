@@ -1,14 +1,16 @@
 from flask import Flask, request, abort
-from linebot import (LineBotApi, WebhookHandler)
-from linebot.exceptions import (InvalidSignatureError)
+from linebot import LineBotApi, WebhookHandler
+from linebot.exceptions import InvalidSignatureError
 from linebot.models import *
-import tempfile, os
-import datetime
-import time
 from selenium import webdriver
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+import requests
+import tempfile, os
+import datetime
+import time
+import json
 import sys
 
 sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
@@ -20,6 +22,7 @@ url = str("")
 msgbuffer = str("")
 success_login_status = int(0)
 fail_login_status = int(0)
+discord_webhook = 'https://discord.com/api/webhooks/919022348433231925/qROUJ50jdA40eL6dF7opy9dHOEKtq7cc9kDqi-qTSTcEZX73NHTdu3endVbJq5e0M4OR'
 userlist = ["11021340","10922248","11021339","11052132"]
 pwlist = ["Aa123456789","Opl5931665","Aa0123456789","Howard22922"]
 
@@ -76,13 +79,23 @@ def callback():
     signature = request.headers['X-Line-Signature']
     body = request.get_data(as_text=True)
     app.logger.info("Request body: " + body)
-    print(body)
+    print("訊息:" + body)
     # handle webhook body
     try:
         handler.handle(body, signature)
     except InvalidSignatureError:
+        print("嚴重失敗!")
         abort(400)
     return 'OK'
+
+def create_request_data(event, text=None) -> dict:
+    profile = line_bot_api.get_group_member_profile(event.source.group_id,event.source.user_id)
+    request_data = {
+        "content":text,
+        "username":profile.display_name + " from LINE",
+        "avatar_url":profile.picture_url
+    }
+    return request_data
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event) :
@@ -97,13 +110,9 @@ def handle_message(event) :
         line_bot_api.reply_message(event.reply_token, TextSendMessage('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n此非itouch網域'))   
     else:
         line_bot_api.reply_message(event.reply_token, TextSendMessage('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n系統若超過30分鐘無人使用會進入休眠模式，輸入的第一則連結會無法回覆，建議傳兩次'))
+    request_data = create_request_data(event, event.message.text)
+    requests.post(url=discord_webhook, data=request_data)
     return 
-
-
-@handler.add(PostbackEvent)
-def handle_message(event):
-    print(event.postback.data)
-
 
 @handler.add(MemberJoinedEvent)
 def welcome(event):
