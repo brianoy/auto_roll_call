@@ -111,7 +111,7 @@ def handle_message(event) :
           line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
       else:
           public_msgbuffer = ('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n請輸入正確的點名網址')
-         line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
+          line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
     elif 'https://' in msg or '.com' in msg:
         public_msgbuffer = ('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n此非itouch網域')
         line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
