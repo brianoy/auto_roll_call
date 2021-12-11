@@ -25,6 +25,7 @@ userlist = ["11021340","10922248","11021339","11052132"]
 pwlist = ["Aa123456789","Opl5931665","Aa0123456789","Howard22922"]
 url = str("")
 msgbuffer = str("")
+public_msgbuffer = str("")
 success_login_status = int(0)
 fail_login_status = int(0)
 
@@ -90,29 +91,30 @@ def callback():
         abort(400)
     return 'OK'
 
-def deliver_data(event, text=None) -> dict:
+def deliver_data(event, public_msgbuffer, text=None) -> dict
     profile = line_bot_api.get_group_member_profile(event.source.group_id,event.source.user_id)
     request_data = {
-        "content":"傳入機器人:\n" + text + "\n" + msgbuffer,
-        "username":"<line 同步訊息>" + profile.display_name + "機器人",
+        "content":"傳入機器人的訊息:\n" + text + "\n" + "傳出的訊息:\n" + public_msgbuffer ,
+        "username":"<line 同步訊息>   " + profile.display_name,
         "avatar_url":profile.picture_url
     }
     return request_data
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event) :
+    public_msgbuffer = ""
     msg = event.message.text
     if 'itouch.cycu.edu.tw' in msg :
       if 'learning_activity' in msg :
           msgbuffer = url_login(msg)
-          line_bot_api.reply_message(event.reply_token, TextSendMessage('點名結束\n每次過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n仍在測試中，不建議將此系統作為正式使用，在系統回覆點名狀態前建議不要離開本對話框，以免失效時來不及通知其他人手動點名\n若超過30分鐘無人使用，伺服器將會增加約10秒的開啟時間，請見諒\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + msgbuffer))
+          line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer = '點名結束\n每次過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n仍在測試中，不建議將此系統作為正式使用，在系統回覆點名狀態前建議不要離開本對話框，以免失效時來不及通知其他人手動點名\n若超過30分鐘無人使用，伺服器將會增加約10秒的開啟時間，請見諒\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + msgbuffer))
       else:
-         line_bot_api.reply_message(event.reply_token, TextSendMessage('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n請輸入正確的點名網址'))
+         line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer = '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n請輸入正確的點名網址'))
     elif 'https://' in msg or '.com' in msg:
-        line_bot_api.reply_message(event.reply_token, TextSendMessage('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n此非itouch網域'))   
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer = '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n此非itouch網域'))   
     else:
-        line_bot_api.reply_message(event.reply_token, TextSendMessage('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n系統若超過30分鐘無人使用會進入休眠模式，輸入的第一則連結會無法回覆，建議傳兩次'))
-    request_data = deliver_data(event, event.message.text)
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer = '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n系統若超過30分鐘無人使用會進入休眠模式，輸入的第一則連結會無法回覆，建議傳兩次'))
+    request_data = deliver_data(event, public_msgbuffer, event.message.text)
     requests.post(url=discord_webhook, data=request_data)
     return 
 
