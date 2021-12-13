@@ -21,7 +21,7 @@ static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
 line_bot_api = LineBotApi('mn0w8gkHEbWQQAbRC7sw1F1J9SFegKNHPVDsRfsAsuOJ2vgQPgx0/zB/ZeB6sM2ybrFrLh8qKKKsc97iPyW5/qUg0mPp7Tpfhkc9+RncWfdW4TUmscADLAW4FfurNsKgdElaTaLlzDA39SJG357lFgdB04t89/1O/w1cDnyilFU=')# Channel Access Token
 handler = WebhookHandler('3e6656d8b069ab3bf6c057c1e1a84018')# Channel Secret
 discord_webhook = 'https://discord.com/api/webhooks/919053709307179029/5whB53gtFXSykfAVcqsFOSSMA6-b_Y1yk4koHC0fx3snjTIweNuAz4qgGlYtIdVvHlev'
-userlist = ["11021340","11021339","11021356","11021331"]
+userlist = ["11021340","11021339","11021346","11021331"]
 pwlist = ["Aa123456789","Aa0123456789","Angel1101","NGSDxNrwfNw2"]
 url = str("")
 msgbuffer = str("")
@@ -64,7 +64,7 @@ def url_login(msg):
            fail_login_status = fail_login_status +1
        elif (soup.find_all(stroke="#73AF55") != []):#success
            detailmsg = wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text
-           messageout = (messageout + "學號:" + usr + "\n點名成功，歐陽非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':')+'\n\n')
+           messageout = (messageout + "學號:" + usr + "\n點名成功，歐陽非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':').replace('<br>','\n')+'\n\n')
            print("點名成功" + messageout)
            success_login_status = success_login_status +1
        else:
