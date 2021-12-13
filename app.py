@@ -21,8 +21,8 @@ static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
 line_bot_api = LineBotApi('mn0w8gkHEbWQQAbRC7sw1F1J9SFegKNHPVDsRfsAsuOJ2vgQPgx0/zB/ZeB6sM2ybrFrLh8qKKKsc97iPyW5/qUg0mPp7Tpfhkc9+RncWfdW4TUmscADLAW4FfurNsKgdElaTaLlzDA39SJG357lFgdB04t89/1O/w1cDnyilFU=')# Channel Access Token
 handler = WebhookHandler('3e6656d8b069ab3bf6c057c1e1a84018')# Channel Secret
 discord_webhook = 'https://discord.com/api/webhooks/919053709307179029/5whB53gtFXSykfAVcqsFOSSMA6-b_Y1yk4koHC0fx3snjTIweNuAz4qgGlYtIdVvHlev'
-userlist = ["11021340","11021339","11021346","11021331"]
-pwlist = ["Aa123456789","Aa0123456789","Angel1101","NGSDxNrwfNw2"]
+userlist = ["11021340","11021339","11021346","11021331","11021338"]
+pwlist = ["Aa123456789","Aa0123456789","Angel1101","NGSDxNrwfNw2","daniel@09250529"]
 url = str("")
 msgbuffer = str("")
 public_msgbuffer = str("")
