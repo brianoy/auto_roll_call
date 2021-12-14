@@ -126,7 +126,7 @@ def handle_message(event) :
                    "Authorization": "Bearer " + grouptoken[0], 
                    }                  
                    requests.post("https://notify-api.line.me/api/notify", headers = headers, params = payload)#翹課大魔王
-               elif(event.source.group_id == "C0041b628a8712ace35095f505520c0b"):
+               elif(event.source.group_id == "C0041b628a8712ace35095f505520c0bd"):
                    headers= {
                    "Authorization": "Bearer " + grouptoken[1], 
                    } 
