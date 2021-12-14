@@ -92,14 +92,14 @@ def callback():
         abort(400)
     return 'OK'
 
-def deliver_data(event, public_msgbuffer, text=None) -> dict:
-    if (event.type == "message"):
+def deliver_data(event, public_msgbuffer, event_temp, text=None) -> dict:
+    if (event_temp.type == "message"):
        request_data = {
           "content":"------------------------------------------\n\n" + "傳入機器人的訊息:\n" + text + "\n" + "傳出的訊息:\n" + public_msgbuffer + "\n\n------------------------------------------" ,
           "username":"<line 同步訊息>   " + "user_name"
        }
-    elif (event.type == "group"):
-       profile = line_bot_api.get_group_member_profile(event.source.group_id,event.source.user_id)
+    elif (event_temp.type == "group"):
+       profile = line_bot_api.get_group_member_profile(event_temp.source.group_id,event_temp.source.user_id)
        request_data = {
         "content":"------------------------------------------\n\n" + "傳入機器人的訊息:\n" + text + "\n" + "傳出的訊息:\n" + public_msgbuffer + "\n\n------------------------------------------" ,
         "username":"<line 同步訊息>   " + profile.display_name,
@@ -112,18 +112,19 @@ def deliver_data(event, public_msgbuffer, text=None) -> dict:
 def handle_message(event) :
     public_msgbuffer = ""
     msg = event.message.text
+    event_temp = event
     if 'itouch.cycu.edu.tw' in msg :
       if 'learning_activity' in msg :
           if (event.type == "group") :
               line_bot_api.reply_message(event.reply_token, TextSendMessage("已收到網址，正在點名中，請靜待約20~30秒"))
               msgbuffer = url_login(msg)
               public_msgbuffer = ('點名結束\n每次過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n仍在測試中，不建議將此系統作為正式使用，在系統回覆點名狀態前建議不要離開本對話框，以免失效時來不及通知其他人手動點名\n若超過30分鐘無人使用，伺服器將會增加約10秒的開啟時間，請見諒\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + msgbuffer)
-              line_bot_api.push_message(event.source.group_id, TextSendMessage(public_msgbuffer))
+              line_bot_api.push_message(event_temp.source.group_id, TextSendMessage(public_msgbuffer))
           elif (event.type == "message") :
               line_bot_api.reply_message(event.reply_token, TextSendMessage("已收到網址，正在點名中，請靜待約20~30秒"))
               msgbuffer = url_login(msg)
               public_msgbuffer = ('點名結束\n每次過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n仍在測試中，不建議將此系統作為正式使用，在系統回覆點名狀態前建議不要離開本對話框，以免失效時來不及通知其他人手動點名\n若超過30分鐘無人使用，伺服器將會增加約10秒的開啟時間，請見諒\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + msgbuffer)
-              line_bot_api.push_message(event.source.user_id, TextSendMessage(public_msgbuffer))
+              line_bot_api.push_message(event_temp.source.user_id, TextSendMessage(public_msgbuffer))
           else:
               print("錯誤:偵測不到訊息類型")
               line_bot_api.reply_message(event.reply_token, TextSendMessage("偵測不到訊息類型，請再試一次"))
@@ -145,7 +146,7 @@ def handle_message(event) :
         public_msgbuffer = ('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n系統若超過30分鐘無人使用會進入休眠模式，輸入的第一則連結會無法回覆，建議傳兩次')
         line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
 
-    request_data = deliver_data(event, public_msgbuffer, event.message.text)
+    request_data = deliver_data(event, public_msgbuffer, event_temp, event.message.text)
     requests.post(url=discord_webhook, data=request_data)
     return 
 
