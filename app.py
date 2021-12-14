@@ -94,6 +94,10 @@ def callback():
         print("嚴重失敗!")
         abort(400)
     return 'OK'
+@app.route("/")
+def activate():
+    print("強迫喚醒成功")
+    return '強迫喚醒成功'
 
 def deliver_data(public_msgbuffer, event_temp, text=None) -> dict:
     if (event_temp.source.type == "user"):
@@ -150,19 +154,20 @@ def handle_message(event) :
       else:
           public_msgbuffer = ('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n請輸入正確的點名網址')
           line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
-    elif 'https://' in msg or '.com' in msg:
+    elif 'https://' in msg or '.com' in msg :
         public_msgbuffer = ('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n此非itouch網域')
         line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
     elif '變更權杖:' in msg:
-        if opId == event.source.user_id:
+        if opId == event.source.user_id :
            print("開始變更權杖")
            line_bot_api.reply_message(event.reply_token, TextSendMessage("已變更權杖"))
         else:
             print("變更權杖失敗，沒有權限")
             line_bot_api.reply_message(event.reply_token, TextSendMessage("沒有權限，無法變更權杖"))
-    elif '要吃什麼' in msg:
+    elif '要吃什麼' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage(EAT[random.randint(0,len(EAT))]))
-  
+    elif '開啟' in msg :
+        print("強制喚醒")
     else:
         public_msgbuffer = ('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n系統若超過30分鐘無人使用會進入休眠模式，輸入的第一則連結會無法回覆，建議傳兩次')
         line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
