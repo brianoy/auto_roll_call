@@ -42,7 +42,7 @@ def url_login(msg):
   for i in range(0,len(userlist),1):
      usr =  userlist[i]
      pwd = pwlist[i]
-     wd = webdriver.Chrome('chromedriver',chrome_options=chrome_options)
+     wd = webdriver.Chrome('chromedriver',options=chrome_options)
      wd.get(url)
      wd.execute_script('document.getElementById("UserNm").value ="' + usr + '"')
      wd.execute_script('document.getElementById("UserPasswd").value ="' + pwd + '"')
@@ -94,17 +94,20 @@ def callback():
 
 def deliver_data(public_msgbuffer, event_temp, text=None) -> dict:
     if (event_temp.source.type == "user"):
-       request_data = {
+
+        profile = line_bot_api.get_profile(event_temp.source.user_id)
+        request_data = {
           "content":"------------------------------------------\n\n" + "傳入機器人的訊息:\n" + text + "\n" + "傳出的訊息:\n" + public_msgbuffer + "\n\n------------------------------------------" ,
-          "username":"<line 同步訊息>   " + "user_name"
-       }
+          "username":"<line 同步訊息>   " + profile.display_name,
+          "avatar_url":profile.picture_url
+          }
     elif (event_temp.source.type == "group"):
-       profile = line_bot_api.get_group_member_profile(event_temp.source.group_id,event_temp.source.user_id)
-       request_data = {
-        "content":"------------------------------------------\n\n" + "傳入機器人的訊息:\n" + text + "\n" + "傳出的訊息:\n" + public_msgbuffer + "\n\n------------------------------------------" ,
-        "username":"<line 同步訊息>   " + profile.display_name,
-        "avatar_url":profile.picture_url
-       }
+        profile = line_bot_api.get_group_member_profile(event_temp.source.group_id,event_temp.source.user_id)
+        request_data = {
+          "content":"------------------------------------------\n\n" + "傳入機器人的訊息:\n" + text + "\n" + "傳出的訊息:\n" + public_msgbuffer + "\n\n------------------------------------------" ,
+          "username":"<line 同步訊息>   " + profile.display_name,
+          "avatar_url":profile.picture_url
+         }
     return request_data
 
  #warning! reply token would expired after send msg about 30seconds. use push msg! 
@@ -119,7 +122,6 @@ def handle_message(event) :
                line_bot_api.reply_message(event_temp.reply_token, TextSendMessage("已收到網址，正在點名中，請靜待約20~30秒"))
                msgbuffer = url_login(msg)
                public_msgbuffer = ('點名結束\n每次過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n仍在測試中，不建議將此系統作為正式使用，在系統回覆點名狀態前建議不要離開本對話框，以免失效時來不及通知其他人手動點名\n若超過30分鐘無人使用，伺服器將會增加約10秒的開啟時間，請見諒\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + msgbuffer)
-               line_bot_api.push_message(event_temp.source.group_id, TextSendMessage(public_msgbuffer))
                payload = {'message': public_msgbuffer }
                if(event.source.group_id == "Cc97a91380e09611261010e4c5c682711"):
                    headers= {
@@ -133,14 +135,15 @@ def handle_message(event) :
                    requests.post("https://notify-api.line.me/api/notify", headers = headers, params = payload)#秘密基地
                else:
                    print("有不知名的群組")
+                   line_bot_api.push_message(event_temp.source.group_id, TextSendMessage(public_msgbuffer))#除了以上兩個群組
           elif (event.source.type == "user") :
-              line_bot_api.reply_message(event_temp.reply_token, TextSendMessage("已收到網址，正在點名中，請靜待約20~30秒"))
+              line_bot_api.reply_message(event_temp.reply_token, TextSendMessage("已收到網址，正在點名中，請靜待約20~30秒，若一個人已傳網址則不需重複傳送"))
               msgbuffer = url_login(msg)
               public_msgbuffer = ('點名結束\n每次過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n仍在測試中，不建議將此系統作為正式使用，在系統回覆點名狀態前建議不要離開本對話框，以免失效時來不及通知其他人手動點名\n若超過30分鐘無人使用，伺服器將會增加約10秒的開啟時間，請見諒\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + msgbuffer)
               line_bot_api.push_message(event_temp.source.user_id, TextSendMessage(public_msgbuffer))
           else:
-              print("錯誤:偵測不到訊息類型")
-              line_bot_api.reply_message(event.reply_token, TextSendMessage("偵測不到訊息類型，請再試一次"))
+              print("錯誤:偵測不到itouch網址訊息類型")
+              line_bot_api.reply_message(event.reply_token, TextSendMessage("偵測不到itouch網址類型，請再試一次"))
       else:
           public_msgbuffer = ('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n請輸入正確的點名網址')
           line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
