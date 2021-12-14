@@ -23,6 +23,7 @@ handler = WebhookHandler('3e6656d8b069ab3bf6c057c1e1a84018')# Channel Secret
 discord_webhook = 'https://discord.com/api/webhooks/919053709307179029/5whB53gtFXSykfAVcqsFOSSMA6-b_Y1yk4koHC0fx3snjTIweNuAz4qgGlYtIdVvHlev'
 userlist = ["11021340","11021339","11021346","11021331","11021338"]
 pwlist = ["Aa123456789","Aa0123456789","Angel1101","NGSDxNrwfNw2","daniel@09250529"]
+opID = "Ueca105de2ec07b6c502d6b639f56d119"
 url = str("")
 msgbuffer = str("")
 public_msgbuffer = str("")
@@ -92,32 +93,58 @@ def callback():
     return 'OK'
 
 def deliver_data(event, public_msgbuffer, text=None) -> dict:
-    profile = line_bot_api.get_group_member_profile(event.source.group_id,event.source.user_id)
-    request_data = {
+    if (event.type == "message"):
+       request_data = {
+          "content":"------------------------------------------\n\n" + "傳入機器人的訊息:\n" + text + "\n" + "傳出的訊息:\n" + public_msgbuffer + "\n\n------------------------------------------" ,
+          "username":"<line 同步訊息>   " + "user_name"
+       }
+    elif (event.type == "group"):
+       profile = line_bot_api.get_group_member_profile(event.source.group_id,event.source.user_id)
+       request_data = {
         "content":"------------------------------------------\n\n" + "傳入機器人的訊息:\n" + text + "\n" + "傳出的訊息:\n" + public_msgbuffer + "\n\n------------------------------------------" ,
         "username":"<line 同步訊息>   " + profile.display_name,
         "avatar_url":profile.picture_url
-    }
+       }
     return request_data
 
+ #warning! reply token would expired after send msg about 30seconds. use push msg! 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event) :
     public_msgbuffer = ""
     msg = event.message.text
     if 'itouch.cycu.edu.tw' in msg :
       if 'learning_activity' in msg :
-          msgbuffer = url_login(msg)
-          public_msgbuffer = ('點名結束\n每次過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n仍在測試中，不建議將此系統作為正式使用，在系統回覆點名狀態前建議不要離開本對話框，以免失效時來不及通知其他人手動點名\n若超過30分鐘無人使用，伺服器將會增加約10秒的開啟時間，請見諒\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + msgbuffer)
-          line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
+          if (event.type == "group") :
+              line_bot_api.reply_message(event.reply_token, TextSendMessage("已收到網址，正在點名中，請靜待約20~30秒"))
+              msgbuffer = url_login(msg)
+              public_msgbuffer = ('點名結束\n每次過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n仍在測試中，不建議將此系統作為正式使用，在系統回覆點名狀態前建議不要離開本對話框，以免失效時來不及通知其他人手動點名\n若超過30分鐘無人使用，伺服器將會增加約10秒的開啟時間，請見諒\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + msgbuffer)
+              line_bot_api.push_message(event.source.groupID, TextSendMessage(public_msgbuffer))
+          elif (event.type == "message") :
+              line_bot_api.reply_message(event.reply_token, TextSendMessage("已收到網址，正在點名中，請靜待約20~30秒"))
+              msgbuffer = url_login(msg)
+              public_msgbuffer = ('點名結束\n每次過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n仍在測試中，不建議將此系統作為正式使用，在系統回覆點名狀態前建議不要離開本對話框，以免失效時來不及通知其他人手動點名\n若超過30分鐘無人使用，伺服器將會增加約10秒的開啟時間，請見諒\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + msgbuffer)
+              line_bot_api.push_message(event.source.userID, TextSendMessage(public_msgbuffer))
+          else:
+              print("錯誤:偵測不到訊息類型")
+              line_bot_api.reply_message(event.reply_token, TextSendMessage("偵測不到訊息類型，請再試一次"))
       else:
           public_msgbuffer = ('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n請輸入正確的點名網址')
           line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
+
     elif 'https://' in msg or '.com' in msg:
         public_msgbuffer = ('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n此非itouch網域')
         line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
+    elif '變更權杖:' in msg:
+        if opID == event.source.userID:
+           print("開始變更權杖")
+           line_bot_api.reply_message(event.reply_token, TextSendMessage("已變更權杖"))
+        else:
+            print("變更權杖失敗，沒有權限")
+            line_bot_api.reply_message(event.reply_token, TextSendMessage("沒有權限，無法變更權杖"))
     else:
         public_msgbuffer = ('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n系統若超過30分鐘無人使用會進入休眠模式，輸入的第一則連結會無法回覆，建議傳兩次')
         line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
+        
     request_data = deliver_data(event, public_msgbuffer, event.message.text)
     requests.post(url=discord_webhook, data=request_data)
     return 
@@ -130,10 +157,6 @@ def welcome(event):
     name = profile.display_name
     message = TextSendMessage(text=f'{name}歡迎加入急難救助會~ \n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n如要完成點名，請傳送該網址即可')
     line_bot_api.reply_message(event.reply_token, message)
-
-@client.event
-async def on_ready():
-    print('目前discord登入身份:', client.user)
 
 import os
 if __name__ == "__main__":
