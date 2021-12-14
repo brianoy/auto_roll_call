@@ -93,7 +93,7 @@ def callback():
     return 'OK'
 
 def deliver_data(public_msgbuffer, event_temp, text=None) -> dict:
-    if (event_temp.source.type == "message"):
+    if (event_temp.source.type == "user"):
        request_data = {
           "content":"------------------------------------------\n\n" + "傳入機器人的訊息:\n" + text + "\n" + "傳出的訊息:\n" + public_msgbuffer + "\n\n------------------------------------------" ,
           "username":"<line 同步訊息>   " + "user_name"
@@ -133,7 +133,7 @@ def handle_message(event) :
                    requests.post("https://notify-api.line.me/api/notify", headers = headers, params = payload)#秘密基地
                else:
                    print("有不知名的群組")
-          elif (event.source.type == "message") :
+          elif (event.source.type == "user") :
               line_bot_api.reply_message(event_temp.reply_token, TextSendMessage("已收到網址，正在點名中，請靜待約20~30秒"))
               msgbuffer = url_login(msg)
               public_msgbuffer = ('點名結束\n每次過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n仍在測試中，不建議將此系統作為正式使用，在系統回覆點名狀態前建議不要離開本對話框，以免失效時來不及通知其他人手動點名\n若超過30分鐘無人使用，伺服器將會增加約10秒的開啟時間，請見諒\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + msgbuffer)
