@@ -24,15 +24,12 @@ discord_webhook = 'https://discord.com/api/webhooks/919053709307179029/5whB53gtF
 userlist = ["11021340","11021339","11021346","11021331","11021338"]
 pwlist = ["Aa123456789","Aa0123456789","Angel1101","NGSDxNrwfNw2","daniel@09250529"]
 opId = "Ueca105de2ec07b6c502d6b639f56d119"
-grouptoken="4C0ZkJflAfexSpelBcoEYVobqbbSD0aGFNvpGAVcdUX"
+grouptoken=["4C0ZkJflAfexSpelBcoEYVobqbbSD0aGFNvpGAVcdUX","vUQ1xrf4cIp7kFlWifowMJf4XHdtUSHeXi1QeUKARa9"]
 url = str("")
 msgbuffer = str("")
 public_msgbuffer = str("")
 success_login_status = int(0)
 fail_login_status = int(0)
-headers = {
-    "Authorization": "Bearer " + grouptoken, 
-}
 def url_login(msg):
   chrome_options = webdriver.ChromeOptions()
   chrome_options.add_argument('--headless')
@@ -124,8 +121,16 @@ def handle_message(event) :
                public_msgbuffer = ('點名結束\n每次過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n仍在測試中，不建議將此系統作為正式使用，在系統回覆點名狀態前建議不要離開本對話框，以免失效時來不及通知其他人手動點名\n若超過30分鐘無人使用，伺服器將會增加約10秒的開啟時間，請見諒\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + msgbuffer)
                line_bot_api.push_message(event_temp.source.group_id, TextSendMessage(public_msgbuffer))
                payload = {'message': public_msgbuffer }
-               if(event.source.group_id == "Cc97a91380e09611261010e4c5c682711" or event.source.group_id == "C0041b628a8712ace35095f505520c0b"):
-                   requests.post("https://notify-api.line.me/api/notify", headers = headers, params = payload)#
+               if(event.source.group_id == "Cc97a91380e09611261010e4c5c682711"):
+                   headers= {
+                   "Authorization": "Bearer " + grouptoken[0], 
+                   }                  
+                   requests.post("https://notify-api.line.me/api/notify", headers = headers, params = payload)#翹課大魔王
+               elif(event.source.group_id == "C0041b628a8712ace35095f505520c0b"):
+                   headers= {
+                   "Authorization": "Bearer " + grouptoken[1], 
+                   } 
+                   requests.post("https://notify-api.line.me/api/notify", headers = headers, params = payload)#秘密基地
                else:
                    print("有不知名的群組")
           elif (event.source.type == "message") :
