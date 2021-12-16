@@ -18,7 +18,9 @@ import discord
 sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
 client = discord.Client()
 app = Flask(__name__)
-EAT = ["全家","7-11","中原夜市","鍋燒意麵","肉羹","拉麵","炒飯","賣麵庄","雞腿便當","摩斯漢堡","麥當勞","烤肉飯","肯德基","石二鍋","五花馬","燒肉","咖哩飯","牛排","肉燥飯","SUKIYA","霸味薑母鴨","高雄黑輪","凍飯","薩利亞","mint","火雞肉飯","品田牧場","滷味","Mr.三明治","雞柳飯","肉骨茶麵","泡麵","水餃","煎餃","包子","炒麵","鐵板燒","披薩","悟饕","河粉","肉圓","黑宅拉麵"]
+EAT = (["全家","7-11","中原夜市","鍋燒意麵","肉羹","拉麵","炒飯","賣麵庄","雞腿便當","摩斯漢堡","麥當勞","烤肉飯","肯德基","石二鍋",
+"五花馬","燒肉","咖哩飯","牛排","肉燥飯","SUKIYA","霸味薑母鴨","高雄黑輪","凍飯","薩利亞","mint","火雞肉飯","品田牧場","滷味","Mr.三明治",
+"雞柳飯","肉骨茶麵","泡麵","水餃","煎餃","包子","炒麵","鐵板燒","披薩","悟饕","河粉","肉圓","黑宅拉麵","壽司","牛肉麵"])
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
 line_bot_api = LineBotApi('mn0w8gkHEbWQQAbRC7sw1F1J9SFegKNHPVDsRfsAsuOJ2vgQPgx0/zB/ZeB6sM2ybrFrLh8qKKKsc97iPyW5/qUg0mPp7Tpfhkc9+RncWfdW4TUmscADLAW4FfurNsKgdElaTaLlzDA39SJG357lFgdB04t89/1O/w1cDnyilFU=')# Channel Access Token
 handler = WebhookHandler('3e6656d8b069ab3bf6c057c1e1a84018')# Channel Secret
@@ -126,21 +128,29 @@ def handle_message(event) :
     if 'itouch.cycu.edu.tw' in msg :
       if 'learning_activity' in msg :
           if (event.source.type == "group") :
-               line_bot_api.reply_message(event_temp.reply_token, TextSendMessage("已收到網址，正在點名中，請靜待約20~30秒，若看見此訊息後請盡量不要重複傳送相同的訊息，以免造成系統塞車"))
-               msgbuffer = url_login(msg)
-               public_msgbuffer = ('點名結束\n每次過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n仍在測試中，不建議將此系統作為正式使用，在系統回覆點名狀態前建議不要離開本對話框，以免失效時來不及通知其他人手動點名\n若超過30分鐘無人使用，伺服器將會增加約10秒的開啟時間，請見諒\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + msgbuffer)
-               payload = {'message': "\n" + public_msgbuffer }
                if(event.source.group_id == groupId[0]):
                    headers= {
                    "Authorization": "Bearer " + grouptoken[0], 
-                   }                  
+                   }
+                   requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + "已收到網址，正在點名中，請靜待約20~30秒，若看見此訊息後請盡量不要重複傳送相同的訊息，以免造成系統塞車" })#秘密基地
+                   msgbuffer = url_login(msg)
+                   public_msgbuffer = ('點名結束\n每次過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n仍在測試中，不建議將此系統作為正式使用，在系統回覆點名狀態前建議不要離開本對話框，以免失效時來不及通知其他人手動點名\n若超過30分鐘無人使用，伺服器將會增加約10秒的開啟時間，請見諒\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + msgbuffer)
+                   payload = {'message': "\n" + public_msgbuffer }   
                    requests.post("https://notify-api.line.me/api/notify", headers = headers, params = payload)#翹課大魔王
                elif(event.source.group_id == groupId[1]):
                    headers= {
                    "Authorization": "Bearer " + grouptoken[1], 
-                   } 
+                   }
+                   requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + "已收到網址，正在點名中，請靜待約20~30秒，若看見此訊息後請盡量不要重複傳送相同的訊息，以免造成系統塞車" })#秘密基地
+                   msgbuffer = url_login(msg)
+                   public_msgbuffer = ('點名結束\n每次過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n仍在測試中，不建議將此系統作為正式使用，在系統回覆點名狀態前建議不要離開本對話框，以免失效時來不及通知其他人手動點名\n若超過30分鐘無人使用，伺服器將會增加約10秒的開啟時間，請見諒\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + msgbuffer)
+                   payload = {'message': "\n" + public_msgbuffer }
                    requests.post("https://notify-api.line.me/api/notify", headers = headers, params = payload)#秘密基地
                else:
+                   line_bot_api.reply_message(event_temp.reply_token, TextSendMessage("已收到網址，正在點名中，請靜待約20~30秒，若看見此訊息後請盡量不要重複傳送相同的訊息，以免造成系統塞車"))
+                   msgbuffer = url_login(msg)
+                   public_msgbuffer = ('點名結束\n每次過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n仍在測試中，不建議將此系統作為正式使用，在系統回覆點名狀態前建議不要離開本對話框，以免失效時來不及通知其他人手動點名\n若超過30分鐘無人使用，伺服器將會增加約10秒的開啟時間，請見諒\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + msgbuffer)
+                   payload = {'message': "\n" + public_msgbuffer }
                    print("有不知名的群組")
                    line_bot_api.push_message(event_temp.source.group_id, TextSendMessage(public_msgbuffer))#除了以上兩個群組
           elif (event.source.type == "user") :
