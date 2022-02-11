@@ -177,6 +177,8 @@ def handle_message(event) :
             line_bot_api.reply_message(event.reply_token, TextSendMessage("沒有權限，無法變更權杖"))
     elif '要吃什麼' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage(EAT[random.randint(0,len(EAT))]))
+    elif '女朋友' in msg :
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("你沒有女朋友啦幹"))
     elif '開啟' in msg :
         print("強制喚醒")
     else:
