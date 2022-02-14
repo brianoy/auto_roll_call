@@ -176,14 +176,14 @@ def handle_message(event) :
                 requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': public_msgbuffer })#翹課大魔王
             elif(event.source.group_id == groupId[1]):
                 headers= {
-                "Authorization": grouptoken[1], 
+                "Authorization": "Bearer " + grouptoken[1], 
                 }
-                requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': ("好像有人傳了網址") })#秘密基地
+                requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n好像有人傳了網址還是怎麼樣的" })#秘密基地
             elif(event.source.group_id == groupId[2]):
                 headers= {
                 "Authorization": "Bearer " + grouptoken[2], 
                 }
-                requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': ("好像有人傳了網址") })#小歐陽機器人
+                requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n好像有人傳了網址還是怎麼樣的" })#小歐陽機器人
             else:
                 public_msgbuffer = ('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n此非itouch網域')
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
@@ -198,6 +198,10 @@ def handle_message(event) :
         line_bot_api.reply_message(event.reply_token, TextSendMessage(EAT[random.randint(0,len(EAT))]))
     elif '女朋友' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("你沒有女朋友啦幹"))
+    elif '閉嘴' in msg :
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("你好兇喔"))
+    elif '約' in msg :
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("又要約又要約"))
     elif '王顥' in msg and '單身' in msg:
         days = datetime.datetime.today()-datetime.datetime(2019,4,30,16)
         days = str(days)[0:4]
