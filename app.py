@@ -183,7 +183,7 @@ def handle_message(event) :
     elif '王顥' in msg and '單身' in msg:
         days = datetime.datetime.today()-datetime.datetime(2019,4,30,16)
         days = str(days)[0:4]
-        sendbuffer = "小提醒:王顥已單身"+ days[0:3] +"天"
+        sendbuffer = "小提醒:王顥已單身"+ days +"天"
         print(sendbuffer)
         line_bot_api.reply_message(event.reply_token, TextSendMessage(sendbuffer))
     elif '開啟' in msg :
