@@ -168,7 +168,25 @@ def handle_message(event) :
           line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
     elif 'https://' in msg or '.com' in msg :
         public_msgbuffer = ('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n此非itouch網域')
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
+        if (event.source.type == "group") :
+            if(event.source.group_id == groupId[0]):
+                headers= {
+                "Authorization": "Bearer " + grouptoken[0], 
+                }
+                requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': public_msgbuffer })#翹課大魔王
+            elif(event.source.group_id == groupId[1]):
+                headers= {
+                "Authorization": "Bearer " + grouptoken[1], 
+                }
+                requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': ("好像有人傳了網址") })#秘密基地
+            elif(event.source.group_id == groupId[2]):
+                headers= {
+                "Authorization": "Bearer " + grouptoken[2], 
+                }
+                requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': ("好像有人傳了網址") })#小歐陽機器人
+            else:
+                public_msgbuffer = ('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n此非itouch網域')
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
     elif '變更權杖:' in msg:
         if opId == event.source.user_id :
            print("開始變更權杖")
@@ -200,12 +218,7 @@ def handle_message(event) :
                 headers= {
                 "Authorization": "Bearer " + grouptoken[1], 
                 }
-                requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': ("好像有人傳了網址") })#秘密基地
-            elif(event.source.group_id == groupId[2]):
-                headers= {
-                "Authorization": "Bearer " + grouptoken[2], 
-                }
-                requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': ("好像有人傳了網址") })#小歐陽機器人
+                requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': (public_msgbuffer) })#秘密基地
             else:
                 print("有不知名的群組傳送了非相關訊息")
         else:
