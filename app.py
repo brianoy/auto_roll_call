@@ -6,6 +6,7 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+from datetime import datetime,timedelta
 import requests
 import tempfile, os
 import datetime
@@ -179,6 +180,11 @@ def handle_message(event) :
         line_bot_api.reply_message(event.reply_token, TextSendMessage(EAT[random.randint(0,len(EAT))]))
     elif '女朋友' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("你沒有女朋友啦幹"))
+    elif '王顥' in msg and '單身' in msg:
+        days=datetime.today()-datetime(2019,4,30,16)
+        sendbuffer = "小提醒:王顥已單身"+ days[0:3] +"天"
+        print(sendbuffer)
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(sendbuffer))
     elif '開啟' in msg :
         print("強制喚醒")
     else:
