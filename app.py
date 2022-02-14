@@ -176,7 +176,7 @@ def handle_message(event) :
                 requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': public_msgbuffer })#翹課大魔王
             elif(event.source.group_id == groupId[1]):
                 headers= {
-                "Authorization": "Bearer " + grouptoken[1], 
+                "Authorization": grouptoken[1], 
                 }
                 requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': ("好像有人傳了網址") })#秘密基地
             elif(event.source.group_id == groupId[2]):
