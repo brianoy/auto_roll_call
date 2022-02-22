@@ -27,7 +27,7 @@ line_bot_api = LineBotApi('mn0w8gkHEbWQQAbRC7sw1F1J9SFegKNHPVDsRfsAsuOJ2vgQPgx0/
 handler = WebhookHandler('3e6656d8b069ab3bf6c057c1e1a84018')# Channel Secret
 discord_webhook = 'https://discord.com/api/webhooks/919053709307179029/5whB53gtFXSykfAVcqsFOSSMA6-b_Y1yk4koHC0fx3snjTIweNuAz4qgGlYtIdVvHlev'
 userlist = ["11021340","11021339","11021346","11021331","11021338"]
-pwlist = ["Aa123456789","Aa0123456789","Angel1101","NGSDxNrwfNw2","daniel@09250529"]
+pwlist = ["Aa123456789","Aa0123456789","Anson0610","dEEwYupDDCqh9","daniel@09250529"]
 opId = "Ueca105de2ec07b6c502d6b639f56d119"
 grouptoken = ["4C0ZkJflAfexSpelBcoEYVobqbbSD0aGFNvpGAVcdUX","vUQ1xrf4cIp7kFlWifowMJf4XHdtUSHeXi1QeUKARa9","WCIuPhhETZysoA6qjdx59kblgzbc6gQuVscBKS91Fi5"]
 groupId = ['Cc97a91380e09611261010e4c5c682711','C0041b628a8712ace35095f505520c0bd','Cdebd7e16f5b52db01c3efd20b12ddd35']
@@ -217,12 +217,17 @@ def handle_message(event) :
                 headers= {
                 "Authorization": "Bearer " + grouptoken[0], 
                 }
-                requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': public_msgbuffer })#翹課大魔王
+                #requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': public_msgbuffer })#翹課大魔王
             elif(event.source.group_id == groupId[1]):
                 headers= {
                 "Authorization": "Bearer " + grouptoken[1], 
                 }
                 requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': (public_msgbuffer) })#秘密基地
+            elif(event.source.group_id == groupId[2]):
+                headers= {
+                "Authorization": "Bearer " + grouptoken[2], 
+                }
+                #requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': (public_msgbuffer) })#煤船組
             else:
                 print("有不知名的群組傳送了非相關訊息")
         else:
