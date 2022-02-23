@@ -254,6 +254,7 @@ def handle_message(event) :
 
 @handler.add(MessageEvent, message=StickerMessage)
 def handle_sticker_message(event):
+    msg_type = event.message.type
     if "sticker" in msg_type :
         stickerid = event.message.stickerId
         print(event)
@@ -281,6 +282,7 @@ def handle_sticker_message(event):
             #else:
         else:
             print("有不知名的群組傳送了貼圖")
+    return
 
 
 @handler.add(MemberJoinedEvent)
