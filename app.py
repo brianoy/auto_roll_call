@@ -258,9 +258,10 @@ def handle_sticker_message(event):
     print(msg_type)
     print(event)
     if "sticker" in msg_type :
-        stickerid = event.message.stickerId
-        print(event)
+        packageid = event.message.package_id
+        stickerid = event.message.sticker_id
         print(stickerid)
+        print(packageid)
         if(event.source.group_id == groupId[0]):
             headers= {
             "Authorization": "Bearer " + grouptoken[0], 
