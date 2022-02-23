@@ -223,8 +223,9 @@ def handle_message(event) :
         line_bot_api.reply_message(event.reply_token, TextSendMessage(sendbuffer))
     elif '開啟' in msg :
         print("強制喚醒")
-    elif msg_type == "sticker" :
+    elif "sticker" in msg_type :
         stickerid = event.message.stickerId
+        print(event)
         print(stickerid)
         if(event.source.group_id == groupId[0]):
             headers= {
