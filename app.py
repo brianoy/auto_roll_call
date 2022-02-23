@@ -127,7 +127,6 @@ def handle_message(event) :
     public_msgbuffer = ""
     msg = event.message.text
     msg_type = event.message.type
-    stickerid = event.message.stickerId
     event_temp = event
     if 'itouch.cycu.edu.tw' in msg :
       if 'learning_activity' in msg :
@@ -225,6 +224,7 @@ def handle_message(event) :
     elif '開啟' in msg :
         print("強制喚醒")
     elif msg_type == "sticker" :
+        stickerid = event.message.stickerId
         if stickerid == '465400171':#ㄌㄩㄝ貼圖
             line_bot_api.reply_message(event.reply_token, TextSendMessage("ㄌㄩㄝ"))
     else:
