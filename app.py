@@ -255,6 +255,8 @@ def handle_message(event) :
 @handler.add(MessageEvent, message=StickerMessage)
 def handle_sticker_message(event):
     msg_type = event.message.type
+    print(msg_type)
+    print(event)
     if "sticker" in msg_type :
         stickerid = event.message.stickerId
         print(event)
