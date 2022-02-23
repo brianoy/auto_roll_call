@@ -225,6 +225,7 @@ def handle_message(event) :
         print("強制喚醒")
     elif msg_type == "sticker" :
         stickerid = event.message.stickerId
+        print(stickerid)
         if(event.source.group_id == groupId[0]):
             headers= {
             "Authorization": "Bearer " + grouptoken[0], 
@@ -234,7 +235,7 @@ def handle_message(event) :
             headers= {
             "Authorization": "Bearer " + grouptoken[1], 
             }
-            if stickerid == '465400171':#ㄌㄩㄝ貼圖
+            if '465400171' in stickerid :#ㄌㄩㄝ貼圖
                 line_bot_api.reply_message(event.reply_token, TextSendMessage("ㄌㄩㄝ"))
                 requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "ㄌㄩㄝ" })#秘密基地
             #else:
