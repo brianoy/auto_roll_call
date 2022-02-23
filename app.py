@@ -126,6 +126,7 @@ def deliver_data(public_msgbuffer, event_temp, text=None) -> dict:
 def handle_message(event) :
     public_msgbuffer = ""
     msg = event.message.text
+    stickerid = event.message.stickerId
     event_temp = event
     if 'itouch.cycu.edu.tw' in msg :
       if 'learning_activity' in msg :
@@ -196,10 +197,24 @@ def handle_message(event) :
             line_bot_api.reply_message(event.reply_token, TextSendMessage("沒有權限，無法變更權杖"))
     elif '要吃什麼' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage(EAT[random.randint(0,len(EAT))]))
+    elif '陪我' in msg :
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("我不想跟你欸"))
+    elif '在一次' in msg :
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("再啦幹"))
+    elif 'ok' in msg :
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("ok"))
+    elif '怪咖' in msg :
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("對阿你很怪"))
+    elif '都已讀' in msg :
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("沒有 是你太邊緣"))
+    elif 'peko' in msg :
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("好油喔"))
     elif '女朋友' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("你沒有女朋友啦幹"))
     elif '閉嘴' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("你好兇喔"))
+    elif '465400171' in stickerid :#ㄌㄩㄝ貼圖
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("ㄌㄩㄝ"))
     elif '約' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("又要約又要約"))
     elif '王顥' in msg and '單身' in msg:
