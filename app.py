@@ -225,7 +225,36 @@ def handle_message(event) :
         line_bot_api.reply_message(event.reply_token, TextSendMessage(sendbuffer))
     elif '開啟' in msg :
         print("強制喚醒")
-    elif "sticker" in msg_type :
+    else:
+        public_msgbuffer = ('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n系統若超過30分鐘無人使用會進入休眠模式，輸入的第一則連結會無法回覆，建議傳兩次')
+        if (event.source.type == "group") :
+            if(event.source.group_id == groupId[0]):
+                headers= {
+                "Authorization": "Bearer " + grouptoken[0], 
+                }
+                #requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': public_msgbuffer })#翹課大魔王
+            elif(event.source.group_id == groupId[1]):
+                headers= {
+                "Authorization": "Bearer " + grouptoken[1], 
+                }
+                requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': (public_msgbuffer) })#秘密基地
+            elif(event.source.group_id == groupId[2]):
+                headers= {
+                "Authorization": "Bearer " + grouptoken[2], 
+                }
+                #requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': (public_msgbuffer) })#煤船組
+            else:
+                print("有不知名的群組傳送了非相關訊息")
+        else:
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
+    request_data = deliver_data(public_msgbuffer, event_temp, event.message.text)
+    requests.post(url=discord_webhook, data=request_data)
+    return 
+
+
+@handler.add(MessageEvent, message=StickerMessage)
+def handle_sticker_message(event):
+    if "sticker" in msg_type :
         stickerid = event.message.stickerId
         print(event)
         print(stickerid)
@@ -252,31 +281,7 @@ def handle_message(event) :
             #else:
         else:
             print("有不知名的群組傳送了貼圖")
-    else:
-        public_msgbuffer = ('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n系統若超過30分鐘無人使用會進入休眠模式，輸入的第一則連結會無法回覆，建議傳兩次')
-        if (event.source.type == "group") :
-            if(event.source.group_id == groupId[0]):
-                headers= {
-                "Authorization": "Bearer " + grouptoken[0], 
-                }
-                #requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': public_msgbuffer })#翹課大魔王
-            elif(event.source.group_id == groupId[1]):
-                headers= {
-                "Authorization": "Bearer " + grouptoken[1], 
-                }
-                requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': (public_msgbuffer) })#秘密基地
-            elif(event.source.group_id == groupId[2]):
-                headers= {
-                "Authorization": "Bearer " + grouptoken[2], 
-                }
-                #requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': (public_msgbuffer) })#煤船組
-            else:
-                print("有不知名的群組傳送了非相關訊息")
-        else:
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
-    request_data = deliver_data(public_msgbuffer, event_temp, event.message.text)
-    requests.post(url=discord_webhook, data=request_data)
-    return 
+
 
 @handler.add(MemberJoinedEvent)
 def welcome(event):
