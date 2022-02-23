@@ -225,8 +225,29 @@ def handle_message(event) :
         print("強制喚醒")
     elif msg_type == "sticker" :
         stickerid = event.message.stickerId
-        if stickerid == '465400171':#ㄌㄩㄝ貼圖
-            line_bot_api.reply_message(event.reply_token, TextSendMessage("ㄌㄩㄝ"))
+        if(event.source.group_id == groupId[0]):
+            headers= {
+            "Authorization": "Bearer " + grouptoken[0], 
+            }
+            #requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': public_msgbuffer })#翹課大魔王
+        elif(event.source.group_id == groupId[1]):
+            headers= {
+            "Authorization": "Bearer " + grouptoken[1], 
+            }
+            if stickerid == '465400171':#ㄌㄩㄝ貼圖
+                line_bot_api.reply_message(event.reply_token, TextSendMessage("ㄌㄩㄝ"))
+                requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "ㄌㄩㄝ" })#秘密基地
+            #else:
+        elif(event.source.group_id == groupId[2]):
+            headers= {
+            "Authorization": "Bearer " + grouptoken[2], 
+            }
+            if stickerid == '465400171':#ㄌㄩㄝ貼圖
+                line_bot_api.reply_message(event.reply_token, TextSendMessage("ㄌㄩㄝ"))
+                requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "ㄌㄩㄝ" })#煤船組
+            #else:
+        else:
+            print("有不知名的群組傳送了貼圖")
     else:
         public_msgbuffer = ('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n系統若超過30分鐘無人使用會進入休眠模式，輸入的第一則連結會無法回覆，建議傳兩次')
         if (event.source.type == "group") :
