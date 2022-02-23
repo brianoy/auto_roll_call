@@ -126,6 +126,7 @@ def deliver_data(public_msgbuffer, event_temp, text=None) -> dict:
 def handle_message(event) :
     public_msgbuffer = ""
     msg = event.message.text
+    msg_type = event.message.type
     stickerid = event.message.stickerId
     event_temp = event
     if 'itouch.cycu.edu.tw' in msg :
@@ -213,8 +214,6 @@ def handle_message(event) :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("你沒有女朋友啦幹"))
     elif '閉嘴' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("你好兇喔"))
-    elif '465400171' in stickerid :#ㄌㄩㄝ貼圖
-        line_bot_api.reply_message(event.reply_token, TextSendMessage("ㄌㄩㄝ"))
     elif '約' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("又要約又要約"))
     elif '王顥' in msg and '單身' in msg:
@@ -225,6 +224,9 @@ def handle_message(event) :
         line_bot_api.reply_message(event.reply_token, TextSendMessage(sendbuffer))
     elif '開啟' in msg :
         print("強制喚醒")
+    elif msg_type == "sticker" :
+        if stickerid == '465400171':#ㄌㄩㄝ貼圖
+            line_bot_api.reply_message(event.reply_token, TextSendMessage("ㄌㄩㄝ"))
     else:
         public_msgbuffer = ('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n系統若超過30分鐘無人使用會進入休眠模式，輸入的第一則連結會無法回覆，建議傳兩次')
         if (event.source.type == "group") :
