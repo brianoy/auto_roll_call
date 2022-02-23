@@ -127,6 +127,8 @@ def handle_message(event) :
     public_msgbuffer = ""
     msg = event.message.text
     msg_type = event.message.type
+    print(msg_type)
+    print(event)
     event_temp = event
     if 'itouch.cycu.edu.tw' in msg :
       if 'learning_activity' in msg :
