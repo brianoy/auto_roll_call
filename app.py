@@ -19,9 +19,15 @@ import discord
 sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
 client = discord.Client()
 app = Flask(__name__)
+
 EAT = (["全家","7-11","中原夜市","鍋燒意麵","肉羹","拉麵","炒飯","賣麵庄","雞腿便當","摩斯漢堡","麥當勞","烤肉飯","肯德基","石二鍋",
 "五花馬","燒肉","咖哩飯","牛排","肉燥飯","SUKIYA","霸味薑母鴨","高雄黑輪","凍飯","薩利亞","mint","火雞肉飯","品田牧場","滷味","Mr.三明治",
 "雞柳飯","肉骨茶麵","泡麵","水餃","煎餃","包子","炒麵","鐵板燒","披薩","悟饕","河粉","肉圓","黑宅拉麵","壽司","牛肉麵","鹹酥雞"])
+
+STICKER_LIST = {'465400171':'ㄌㄩㄝ','465400158':'才不美','465400159':'Woooooooow','465400160':'不可以','465400161':'怎樣啦 輸贏啦','465400163':'假K孝濂給',
+'465400165':'累屁','465400166':'聽話 讓我看看','465400169':'到底??????','465400172':'他在已讀你','465400173':'大概24小時後才會回你','13744852':'哼',
+'349572675':'可憐哪','352138078':'吃屎阿','464946842':'對咩對咩','464946834':'ㄏㄏ','464946841':'亂講','435674449':'嘿嘿','435674452':'兇屁'}
+
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
 line_bot_api = LineBotApi('mn0w8gkHEbWQQAbRC7sw1F1J9SFegKNHPVDsRfsAsuOJ2vgQPgx0/zB/ZeB6sM2ybrFrLh8qKKKsc97iPyW5/qUg0mPp7Tpfhkc9+RncWfdW4TUmscADLAW4FfurNsKgdElaTaLlzDA39SJG357lFgdB04t89/1O/w1cDnyilFU=')# Channel Access Token
 handler = WebhookHandler('3e6656d8b069ab3bf6c057c1e1a84018')# Channel Secret
@@ -203,6 +209,8 @@ def handle_message(event) :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("我不想跟你欸"))
     elif '在一次' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("再啦幹"))
+    elif '我失戀了' in msg :
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("反正你小王那麼多"))
     elif 'ok' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("ok"))
     elif '怪咖' in msg :
@@ -271,17 +279,17 @@ def handle_sticker_message(event):
             headers= {
             "Authorization": "Bearer " + grouptoken[1], 
             }
-            if '465400171' in stickerid :#ㄌㄩㄝ貼圖
-                line_bot_api.reply_message(event.reply_token, TextSendMessage("ㄌㄩㄝ"))
-                requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "ㄌㄩㄝ" })#秘密基地
+            if STICKER_LIST.get(stickerid,"No") != "No":#ㄌㄩㄝ貼圖
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(STICKER_LIST.get(stickerid,"No")))
+                #requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "ㄌㄩㄝ" })#煤船組 小鷗機器人
             #else:
         elif(event.source.group_id == groupId[2]):
             headers= {
             "Authorization": "Bearer " + grouptoken[2], 
             }
-            if stickerid == '465400171':#ㄌㄩㄝ貼圖
-                line_bot_api.reply_message(event.reply_token, TextSendMessage("ㄌㄩㄝ"))
-                requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "ㄌㄩㄝ" })#煤船組
+            if STICKER_LIST.get(stickerid,"No") != "No":#ㄌㄩㄝ貼圖
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(STICKER_LIST.get(stickerid,"No")))
+                #requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "ㄌㄩㄝ" })#煤船組 小鷗機器人
             #else:
         else:
             print("有不知名的群組傳送了貼圖")
