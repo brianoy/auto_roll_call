@@ -60,7 +60,7 @@ def url_login(msg):
      name = namelist[i]
      wd = webdriver.Chrome('chromedriver',options=chrome_options)
      wd.get(url)
-     print(wd.getPageSource().contains("未開放 QRCODE簽到功能"))
+     print(wd.page_source().contains("未開放 QRCODE簽到功能"))
      wd.execute_script('document.getElementById("UserNm").value ="' + usr + '"')
      wd.execute_script('document.getElementById("UserPasswd").value ="' + pwd + '"')
      wd.execute_script('document.getElementsByClassName("w3-button w3-block w3-green w3-section w3-padding")[0].click();')
