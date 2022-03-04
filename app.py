@@ -59,6 +59,7 @@ def url_login(msg):
      name = namelist[i]
      wd = webdriver.Chrome('chromedriver',options=chrome_options)
      wd.get(url)
+     print(wd.find_element(By.XPATH,"/html/body/div/div[2]/div").text)
      wd.execute_script('document.getElementById("UserNm").value ="' + usr + '"')
      wd.execute_script('document.getElementById("UserPasswd").value ="' + pwd + '"')
      wd.execute_script('document.getElementsByClassName("w3-button w3-block w3-green w3-section w3-padding")[0].click();')
