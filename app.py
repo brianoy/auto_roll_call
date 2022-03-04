@@ -34,6 +34,8 @@ handler = WebhookHandler('3e6656d8b069ab3bf6c057c1e1a84018')# Channel Secret
 discord_webhook = 'https://discord.com/api/webhooks/919053709307179029/5whB53gtFXSykfAVcqsFOSSMA6-b_Y1yk4koHC0fx3snjTIweNuAz4qgGlYtIdVvHlev'
 userlist = ["11021340","11021339","11021346","11021331","11021338"]
 pwlist = ["aA123456789","Zz0123456789","Angel0610","dEEwYupDDCqh9","Daniel@123456"]
+namelist = ["歐陽立庭","蔡祐恩","洪晨旻","楊智涵","楊其宸"]
+useridlist = []
 opId = "Ueca105de2ec07b6c502d6b639f56d119"
 grouptoken = ["4C0ZkJflAfexSpelBcoEYVobqbbSD0aGFNvpGAVcdUX","vUQ1xrf4cIp7kFlWifowMJf4XHdtUSHeXi1QeUKARa9","WCIuPhhETZysoA6qjdx59kblgzbc6gQuVscBKS91Fi5"]
 groupId = ['Cc97a91380e09611261010e4c5c682711','C0041b628a8712ace35095f505520c0bd','Cdebd7e16f5b52db01c3efd20b12ddd35']
@@ -54,6 +56,7 @@ def url_login(msg):
   for i in range(0,len(userlist),1):
      usr =  userlist[i]
      pwd = pwlist[i]
+     name = namelist[i]
      wd = webdriver.Chrome('chromedriver',options=chrome_options)
      wd.get(url)
      wd.execute_script('document.getElementById("UserNm").value ="' + usr + '"')
@@ -72,16 +75,16 @@ def url_login(msg):
        soup = BeautifulSoup(wd.page_source, 'html.parser')
        #print(soup.prettify()) #html details
        if (soup.find_all(stroke="#D06079") != []):#fail
-           messageout = (messageout + "學號:" + usr + "\n點名失敗，好可憐喔\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text +'\n\n')
+           messageout = (messageout + "\n點名失敗，"+ name +"好可憐喔😱\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text +'\n\n')
            print("點名失敗\n------------------\n" + messageout)
            fail_login_status = fail_login_status +1
        elif (soup.find_all(stroke="#73AF55") != []):#success
            detailmsg = wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text
-           messageout = (messageout + "學號:" + usr + "\n點名成功，歐陽非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':').replace('<br>','\n')+'\n\n')
+           messageout = (messageout + "\n點名成功，"+ name +"會非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':').replace('<br>','\n')+'\n\n')
            print("點名成功\n------------------\n" + messageout)
            success_login_status = success_login_status +1
        else:
-           messageout = (messageout + "學號:" + usr + "\n發生未知的錯誤點名失敗，趕快聯繫管理員"+'\n\n')#unknown failure
+           messageout = (messageout + name + "\n發生未知的錯誤😱，點名失敗，趕快聯繫管理員，並自行手點"+'\n\n')#unknown failure
            print("點名失敗\n------------------\n" + messageout)
            fail_login_status = fail_login_status +1
   wd.quit()
@@ -134,7 +137,7 @@ def handle_message(event) :
     msg = event.message.text
     msg_type = event.message.type
     print(msg_type)
-    print(event)
+    #print(event)
     event_temp = event
     if 'itouch.cycu.edu.tw' in msg :
       if 'learning_activity' in msg :
@@ -264,7 +267,7 @@ def handle_message(event) :
 def handle_sticker_message(event):
     msg_type = event.message.type
     print(msg_type)
-    print(event)
+    #print(event)
     if "sticker" in msg_type :
         packageid = event.message.package_id
         stickerid = event.message.sticker_id
