@@ -139,6 +139,14 @@ def deliver_data(public_msgbuffer, event_temp, text=None) -> dict:
          }
     return request_data
 
+
+def distinguish(msgbuffer):
+    if (fail_login_status > 0):
+        msgbuffer = "🟥" + msgbuffer
+    else:
+        msgbuffer = "🟩" + msgbuffer
+    return msgbuffer
+
  #warning! reply token would expired after send msg about 30seconds. use push msg! 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event) :
@@ -160,8 +168,8 @@ def handle_message(event) :
                       }
                       requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + recived })#翹課大魔王
                       msgbuffer = url_login(msg)
-                      public_msgbuffer = distinguish(done + msgbuffer)
-                      payload = {'message': "\n" + public_msgbuffer }
+                      public_msgbuffer = done + msgbuffer
+                      payload = {'message': "\n" + distinguish(public_msgbuffer) }
                       requests.post("https://notify-api.line.me/api/notify", headers = headers, params = payload)
                  elif(event.source.group_id == groupId[1]):
                       headers= {
@@ -169,14 +177,14 @@ def handle_message(event) :
                       }
                       requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + recived })#秘密基地
                       msgbuffer = url_login(msg)
-                      public_msgbuffer = distinguish(done + msgbuffer)
-                      payload = {'message': "\n" + public_msgbuffer }
+                      public_msgbuffer = done + msgbuffer
+                      payload = {'message': "\n" + distinguish(public_msgbuffer) }
                       requests.post("https://notify-api.line.me/api/notify", headers = headers, params = payload)
                  else:
                       line_bot_api.reply_message(event_temp.reply_token, TextSendMessage(recived))
                       msgbuffer = url_login(msg)
-                      public_msgbuffer = distinguish(done + msgbuffer)
-                      payload = {'message': "\n" + public_msgbuffer }
+                      public_msgbuffer = done + msgbuffer
+                      payload = {'message': "\n" + distinguish(public_msgbuffer) }
                       print("有不知名的群組")
                       line_bot_api.push_message(event_temp.source.group_id, TextSendMessage(public_msgbuffer))#除了以上兩個群組
              elif(event.source.type == "user") :
@@ -318,11 +326,3 @@ def welcome(event):
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
-
-
-def distinguish(msgbuffer):
-    if (fail_login_status > 0):
-        msgbuffer = "🟥" + msgbuffer
-    else:
-        msgbuffer = "🟩" + msgbuffer
-    return msgbuffer
