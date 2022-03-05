@@ -63,7 +63,7 @@ def url_login(msg):
      not_open = "未開放 QRCODE簽到功能" in wd.page_source
      if not_open:
          fail_login_status = len(userlist)
-         messageout = "警告，點名尚未開始，請稍後再試，全數點名失敗"
+         messageout = "🟥🟥🟥🟥\n警告，點名尚未開始，請稍後再試，全數點名失敗"
      else:
          wd.execute_script('document.getElementById("UserNm").value ="' + usr + '"')
          wd.execute_script('document.getElementById("UserPasswd").value ="' + pwd + '"')
@@ -73,7 +73,7 @@ def url_login(msg):
          if password_wrong:
            failmsg = password_wrong.text
            password_wrong.accept()
-           messageout = (messageout + "學號:" + usr + "\n點名失敗\n錯誤訊息:密碼錯誤" + failmsg +'\n\n')#error login
+           messageout = (messageout + "學號:" + usr + "\n🟥點名失敗\n錯誤訊息:密碼錯誤" + failmsg +'\n\n')#error login
            print("密碼錯誤\n------------------\n" + messageout)
            fail_login_status = fail_login_status +1
            wd.quit()
@@ -81,20 +81,21 @@ def url_login(msg):
            soup = BeautifulSoup(wd.page_source, 'html.parser')
            #print(soup.prettify()) #html details
            if (soup.find_all(stroke="#D06079") != []):#fail
-               messageout = (messageout + "\n點名失敗，"+ name +"好可憐喔😱\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text +'\n\n')
+               messageout = (messageout + "\n🟥點名失敗，"+ name +"好可憐喔😱\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text +'\n\n')
                print("點名失敗\n------------------\n" + messageout)
                fail_login_status = fail_login_status +1
            elif (soup.find_all(stroke="#73AF55") != []):#success
                detailmsg = wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text
-               messageout = (messageout + "\n點名成功，"+ name +"會非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':').replace('<br>','\n')+'\n\n')
+               messageout = (messageout + "\n🟩點名成功，"+ name +"會非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':').replace('<br>','\n')+'\n\n')
                print("點名成功\n------------------\n" + messageout)
                success_login_status = success_login_status +1
            else:
-               messageout = (messageout + name + "\n發生未知的錯誤😱，點名失敗，趕快聯繫管理員，並自行手點"+'\n\n')#unknown failure
+               messageout = (messageout + name + "\n🟥發生未知的錯誤😱，點名失敗，趕快聯繫管理員，並自行手點"+'\n\n')#unknown failure
                print("點名失敗\n------------------\n" + messageout)
                fail_login_status = fail_login_status +1
   wd.quit()
   messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人")
+  messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + HEROKU_RELEASE_CREATED_AT + "\n" + "版本:" + HEROKU_RELEASE_VERSION)
   return messageout
 
 
@@ -145,8 +146,9 @@ def handle_message(event) :
     print(msg_type)
     #print(event)
     event_temp = event
-    recived = "已收到網址，正在點名中，請靜待約20~30秒，若看見此訊息後請盡量不要重複傳送相同的訊息，以免造成系統塞車"
+    recived = '已收到網址，正在點名中，請靜待約20~30秒，若看見此訊息後請盡量不要重複傳送相同的訊息，以免造成系統塞車'
     done = '點名結束\n每次過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n仍在測試中，不建議將此系統作為正式使用，在系統回覆點名狀態前建議不要離開本對話框，以免失效時來不及通知其他人手動點名\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' 
+    announce = '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n'
     if 'itouch.cycu.edu.tw' in msg :
          if 'learning_activity' in msg :
              if (event.source.type == "group") :
@@ -156,18 +158,12 @@ def handle_message(event) :
                       }
                       requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + recived })#翹課大魔王
                       msgbuffer = url_login(msg)
-                      public_msgbuffer = (done + msgbuffer)
-                      payload = {'message': "\n" + public_msgbuffer }   
-                      requests.post("https://notify-api.line.me/api/notify", headers = headers, params = payload)#翹課大魔王
                  elif(event.source.group_id == groupId[1]):
                       headers= {
                       "Authorization": "Bearer " + grouptoken[1], 
                       }
                       requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + recived })#秘密基地
                       msgbuffer = url_login(msg)
-                      public_msgbuffer = (done + msgbuffer)
-                      payload = {'message': "\n" + public_msgbuffer }
-                      requests.post("https://notify-api.line.me/api/notify", headers = headers, params = payload)#秘密基地
                  else:
                       line_bot_api.reply_message(event_temp.reply_token, TextSendMessage(recived))
                       msgbuffer = url_login(msg)
@@ -175,6 +171,10 @@ def handle_message(event) :
                       payload = {'message': "\n" + public_msgbuffer }
                       print("有不知名的群組")
                       line_bot_api.push_message(event_temp.source.group_id, TextSendMessage(public_msgbuffer))#除了以上兩個群組
+                 public_msgbuffer = (done + msgbuffer)
+                 payload = {'message': "\n" + public_msgbuffer }
+                 requests.post("https://notify-api.line.me/api/notify", headers = headers, params = payload)
+
              elif (event.source.type == "user") :
                  line_bot_api.reply_message(event_temp.reply_token, TextSendMessage(recived))
                  msgbuffer = url_login(msg)
@@ -184,10 +184,10 @@ def handle_message(event) :
                  print("錯誤:偵測不到itouch網址訊息類型")
                  line_bot_api.reply_message(event.reply_token, TextSendMessage("偵測不到itouch網址類型，請再試一次"))
          else:
-             public_msgbuffer = ('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n請輸入正確的點名網址')
+             public_msgbuffer = ('請輸入正確的點名網址')
              line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
     elif 'https://' in msg or '.com' in msg :
-        public_msgbuffer = ('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n此非itouch網域')
+        public_msgbuffer = (announce + '此非itouch網域')
         if (event.source.type == "group") :
             if(event.source.group_id == groupId[0]):
                 headers= {
@@ -205,7 +205,7 @@ def handle_message(event) :
                 }
                 requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n好像有人傳了網址還是怎麼樣的" })#小歐陽機器人
             else:
-                public_msgbuffer = ('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n此非itouch網域')
+                public_msgbuffer = (announce + '此非itouch網域')
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
     elif '變更權杖:' in msg:
         if opId == event.source.user_id :
@@ -245,7 +245,7 @@ def handle_message(event) :
     elif '開啟' in msg :
         print("強制喚醒")
     else:
-        public_msgbuffer = ('▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n系統若超過30分鐘無人使用會進入休眠模式，輸入的第一則連結會無法回覆，建議傳兩次')
+        public_msgbuffer = (announce + '無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀')
         if (event.source.type == "group") :
             if(event.source.group_id == groupId[0]):
                 headers= {
@@ -285,23 +285,18 @@ def handle_sticker_message(event):
             headers= {
             "Authorization": "Bearer " + grouptoken[0], 
             }
-            #requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': public_msgbuffer })#翹課大魔王
         elif(event.source.group_id == groupId[1]):
             headers= {
             "Authorization": "Bearer " + grouptoken[1], 
             }
-            if STICKER_LIST.get(stickerid,"No") != "No":#ㄌㄩㄝ貼圖
-                line_bot_api.reply_message(event.reply_token, TextSendMessage(STICKER_LIST.get(stickerid,"No")))
-                #requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "ㄌㄩㄝ" })#煤船組 小鷗機器人
-            #else:
+            if STICKER_LIST.get(stickerid,"No") != "No":
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(STICKER_LIST.get(stickerid,"No")))#load sticker id ,if it doesn't found it'll return "No"
         elif(event.source.group_id == groupId[2]):
             headers= {
             "Authorization": "Bearer " + grouptoken[2], 
             }
-            if STICKER_LIST.get(stickerid,"No") != "No":#ㄌㄩㄝ貼圖
+            if STICKER_LIST.get(stickerid,"No") != "No":
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(STICKER_LIST.get(stickerid,"No")))
-                #requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "ㄌㄩㄝ" })#煤船組 小鷗機器人
-            #else:
         else:
             print("有不知名的群組傳送了貼圖")
     return
@@ -313,7 +308,7 @@ def welcome(event):
     gid = event.source.group_id
     profile = line_bot_api.get_group_member_profile(gid, uid)
     name = profile.display_name
-    message = TextSendMessage(text=f'{name}歡迎加入急難救助會~ \n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n如要完成點名，請傳送該網址即可')
+    message = TextSendMessage(text=f'{name}歡淫加入小歐機器人\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n如要完成點名，請傳送該網址即可')
     line_bot_api.reply_message(event.reply_token, message)
 
 import os
