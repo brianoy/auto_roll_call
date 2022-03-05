@@ -65,7 +65,7 @@ def url_login(msg):
      not_open = "未開放 QRCODE簽到功能" in wd.page_source
      if not_open:
          fail_login_status = len(userlist)
-         messageout = "🟥\n警告，點名並沒有開放，請稍後再試或自行手點，全數點名失敗"
+         messageout = "\n🟥警告❌，點名並沒有開放，請稍後再試或自行手點，全數點名失敗\n"
      else:
          wd.execute_script('document.getElementById("UserNm").value ="' + usr + '"')
          wd.execute_script('document.getElementById("UserPasswd").value ="' + pwd + '"')
@@ -92,7 +92,7 @@ def url_login(msg):
                print("點名成功\n------------------\n" + messageout)
                success_login_status = success_login_status +1
            else:
-               messageout = (messageout + name + "\n🟥發生未知的錯誤❌，點名失敗😱，趕快聯繫管理員，並自行手點"+'\n\n')#unknown failure
+               messageout = (messageout + name + "\n🟥發生未知的錯誤❌，" + "學號:" + usr + " " + name + "點名失敗😱，趕快聯繫布萊恩，並自行手點" + '\n\n')#unknown failure
                print("點名失敗\n------------------\n" + messageout)
                fail_login_status = fail_login_status +1
   wd.quit()
@@ -142,9 +142,9 @@ def deliver_data(public_msgbuffer, event_temp, text=None) -> dict:
 
 def distinguish(msgbuffer):
     if (fail_login_status > 0):
-        msgbuffer = "🟥" + msgbuffer
+        msgbuffer = "🟥\n" + msgbuffer
     else:
-        msgbuffer = "🟩" + msgbuffer
+        msgbuffer = "🟩\n" + msgbuffer
     return msgbuffer
 
  #warning! reply token would expired after send msg about 30seconds. use push msg! 
@@ -169,7 +169,7 @@ def handle_message(event) :
                       requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + recived })#翹課大魔王
                       msgbuffer = url_login(msg)
                       public_msgbuffer = done + msgbuffer
-                      payload = {'message': "\n" + distinguish(public_msgbuffer) }
+                      payload = {'message': distinguish(public_msgbuffer) }
                       requests.post("https://notify-api.line.me/api/notify", headers = headers, params = payload)
                  elif(event.source.group_id == groupId[1]):
                       headers= {
@@ -178,13 +178,13 @@ def handle_message(event) :
                       requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + recived })#秘密基地
                       msgbuffer = url_login(msg)
                       public_msgbuffer = done + msgbuffer
-                      payload = {'message': "\n" + distinguish(public_msgbuffer) }
+                      payload = {'message': distinguish(public_msgbuffer) }
                       requests.post("https://notify-api.line.me/api/notify", headers = headers, params = payload)
                  else:
                       line_bot_api.reply_message(event_temp.reply_token, TextSendMessage(recived))
                       msgbuffer = url_login(msg)
                       public_msgbuffer = done + msgbuffer
-                      payload = {'message': "\n" + distinguish(public_msgbuffer) }
+                      payload = {'message': distinguish(public_msgbuffer) }
                       print("有不知名的群組")
                       line_bot_api.push_message(event_temp.source.group_id, TextSendMessage(public_msgbuffer))#除了以上兩個群組
              elif(event.source.type == "user") :
