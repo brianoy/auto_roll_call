@@ -95,7 +95,7 @@ def url_login(msg):
                fail_login_status = fail_login_status +1
   wd.quit()
   messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人")
-  messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + HEROKU_RELEASE_CREATED_AT + "\n" + "版本:" + HEROKU_RELEASE_VERSION)
+  messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ.HEROKU_RELEASE_CREATED_AT + "\n" + "版本:" + os.environ.HEROKU_RELEASE_VERSION)
   return messageout
 
 
