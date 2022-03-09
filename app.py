@@ -104,13 +104,7 @@ def login_pros(msg):
         wd.quit()
         return
     with Pool(8) as pool:
-        for i in range(0,len(userlist),1):
-            usr =  userlist[i]
-            pwd = pwlist[i]
-            name = namelist[i]
-            pool.apply_async(
-                func=url_login , args=(url,usr,pwd,name,)
-                )
+        pool.starmap(url_login , zip(url,userlist,pwlist,namelist))
         pool.close()
         pool.join()
     print("清單:")
