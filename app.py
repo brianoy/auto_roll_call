@@ -58,13 +58,6 @@ def login_pros(msg):
     success_login_status = 0
     global fail_login_status
     fail_login_status = 0
-    for i in range(0,len(userlist),1):
-        usr =  userlist[i]
-        pwd = pwlist[i]
-        name = namelist[i]
-    threadmission = threading.Thread(target=url_login,args=(url,usr,pwd,name))
-    threads.append(threadmission)
-
     def url_login(url,usr,pwd,name):
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--headless')
@@ -107,7 +100,13 @@ def login_pros(msg):
                   fail_login_status = fail_login_status +1
         wd.quit()
         return
-
+    for i in range(0,len(userlist),1):
+        usr =  userlist[i]
+        pwd = pwlist[i]
+        name = namelist[i]
+    threadmission = threading.Thread(target=url_login,args=(url,usr,pwd,name))
+    threads.append(threadmission)
+    
     for threadmission in threads:
         threadmission.start()
     for threadmission in threads:
