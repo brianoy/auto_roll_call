@@ -39,14 +39,19 @@ useridlist = []
 opuuId = "Ueca105de2ec07b6c502d6b639f56d119"
 grouptoken = ["4C0ZkJflAfexSpelBcoEYVobqbbSD0aGFNvpGAVcdUX","vUQ1xrf4cIp7kFlWifowMJf4XHdtUSHeXi1QeUKARa9","WCIuPhhETZysoA6qjdx59kblgzbc6gQuVscBKS91Fi5"]
 groupId = ['Cc97a91380e09611261010e4c5c682711','C0041b628a8712ace35095f505520c0bd','Cdebd7e16f5b52db01c3efd20b12ddd35']
-url = str("")
 msgbuffer = str("")
 public_msgbuffer = str("")
 success_login_status = int(0)
 fail_login_status = int(0) 
-def url_login(url,usr,pwd,name):
+global url
+url = str("")
+def url_login(i):
+        usr =  userlist[i]
+        pwd = pwlist[i]
+        name = namelist[i]
         global fail_login_status
         global message_single_out
+        global messageout_temp_list
         message_single_out = ""
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--headless')
@@ -94,7 +99,6 @@ def url_login(url,usr,pwd,name):
         return
 
 def login_pros(msg):
-    url = str(msg)
     global messageout
     messageout = ""
     global messageout_temp_list
@@ -105,12 +109,8 @@ def login_pros(msg):
     fail_login_status = 0
     threads = []
     for i in range(0,len(userlist),1):
-       usr =  userlist[i]
-       pwd = pwlist[i]
-       name = namelist[i]
-       threadmission = multiprocessing.Process(target=url_login,args=(url,usr,pwd,name))
+       threadmission = multiprocessing.Process(target=url_login,args=(i,))
        threads.append(threadmission)
-    #print(threading.enumerate())
     for threadmission in threads:
         time.sleep(1)
         threadmission.start()
