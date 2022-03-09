@@ -13,8 +13,8 @@ import datetime
 import random
 import sys
 import discord
-import multiprocessing 
-print(os.cpu_count())
+from multiprocessing import Process, Pool
+print("伺服器分配核心:" + str(os.cpu_count()))
 sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
 client = discord.Client()
 app = Flask(__name__)
@@ -103,18 +103,14 @@ def login_pros(msg):
         messageout_temp_list.append(message_single_out)
         wd.quit()
         return
-
-    for i in range(0,len(userlist),1):
-        usr =  userlist[i]
-        pwd = pwlist[i]
-        name = namelist[i]
-        threadmission = multiprocessing.Process(target=url_login,args=(url,usr,pwd,name,))
-        threads.append(threadmission)
-    #print(threading.enumerate())
-    for threadmission in threads:
-        threadmission.start()
-    for threadmission in threads:
-        threadmission.join()
+    with Pool(8) as pool:
+        for i in range(0,len(userlist),1):
+            usr =  userlist[i]
+            pwd = pwlist[i]
+            name = namelist[i]
+            pool.apply_async(url_login,(url,usr,pwd,name,))
+        pool.close()
+        pool.join()
     print("清單:")
     print(messageout_temp_list)
     for i in range(0,len(messageout_temp_list),1):
