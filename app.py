@@ -39,7 +39,6 @@ useridlist = []
 opuuId = "Ueca105de2ec07b6c502d6b639f56d119"
 grouptoken = ["4C0ZkJflAfexSpelBcoEYVobqbbSD0aGFNvpGAVcdUX","vUQ1xrf4cIp7kFlWifowMJf4XHdtUSHeXi1QeUKARa9","WCIuPhhETZysoA6qjdx59kblgzbc6gQuVscBKS91Fi5"]
 groupId = ['Cc97a91380e09611261010e4c5c682711','C0041b628a8712ace35095f505520c0bd','Cdebd7e16f5b52db01c3efd20b12ddd35']
-threads = []
 url = str("")
 msgbuffer = str("")
 public_msgbuffer = str("")
@@ -61,6 +60,7 @@ def url_login(url,usr,pwd,name):
             fail_login_status = len(userlist)
             message_single_out = "\n🟥警告❌，點名並沒有開放，請稍後再試或自行手點，全數點名失敗\n"
         else:
+            time.sleep(1.5)
             wd.execute_script('document.getElementById("UserNm").value ="' + usr + '"')
             wd.execute_script('document.getElementById("UserPasswd").value ="' + pwd + '"')
             wd.execute_script('document.getElementsByClassName("w3-button w3-block w3-green w3-section w3-padding")[0].click();')
@@ -103,6 +103,7 @@ def login_pros(msg):
     success_login_status = 0
     global fail_login_status
     fail_login_status = 0
+    threads = []
     for i in range(0,len(userlist),1):
        usr =  userlist[i]
        pwd = pwlist[i]
