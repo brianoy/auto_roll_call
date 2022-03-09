@@ -103,7 +103,8 @@ def login_pros(msg):
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
     with Pool(8) as pool:
-        pool.starmap(url_login,(url,zip(userlist,pwlist,namelist)))
+        for i in range(0,len(userlist),1):
+            pool.starmap(url_login,(url,userlist[i],pwlist[i],namelist[i]))
         pool.close()
         pool.join()
     print("清單:")
