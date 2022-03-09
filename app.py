@@ -33,11 +33,11 @@ static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
 line_bot_api = LineBotApi('mn0w8gkHEbWQQAbRC7sw1F1J9SFegKNHPVDsRfsAsuOJ2vgQPgx0/zB/ZeB6sM2ybrFrLh8qKKKsc97iPyW5/qUg0mPp7Tpfhkc9+RncWfdW4TUmscADLAW4FfurNsKgdElaTaLlzDA39SJG357lFgdB04t89/1O/w1cDnyilFU=')# Channel Access Token
 handler = WebhookHandler('3e6656d8b069ab3bf6c057c1e1a84018')# Channel Secret
 discord_webhook = 'https://discord.com/api/webhooks/919053709307179029/5whB53gtFXSykfAVcqsFOSSMA6-b_Y1yk4koHC0fx3snjTIweNuAz4qgGlYtIdVvHlev'
-userlist = ["11021340","11021339","11021346","11021331","11021338"]
-pwlist = ["aA123456789","Zz0123456789","Angel0610","dEEwYupDDCqh9","Daniel@123456"]
-namelist = ["歐陽立庭","蔡祐恩","洪晨旻","楊智涵","楊其宸"]
+userlist = ["11021340","11021339","11021346","11021331","11021338","11021337","11021325"]
+pwlist = ["aA123456789","Zz0123456789","Angel0610","dEEwYupDDCqh9","Daniel@123456","Wolf1017","Ray11021325"]
+namelist = ["歐陽立庭","蔡祐恩","洪晨旻","楊智涵","楊其宸","張子恆","江昱叡"]
 useridlist = []
-opId = "Ueca105de2ec07b6c502d6b639f56d119"
+opuuId = "Ueca105de2ec07b6c502d6b639f56d119"
 grouptoken = ["4C0ZkJflAfexSpelBcoEYVobqbbSD0aGFNvpGAVcdUX","vUQ1xrf4cIp7kFlWifowMJf4XHdtUSHeXi1QeUKARa9","WCIuPhhETZysoA6qjdx59kblgzbc6gQuVscBKS91Fi5"]
 groupId = ['Cc97a91380e09611261010e4c5c682711','C0041b628a8712ace35095f505520c0bd','Cdebd7e16f5b52db01c3efd20b12ddd35']
 url = str("")
@@ -220,7 +220,7 @@ def handle_message(event) :
                 public_msgbuffer = (announce + '此非itouch網域')
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
     elif '變更權杖:' in msg:
-        if opId == event.source.user_id :
+        if opuuId == event.source.user_id :
            print("開始變更權杖")
            line_bot_api.reply_message(event.reply_token, TextSendMessage("已變更權杖"))
         else:
@@ -248,6 +248,8 @@ def handle_message(event) :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("你好兇喔"))
     elif '約' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("又要約又要約"))
+    elif '三小' in msg :
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("好兇"))
     elif '王顥' in msg and '單身' in msg:
         days = datetime.datetime.today()-datetime.datetime(2019,4,30,16)
         days = str(days)[0:4]
@@ -256,6 +258,14 @@ def handle_message(event) :
         line_bot_api.reply_message(event.reply_token, TextSendMessage(sendbuffer))
     elif '開啟' in msg :
         print("強制喚醒")
+
+    elif '開始綁定' in msg :
+        if (event.source.type == "group") :
+            line_bot_api.push_message(event_temp.source.group_id, TextSendMessage("無法在群組進行綁定，請以私訊的形式進行此動作，謝謝"))
+        elif(event.source.type == "user"):
+            line_bot_api.push_message(event_temp.source.user_id, TextSendMessage("無法在群組進行綁定，請以私訊的形式進行此動作，謝謝"))
+        else:
+            print("")
     else:
         public_msgbuffer = (announce + '無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀')
         if (event.source.type == "group") :
@@ -314,13 +324,24 @@ def handle_sticker_message(event):
     return
 
 
+def binding(uuid):
+    print("uuid")
+    return 
+
+
+def my_msg(msg_info):
+    line_bot_api.push_message(opuuId, TextSendMessage(msg_info))
+    print("進入管理員私訊:" + msg_info)
+    return
+
+
 @handler.add(MemberJoinedEvent)
 def welcome(event):
     uid = event.joined.members[0].user_id
     gid = event.source.group_id
     profile = line_bot_api.get_group_member_profile(gid, uid)
     name = profile.display_name
-    message = TextSendMessage(text=f'{name}歡淫加入小歐機器人\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n如要完成點名，請傳送該網址即可')
+    message = TextSendMessage(text=f'{name}歡淫加入\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n如要完成點名，請傳送該網址即可\n歡迎邀請其他人')
     line_bot_api.reply_message(event.reply_token, message)
 
 if __name__ == "__main__":
