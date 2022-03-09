@@ -48,6 +48,7 @@ fail_login_status = int(0)
 def url_login(url,usr,pwd,name):
     global fail_login_status
     message_single_out = ""
+    chrome_options = webdriver.ChromeOptions()
     wd = webdriver.Chrome('chromedriver',options=chrome_options)
     wd.get(url)
     not_open = "未開放 QRCODE簽到功能" in wd.page_source
@@ -108,8 +109,7 @@ def login_pros(msg):
     print("清單:")
     print(messageout_temp_list)
     for i in range(0,len(messageout_temp_list),1):
-        messageout = messageout + messageout_temp_list[i]
-    
+        messageout = messageout + messageout_temp_list[i] 
     messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人")
     messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ['HEROKU_RELEASE_CREATED_AT'] + "GMT+0\n" + "版本:" + os.environ['HEROKU_RELEASE_VERSION'])
     return messageout
