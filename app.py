@@ -48,11 +48,6 @@ fail_login_status = int(0)
 def url_login(url,usr,pwd,name):
     global fail_login_status
     message_single_out = ""
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument('--headless')
-    chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument('--disable-dev-shm-usage')
-    wd = webdriver.Chrome('chromedriver',options=chrome_options)
     wd.get(url)
     not_open = "未開放 QRCODE簽到功能" in wd.page_source
     if not_open:
@@ -101,6 +96,11 @@ def login_pros(msg):
     success_login_status = 0
     global fail_login_status
     fail_login_status = 0
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    wd = webdriver.Chrome('chromedriver',options=chrome_options)
     with Pool(8) as pool:
         pool.starmap(url_login , zip(url,userlist,pwlist,namelist))
         pool.close()
