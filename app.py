@@ -52,15 +52,17 @@ fail_login_status = int(0)
 
 def login_pros(msg):
     url = str(msg)
+    global messageout
+    messageout = ""
     global messageout_temp_list
     messageout_temp_list =[]
     global success_login_status 
     success_login_status = 0
     global fail_login_status
     fail_login_status = 0
-
+    
     def url_login(url,usr,pwd,name):
-        messageout = ""
+        message_single_out = ""
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--headless')
         chrome_options.add_argument('--no-sandbox')
@@ -70,7 +72,7 @@ def login_pros(msg):
         not_open = "未開放 QRCODE簽到功能" in wd.page_source
         if not_open:
             fail_login_status = len(userlist)
-            messageout = "\n🟥警告❌，點名並沒有開放，請稍後再試或自行手點，全數點名失敗\n"
+            message_single_out = "\n🟥警告❌，點名並沒有開放，請稍後再試或自行手點，全數點名失敗\n"
         else:
             wd.execute_script('document.getElementById("UserNm").value ="' + usr + '"')
             wd.execute_script('document.getElementById("UserPasswd").value ="' + pwd + '"')
@@ -80,27 +82,27 @@ def login_pros(msg):
             if password_wrong:
               failmsg = password_wrong.text
               password_wrong.accept()
-              messageout = (messageout + "學號:" + usr + "\n🟥點名失敗❌\n錯誤訊息:密碼錯誤" + failmsg +'\n\n')#error login
-              print("密碼錯誤\n------------------\n" + messageout)
+              message_single_out = (message_single_out + "學號:" + usr + "\n🟥點名失敗❌\n錯誤訊息:密碼錯誤" + failmsg +'\n\n')#error login
+              print("密碼錯誤\n------------------\n" + message_single_out)
               fail_login_status = fail_login_status +1
               wd.quit()
             else:
               soup = BeautifulSoup(wd.page_source, 'html.parser')
               #print(soup.prettify()) #html details
               if (soup.find_all(stroke="#D06079") != []):#fail
-                  messageout = (messageout + "\n🟥點名失敗❌，"+ name +"好可憐喔😱\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text +'\n\n')
-                  print("點名失敗\n------------------\n" + messageout)
+                  message_single_out = (message_single_out + "\n🟥點名失敗❌，"+ name +"好可憐喔😱\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text +'\n\n')
+                  print("點名失敗\n------------------\n" + message_single_out)
                   fail_login_status = fail_login_status +1
               elif (soup.find_all(stroke="#73AF55") != []):#success
                   detailmsg = wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text
-                  messageout = (messageout + "\n🟩點名成功✅，"+ name +"會非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':').replace('<br>','\n')+'\n\n')
-                  print("點名成功\n------------------\n" + messageout)
+                  message_single_out = (message_single_out + "\n🟩點名成功✅，"+ name +"會非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':').replace('<br>','\n')+'\n\n')
+                  print("點名成功\n------------------\n" + message_single_out)
                   success_login_status = success_login_status +1
               else:
-                  messageout = (messageout + name + "\n🟥發生未知的錯誤❌，" + "學號:" + usr + " " + name + "點名失敗😱，趕快聯繫布萊恩，並自行手點" + '\n\n')#unknown failure
-                  print("點名失敗\n------------------\n" + messageout)
+                  message_single_out = (message_single_out + name + "\n🟥發生未知的錯誤❌，" + "學號:" + usr + " " + name + "點名失敗😱，趕快聯繫布萊恩，並自行手點" + '\n\n')#unknown failure
+                  print("點名失敗\n------------------\n" + message_single_out)
                   fail_login_status = fail_login_status +1
-        messageout_temp_list.append(messageout)
+        messageout_temp_list.append(message_single_out)
         wd.quit()
         return
 
@@ -115,7 +117,7 @@ def login_pros(msg):
         threadmission.start()
     for threadmission in threads:
         threadmission.join()
-    print(messageout_temp_list)
+    print("清單:" + messageout_temp_list)
     for i in range(0,len(messageout_temp_list),1):
         messageout = messageout + messageout_temp_list[i]
     
