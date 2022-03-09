@@ -110,7 +110,10 @@ def login_pros(msg):
         #usr =  userlist[i]
         #pwd = pwlist[i]
         #name = namelist[i]
-    threadmission = multiprocessing.Process(target=url_login,args=(url,usr,pwd,name,))
+    usr =  userlist[1]
+    pwd = pwlist[1]
+    name = namelist[1]
+    threadmission = multiprocessing.Process(target=url_login,args=(url,usr,pwd,name))
     threads.append(threadmission)
     #print(threading.enumerate())
     for threadmission in threads:
