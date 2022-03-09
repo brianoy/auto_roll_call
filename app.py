@@ -15,7 +15,7 @@ import sys
 import discord
 from multiprocessing import Process, Pool
 print("伺服器分配核心:" + str(os.cpu_count()))
-sys.path.insert(0,'/usr/bin/chromium-browser/chromedriver')
+sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
 client = discord.Client()
 app = Flask(__name__)
 
