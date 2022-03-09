@@ -117,7 +117,7 @@ def login_pros(msg):
         threadmission.start()
     for threadmission in threads:
         threadmission.join()
-    print("清單:" + messageout_temp_list)
+    print(messageout_temp_list)
     for i in range(0,len(messageout_temp_list),1):
         messageout = messageout + messageout_temp_list[i]
     
