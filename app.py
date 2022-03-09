@@ -108,7 +108,9 @@ def login_pros(msg):
             usr =  userlist[i]
             pwd = pwlist[i]
             name = namelist[i]
-            pool.apply_async(url_login,(url,usr,pwd,name,))
+            pool.apply_async(
+                func=url_login , args=(url,usr,pwd,name,)
+                )
         pool.close()
         pool.join()
     print("清單:")
