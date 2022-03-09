@@ -111,8 +111,10 @@ def login_pros(msg):
         usr =  userlist[i]
         pwd = pwlist[i]
         name = namelist[i]
-    threadmission = threading.Thread(target=url_login,args=(url,usr,pwd,name))
-    threads.append(threadmission)
+        threadmission = threading.Thread(target=url_login,args=(url,usr,pwd,name))
+        threads.append(threadmission)
+
+    print(threading.enumerate())
 
     for threadmission in threads:
         threadmission.start()
