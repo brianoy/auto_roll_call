@@ -44,22 +44,8 @@ url = str("")
 msgbuffer = str("")
 public_msgbuffer = str("")
 success_login_status = int(0)
-fail_login_status = int(0)
-
-
-
-def login_pros(msg):
-    url = str(msg)
-    global messageout
-    messageout = ""
-    global messageout_temp_list
-    messageout_temp_list =[]
-    global success_login_status 
-    success_login_status = 0
-    global fail_login_status
-    fail_login_status = 0
-    
-    def url_login(url,usr,pwd,name):
+fail_login_status = int(0) 
+def url_login(url,usr,pwd,name):
         global fail_login_status
         message_single_out = ""
         chrome_options = webdriver.ChromeOptions()
@@ -106,14 +92,21 @@ def login_pros(msg):
         wd.quit()
         return
 
-    #for i in range(0,len(userlist),1):
-        #usr =  userlist[i]
-        #pwd = pwlist[i]
-        #name = namelist[i]
-    usr =  userlist[1]
-    pwd = pwlist[1]
-    name = namelist[1]
-    threadmission = multiprocessing.Process(target=url_login,args=(url,usr,pwd,name))
+def login_pros(msg):
+    url = str(msg)
+    global messageout
+    messageout = ""
+    global messageout_temp_list
+    messageout_temp_list =[]
+    global success_login_status 
+    success_login_status = 0
+    global fail_login_status
+    fail_login_status = 0
+    for i in range(0,len(userlist),1):
+       usr =  userlist[i]
+       pwd = pwlist[i]
+       name = namelist[i]
+       threadmission = multiprocessing.Process(target=url_login,args=(url,usr,pwd,name))
     threads.append(threadmission)
     #print(threading.enumerate())
     for threadmission in threads:
