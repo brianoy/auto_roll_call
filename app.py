@@ -90,6 +90,7 @@ def url_login(url,usr,pwd,name):
 
 def login_pros(msg):
     url = str(msg)
+    url = str(url, "utf-8")
     global messageout
     messageout = ""
     global messageout_temp_list
@@ -107,7 +108,8 @@ def login_pros(msg):
             usr =  userlist[i]
             pwd = pwlist[i]
             name = namelist[i]
-            pool.starmap(url_login,zip(url,usr,pwd,name))
+            a = zip(url,usr,pwd,name))
+        pool.starmap(url_login,a)
         pool.close()
         pool.join()
     print("清單:")
