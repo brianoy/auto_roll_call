@@ -8,16 +8,13 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from datetime import datetime
 import requests
-import tempfile
 import os
 import datetime
-import time
-import json
 import random
 import sys
 import discord
-import threading 
-
+import multiprocessing 
+print(os.cpu_count())
 sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
 client = discord.Client()
 app = Flask(__name__)
@@ -111,11 +108,9 @@ def login_pros(msg):
         usr =  userlist[i]
         pwd = pwlist[i]
         name = namelist[i]
-        threadmission = threading.Thread(target=url_login,args=(url,usr,pwd,name))
+        threadmission = multiprocessing.Process(target=url_login,args=(url,usr,pwd,name,))
         threads.append(threadmission)
-
-    print(threading.enumerate())
-
+    #print(threading.enumerate())
     for threadmission in threads:
         threadmission.start()
     for threadmission in threads:
