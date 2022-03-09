@@ -265,7 +265,7 @@ def handle_message(event) :
         elif(event.source.type == "user"):
             line_bot_api.push_message(event_temp.source.user_id, TextSendMessage("無法在群組進行綁定，請以私訊的形式進行此動作，謝謝"))
         else:
-       
+            print("")
     else:
         public_msgbuffer = (announce + '無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀')
         if (event.source.type == "group") :
@@ -325,6 +325,7 @@ def handle_sticker_message(event):
 
 
 def binding(uuid):
+    print("")
     return 
 
 
