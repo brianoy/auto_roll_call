@@ -8,14 +8,16 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from datetime import datetime
 import requests
+import tempfile
 import os
 import datetime
+import time
+import json
 import random
 import sys
 import discord
-import multiprocessing 
-import time
-print(os.cpu_count())
+import threading 
+
 sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
 client = discord.Client()
 app = Flask(__name__)
@@ -39,33 +41,35 @@ useridlist = []
 opuuId = "Ueca105de2ec07b6c502d6b639f56d119"
 grouptoken = ["4C0ZkJflAfexSpelBcoEYVobqbbSD0aGFNvpGAVcdUX","vUQ1xrf4cIp7kFlWifowMJf4XHdtUSHeXi1QeUKARa9","WCIuPhhETZysoA6qjdx59kblgzbc6gQuVscBKS91Fi5"]
 groupId = ['Cc97a91380e09611261010e4c5c682711','C0041b628a8712ace35095f505520c0bd','Cdebd7e16f5b52db01c3efd20b12ddd35']
+threads = []
+url = str("")
 msgbuffer = str("")
 public_msgbuffer = str("")
 success_login_status = int(0)
-fail_login_status = int(0) 
-global url
-url = str("")
-def url_login(i):
-        usr =  userlist[i]
-        pwd = pwlist[i]
-        name = namelist[i]
-        global fail_login_status
-        global message_single_out
-        global messageout_temp_list
-        message_single_out = ""
+fail_login_status = int(0)
+
+
+
+def login_pros(msg):
+    url = str(msg)
+    global messageout
+    messageout = ""
+    global success_login_status 
+    success_login_status = 0
+    global fail_login_status
+    fail_login_status = 0
+    def url_login(url,usr,pwd,name):
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--headless')
         chrome_options.add_argument('--no-sandbox')
         chrome_options.add_argument('--disable-dev-shm-usage')
         wd = webdriver.Chrome('chromedriver',options=chrome_options)
         wd.get(url)
-        time.sleep(1)
         not_open = "未開放 QRCODE簽到功能" in wd.page_source
         if not_open:
             fail_login_status = len(userlist)
-            message_single_out = "\n🟥警告❌，點名並沒有開放，請稍後再試或自行手點，全數點名失敗\n"
+            messageout = "\n🟥警告❌，點名並沒有開放，請稍後再試或自行手點，全數點名失敗\n"
         else:
-            time.sleep(1.5)
             wd.execute_script('document.getElementById("UserNm").value ="' + usr + '"')
             wd.execute_script('document.getElementById("UserPasswd").value ="' + pwd + '"')
             wd.execute_script('document.getElementsByClassName("w3-button w3-block w3-green w3-section w3-padding")[0].click();')
@@ -74,54 +78,39 @@ def url_login(i):
             if password_wrong:
               failmsg = password_wrong.text
               password_wrong.accept()
-              message_single_out = (message_single_out + "學號:" + usr + "\n🟥點名失敗❌\n錯誤訊息:密碼錯誤" + failmsg +'\n\n')#error login
-              print("密碼錯誤\n------------------\n" + message_single_out)
+              messageout = (messageout + "學號:" + usr + "\n🟥點名失敗❌\n錯誤訊息:密碼錯誤" + failmsg +'\n\n')#error login
+              print("密碼錯誤\n------------------\n" + messageout)
               fail_login_status = fail_login_status +1
               wd.quit()
             else:
               soup = BeautifulSoup(wd.page_source, 'html.parser')
               #print(soup.prettify()) #html details
               if (soup.find_all(stroke="#D06079") != []):#fail
-                  message_single_out = (message_single_out + "\n🟥點名失敗❌，"+ name +"好可憐喔😱\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text +'\n\n')
-                  print("點名失敗\n------------------\n" + message_single_out)
+                  messageout = (messageout + "\n🟥點名失敗❌，"+ name +"好可憐喔😱\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text +'\n\n')
+                  print("點名失敗\n------------------\n" + messageout)
                   fail_login_status = fail_login_status +1
               elif (soup.find_all(stroke="#73AF55") != []):#success
                   detailmsg = wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text
-                  message_single_out = (message_single_out + "\n🟩點名成功✅，"+ name +"會非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':').replace('<br>','\n')+'\n\n')
-                  print("點名成功\n------------------\n" + message_single_out)
+                  messageout = (messageout + "\n🟩點名成功✅，"+ name +"會非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':').replace('<br>','\n')+'\n\n')
+                  print("點名成功\n------------------\n" + messageout)
                   success_login_status = success_login_status +1
               else:
-                  message_single_out = (message_single_out + name + "\n🟥發生未知的錯誤❌，" + "學號:" + usr + " " + name + "點名失敗😱，趕快聯繫布萊恩，並自行手點" + '\n\n')#unknown failure
-                  print("點名失敗\n------------------\n" + message_single_out)
+                  messageout = (messageout + name + "\n🟥發生未知的錯誤❌，" + "學號:" + usr + " " + name + "點名失敗😱，趕快聯繫布萊恩，並自行手點" + '\n\n')#unknown failure
+                  print("點名失敗\n------------------\n" + messageout)
                   fail_login_status = fail_login_status +1
-        messageout_temp_list.append(message_single_out)
         wd.quit()
         return
-
-def login_pros(msg):
-    global messageout
-    messageout = ""
-    global messageout_temp_list
-    messageout_temp_list =[]
-    global success_login_status 
-    success_login_status = 0
-    global fail_login_status
-    fail_login_status = 0
-    threads = []
     for i in range(0,len(userlist),1):
-       threadmission = multiprocessing.Process(target=url_login,args=(i,))
-       threads.append(threadmission)
+        usr =  userlist[i]
+        pwd = pwlist[i]
+        name = namelist[i]
+    threadmission = threading.Thread(target=url_login,args=(url,usr,pwd,name))
+    threads.append(threadmission)
+
     for threadmission in threads:
-        time.sleep(1)
         threadmission.start()
     for threadmission in threads:
-        time.sleep(1.5)
         threadmission.join()
-    print("清單:")
-    print(messageout_temp_list)
-    for i in range(0,len(messageout_temp_list),1):
-        messageout = messageout + messageout_temp_list[i]
-    
     messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人")
     messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ['HEROKU_RELEASE_CREATED_AT'] + "GMT+0\n" + "版本:" + os.environ['HEROKU_RELEASE_VERSION'])
     return messageout
