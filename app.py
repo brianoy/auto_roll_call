@@ -108,7 +108,7 @@ def login_pros(msg):
             usr =  userlist[i]
             pwd = pwlist[i]
             name = namelist[i]
-            a = zip(url,usr,pwd,name))
+            a = zip(url,usr,pwd,name)
         pool.starmap(url_login,a)
         pool.close()
         pool.join()
