@@ -62,6 +62,7 @@ def login_pros(msg):
     fail_login_status = 0
     
     def url_login(url,usr,pwd,name):
+        global fail_login_status
         message_single_out = ""
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument('--headless')
@@ -117,6 +118,7 @@ def login_pros(msg):
         threadmission.start()
     for threadmission in threads:
         threadmission.join()
+    print("清單:")
     print(messageout_temp_list)
     for i in range(0,len(messageout_temp_list),1):
         messageout = messageout + messageout_temp_list[i]
