@@ -14,6 +14,7 @@ import random
 import sys
 import discord
 import multiprocessing 
+import time
 print(os.cpu_count())
 sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
 client = discord.Client()
@@ -67,6 +68,7 @@ def login_pros(msg):
         chrome_options.add_argument('--disable-dev-shm-usage')
         wd = webdriver.Chrome('chromedriver',options=chrome_options)
         wd.get(url)
+        time.sleep(1)
         not_open = "未開放 QRCODE簽到功能" in wd.page_source
         if not_open:
             fail_login_status = len(userlist)
