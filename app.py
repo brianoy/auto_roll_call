@@ -104,7 +104,10 @@ def login_pros(msg):
     chrome_options.add_argument('--disable-dev-shm-usage')
     with Pool(8) as pool:
         for i in range(0,len(userlist),1):
-            pool.starmap(url_login,(url,userlist[i],pwlist[i],namelist[i]))
+            usr =  userlist[i]
+            pwd = pwlist[i]
+            name = namelist[i]
+            pool.starmap(url_login,zip(url,usr,pwd,name))
         pool.close()
         pool.join()
     print("清單:")
