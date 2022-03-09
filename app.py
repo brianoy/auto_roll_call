@@ -97,7 +97,7 @@ def url_login(msg):
                fail_login_status = fail_login_status +1
   wd.quit()
   messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人")
-  messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ['HEROKU_RELEASE_CREATED_AT'] + "\n" + "版本:" + os.environ['HEROKU_RELEASE_VERSION'])
+  messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ['HEROKU_RELEASE_CREATED_AT'] + "GMT+0\n" + "版本:" + os.environ['HEROKU_RELEASE_VERSION'])
   return messageout
 
 
@@ -186,7 +186,7 @@ def handle_message(event) :
                       public_msgbuffer = done + msgbuffer
                       payload = {'message': distinguish(public_msgbuffer) }
                       print("有不知名的群組")
-                      line_bot_api.push_message(event_temp.source.group_id, TextSendMessage(public_msgbuffer))#除了以上兩個群組
+                      line_bot_api.push_message(event_temp.source.group_id, TextSendMessage(distinguish(public_msgbuffer)))#除了以上兩個群組
              elif(event.source.type == "user") :
                   line_bot_api.reply_message(event_temp.reply_token, TextSendMessage(recived))
                   msgbuffer = url_login(msg)
