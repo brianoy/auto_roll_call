@@ -110,8 +110,10 @@ def login_pros(msg):
        threads.append(threadmission)
     #print(threading.enumerate())
     for threadmission in threads:
+        time.sleep(1)
         threadmission.start()
     for threadmission in threads:
+        time.sleep(1)
         threadmission.join()
     print("清單:")
     print(messageout_temp_list)
