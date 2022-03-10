@@ -8,11 +8,10 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from datetime import datetime
 import requests
-import tempfile
+import time
 import os
 import datetime
 import time
-import json
 import random
 import sys
 import discord
