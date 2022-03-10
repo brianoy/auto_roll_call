@@ -114,7 +114,7 @@ async def url_login(msg):
     single_msg_list = []
     final_msg = ""
     start_time = time.time()
-    results = await asyncio.gather(*[login_pros(msg,userlist[i],pwlist[i],namelist[i]) for i in range(userlist)])
+    results = await asyncio.gather(*[login_pros(msg,userlist[i],pwlist[i],namelist[i]) for i in range(len(userlist))])
     for i in range(len(single_msg_list)):
         messageout = messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + single_msg_list[i]
     messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人")
