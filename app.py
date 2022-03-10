@@ -109,6 +109,7 @@ async def url_login(msg):
     global fail_login_status
     global single_msg_list
     global final_msg
+    messageout = ""
     success_login_status = 0
     fail_login_status = 0
     single_msg_list = []
