@@ -11,7 +11,6 @@ import requests
 import time
 import os
 import datetime
-import time
 import random
 import sys
 import discord
@@ -46,6 +45,7 @@ success_login_status = int(0)
 fail_login_status = int(0)
 
 def url_login(msg):
+  start_time = time.time()
   chrome_options = webdriver.ChromeOptions()
   chrome_options.add_argument('--headless')
   chrome_options.add_argument('--no-sandbox')
