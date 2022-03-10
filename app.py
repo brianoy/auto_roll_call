@@ -195,9 +195,8 @@ def handle_message(event) :
                       requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + recived })#翹課大魔王
                       asyncio.run(url_login(msg))
                       print(final_msg)
-                      msgbuffer = str(final_msg) + done
-                      print(msgbuffer)
-                      public_msgbuffer = done + msgbuffer
+                      public_msgbuffer = done + str(final_msg)
+                      print(public_msgbuffer)
                       payload = {'message': distinguish(public_msgbuffer) }
                       requests.post("https://notify-api.line.me/api/notify", headers = headers, params = payload)
                  elif(event.source.group_id == groupId[1]):
@@ -207,23 +206,25 @@ def handle_message(event) :
                       requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + recived })#秘密基地
                       asyncio.run(url_login(msg))
                       print(final_msg)
-                      msgbuffer = str(final_msg) + done
-                      print(msgbuffer)
+                      public_msgbuffer = done + str(final_msg)
+                      print(public_msgbuffer)
                       payload = {'message': distinguish(public_msgbuffer) }
                       requests.post("https://notify-api.line.me/api/notify", headers = headers, params = payload)
                  else:
                       line_bot_api.reply_message(event_temp.reply_token, TextSendMessage(recived))
                       asyncio.run(url_login(msg))
                       print(final_msg)
-                      msgbuffer = str(final_msg) + done
-                      print(msgbuffer)
+                      public_msgbuffer = done + str(final_msg)
+                      print(public_msgbuffer)
                       payload = {'message': distinguish(public_msgbuffer) }
                       print("有不知名的群組")
                       line_bot_api.push_message(event_temp.source.group_id, TextSendMessage(distinguish(public_msgbuffer)))#除了以上兩個群組
              elif(event.source.type == "user") :
                   line_bot_api.reply_message(event_temp.reply_token, TextSendMessage(recived))
                   asyncio.run(url_login(msg))
-                  msgbuffer = str(final_msg) + done
+                  print(final_msg)
+                  public_msgbuffer = done + str(final_msg)
+                  print(public_msgbuffer)
                   line_bot_api.push_message(event_temp.source.user_id, TextSendMessage(public_msgbuffer))
              else:
                  print("錯誤:偵測不到itouch網址訊息類型")
