@@ -63,7 +63,7 @@ def login_pros(msg):
         chrome_options.add_argument('--headless')
         chrome_options.add_argument('--no-sandbox')
         chrome_options.add_argument('--disable-dev-shm-usage')
-        wd = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver',chrome_options=chrome_options)
+        wd = webdriver.Chrome('/usr/lib/chromium-browser',chrome_options=chrome_options)
         wd.get(url)
         not_open = "未開放 QRCODE簽到功能" in wd.page_source
         if not_open:
