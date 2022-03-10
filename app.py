@@ -16,6 +16,7 @@ import json
 import random
 import sys
 import discord
+import threading 
 
 sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
 client = discord.Client()
@@ -40,65 +41,82 @@ useridlist = []
 opuuId = "Ueca105de2ec07b6c502d6b639f56d119"
 grouptoken = ["4C0ZkJflAfexSpelBcoEYVobqbbSD0aGFNvpGAVcdUX","vUQ1xrf4cIp7kFlWifowMJf4XHdtUSHeXi1QeUKARa9","WCIuPhhETZysoA6qjdx59kblgzbc6gQuVscBKS91Fi5"]
 groupId = ['Cc97a91380e09611261010e4c5c682711','C0041b628a8712ace35095f505520c0bd','Cdebd7e16f5b52db01c3efd20b12ddd35']
+threads = []
 url = str("")
 msgbuffer = str("")
 public_msgbuffer = str("")
 success_login_status = int(0)
 fail_login_status = int(0)
 
-def url_login(msg):
-  chrome_options = webdriver.ChromeOptions()
-  chrome_options.add_argument('--headless')
-  chrome_options.add_argument('--no-sandbox')
-  chrome_options.add_argument('--disable-dev-shm-usage')
-  url = str(msg)
-  messageout = ""
-  success_login_status = 0
-  global fail_login_status
-  fail_login_status = 0
-  for i in range(0,len(userlist),1):
-     usr =  userlist[i]
-     pwd = pwlist[i]
-     name = namelist[i]
-     wd = webdriver.Chrome('chromedriver',options=chrome_options)
-     wd.get(url)
-     not_open = "未開放 QRCODE簽到功能" in wd.page_source
-     if not_open:
-         fail_login_status = len(userlist)
-         messageout = "\n🟥警告❌，點名並沒有開放，請稍後再試或自行手點，全數點名失敗\n"
-     else:
-         wd.execute_script('document.getElementById("UserNm").value ="' + usr + '"')
-         wd.execute_script('document.getElementById("UserPasswd").value ="' + pwd + '"')
-         wd.execute_script('document.getElementsByClassName("w3-button w3-block w3-green w3-section w3-padding")[0].click();')
-         from selenium.webdriver.support import expected_conditions as EC
-         password_wrong = EC.alert_is_present()(wd)#如果有錯誤訊息
-         if password_wrong:
-           failmsg = password_wrong.text
-           password_wrong.accept()
-           messageout = (messageout + "學號:" + usr + "\n🟥點名失敗❌\n錯誤訊息:密碼錯誤" + failmsg +'\n\n')#error login
-           print("密碼錯誤\n------------------\n" + messageout)
-           fail_login_status = fail_login_status +1
-           wd.quit()
-         else:
-           soup = BeautifulSoup(wd.page_source, 'html.parser')
-           #print(soup.prettify()) #html details
-           if (soup.find_all(stroke="#D06079") != []):#fail
-               messageout = (messageout + "\n🟥點名失敗❌，"+ name +"好可憐喔😱\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text +'\n\n')
-               print("點名失敗\n------------------\n" + messageout)
-               fail_login_status = fail_login_status +1
-           elif (soup.find_all(stroke="#73AF55") != []):#success
-               detailmsg = wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text
-               messageout = (messageout + "\n🟩點名成功✅，"+ name +"會非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':').replace('<br>','\n')+'\n\n')
-               print("點名成功\n------------------\n" + messageout)
-               success_login_status = success_login_status +1
-           else:
-               messageout = (messageout + name + "\n🟥發生未知的錯誤❌，" + "學號:" + usr + " " + name + "點名失敗😱，趕快聯繫布萊恩，並自行手點" + '\n\n')#unknown failure
-               print("點名失敗\n------------------\n" + messageout)
-               fail_login_status = fail_login_status +1
-  wd.quit()
-  messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人")
-  messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ['HEROKU_RELEASE_CREATED_AT'] + "GMT+0\n" + "版本:" + os.environ['HEROKU_RELEASE_VERSION'])
-  return messageout
+
+
+def login_pros(msg):
+    url = str(msg)
+    print(msg)
+    global messageout
+    messageout = ""
+    global success_login_status 
+    success_login_status = 0
+    global fail_login_status
+    fail_login_status = 0
+    def url_login(url,usr,pwd,name):
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.add_argument('--disable-dev-shm-usage')
+        wd = webdriver.Chrome('chromedriver',options=chrome_options)
+        wd.get(url)
+        not_open = "未開放 QRCODE簽到功能" in wd.page_source
+        if not_open:
+            fail_login_status = len(userlist)
+            messageout = "\n🟥警告❌，點名並沒有開放，請稍後再試或自行手點，全數點名失敗\n"
+        else:
+            wd.execute_script('document.getElementById("UserNm").value ="' + usr + '"')
+            wd.execute_script('document.getElementById("UserPasswd").value ="' + pwd + '"')
+            wd.execute_script('document.getElementsByClassName("w3-button w3-block w3-green w3-section w3-padding")[0].click();')
+            from selenium.webdriver.support import expected_conditions as EC
+            password_wrong = EC.alert_is_present()(wd)#如果有錯誤訊息
+            if password_wrong:
+              failmsg = password_wrong.text
+              password_wrong.accept()
+              messageout = (messageout + "學號:" + usr + "\n🟥點名失敗❌\n錯誤訊息:密碼錯誤" + failmsg +'\n\n')#error login
+              print("密碼錯誤\n------------------\n" + messageout)
+              fail_login_status = fail_login_status +1
+              wd.quit()
+            else:
+              soup = BeautifulSoup(wd.page_source, 'html.parser')
+              #print(soup.prettify()) #html details
+              if (soup.find_all(stroke="#D06079") != []):#fail
+                  messageout = (messageout + "\n🟥點名失敗❌，"+ name +"好可憐喔😱\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text +'\n\n')
+                  print("點名失敗\n------------------\n" + messageout)
+                  fail_login_status = fail_login_status +1
+              elif (soup.find_all(stroke="#73AF55") != []):#success
+                  detailmsg = wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text
+                  messageout = (messageout + "\n🟩點名成功✅，"+ name +"會非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':').replace('<br>','\n')+'\n\n')
+                  print("點名成功\n------------------\n" + messageout)
+                  success_login_status = success_login_status +1
+              else:
+                  messageout = (messageout + name + "\n🟥發生未知的錯誤❌，" + "學號:" + usr + " " + name + "點名失敗😱，趕快聯繫布萊恩，並自行手點" + '\n\n')#unknown failure
+                  print("點名失敗\n------------------\n" + messageout)
+                  fail_login_status = fail_login_status +1
+        wd.quit()
+        return
+    for i in range(0,len(userlist),1):
+        url = "https://itouch.cycu.edu.tw/active_system/query_course/learning_activity_stusign.jsp?act_no=2765801d-407d-42cd-9dfb-bb65b4f3aa6f&afterLogin=true"
+        usr =  userlist[i]
+        pwd = pwlist[i]
+        name = namelist[i]
+        threads.append(threading.Thread(target=url_login,args=(url,usr,pwd,name)))
+
+    for threadmission in threads:
+        threadmission.start()
+    for threadmission in threads:
+        threadmission.join()
+    messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人")
+    messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ['HEROKU_RELEASE_CREATED_AT'] + "GMT+0\n" + "版本:" + os.environ['HEROKU_RELEASE_VERSION'])
+    return messageout
+
+
 
 
 # 監聽所有來自 /callback 的 Post Request
@@ -167,7 +185,7 @@ def handle_message(event) :
                       "Authorization": "Bearer " + grouptoken[0], 
                       }
                       requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + recived })#翹課大魔王
-                      msgbuffer = url_login(msg)
+                      msgbuffer = login_pros(msg)
                       public_msgbuffer = done + msgbuffer
                       payload = {'message': distinguish(public_msgbuffer) }
                       requests.post("https://notify-api.line.me/api/notify", headers = headers, params = payload)
@@ -176,20 +194,20 @@ def handle_message(event) :
                       "Authorization": "Bearer " + grouptoken[1], 
                       }
                       requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + recived })#秘密基地
-                      msgbuffer = url_login(msg)
+                      msgbuffer =login_pros(msg)
                       public_msgbuffer = done + msgbuffer
                       payload = {'message': distinguish(public_msgbuffer) }
                       requests.post("https://notify-api.line.me/api/notify", headers = headers, params = payload)
                  else:
                       line_bot_api.reply_message(event_temp.reply_token, TextSendMessage(recived))
-                      msgbuffer = url_login(msg)
+                      msgbuffer = login_pros(msg)
                       public_msgbuffer = done + msgbuffer
                       payload = {'message': distinguish(public_msgbuffer) }
                       print("有不知名的群組")
-                      line_bot_api.push_message(event_temp.source.group_id, TextSendMessage(distinguish(public_msgbuffer)))#除了以上兩個群組
+                      line_bot_api.push_message(event_temp.source.group_id, TextSendMessage(public_msgbuffer))#除了以上兩個群組
              elif(event.source.type == "user") :
                   line_bot_api.reply_message(event_temp.reply_token, TextSendMessage(recived))
-                  msgbuffer = url_login(msg)
+                  msgbuffer = login_pros(msg)
                   public_msgbuffer = (done + msgbuffer)
                   line_bot_api.push_message(event_temp.source.user_id, TextSendMessage(public_msgbuffer))
              else:
@@ -325,7 +343,7 @@ def handle_sticker_message(event):
 
 
 def binding(uuid):
-    print("")
+    print("uuid")
     return 
 
 
