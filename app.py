@@ -50,6 +50,8 @@ global fail_login_status
 fail_login_status = int(0)
 global single_msg_list
 single_msg_list = []
+global final_msg
+final_msg = ""
 
 async def login_pros(msg,usr,pwd,name):
   chrome_options = webdriver.ChromeOptions()
@@ -106,9 +108,11 @@ async def url_login(msg):
     global success_login_status
     global fail_login_status
     global single_msg_list
+    global final_msg
     success_login_status = 0
     fail_login_status = 0
     single_msg_list = []
+    final_msg = ""
     start_time = time.time()
     results = await asyncio.gather(*[login_pros(msg,userlist[i],pwlist[i],namelist[i]) for i in range(userlist)])
     for i in range(len(single_msg_list)):
@@ -116,7 +120,8 @@ async def url_login(msg):
     messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人")
     messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ['HEROKU_RELEASE_CREATED_AT'] + "GMT+0\n" + "版本:" + os.environ['HEROKU_RELEASE_VERSION']+ "\n此次點名耗費時間:" + str(time.time() - start_time)+"秒")
     print(results)
-    return str(messageout)
+    final_msg = messageout
+    return final_msg 
 
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
@@ -167,6 +172,7 @@ def distinguish(msgbuffer):
  #warning! reply token would expired after send msg about 30seconds. use push msg! 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event) :
+    global final_msg
     public_msgbuffer = ""
     msg = event.message.text
     msg_type = event.message.type
@@ -184,7 +190,8 @@ def handle_message(event) :
                       "Authorization": "Bearer " + grouptoken[0], 
                       }
                       requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + recived })#翹課大魔王
-                      msgbuffer = url_login(msg)
+                      url_login(msg)
+                      msgbuffer = str(final_msg) + done
                       public_msgbuffer = done + msgbuffer
                       payload = {'message': distinguish(public_msgbuffer) }
                       requests.post("https://notify-api.line.me/api/notify", headers = headers, params = payload)
@@ -193,21 +200,21 @@ def handle_message(event) :
                       "Authorization": "Bearer " + grouptoken[1], 
                       }
                       requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + recived })#秘密基地
-                      msgbuffer = url_login(msg)
-                      public_msgbuffer = done + msgbuffer
+                      url_login(msg)
+                      msgbuffer = str(final_msg) + done
                       payload = {'message': distinguish(public_msgbuffer) }
                       requests.post("https://notify-api.line.me/api/notify", headers = headers, params = payload)
                  else:
                       line_bot_api.reply_message(event_temp.reply_token, TextSendMessage(recived))
-                      msgbuffer = url_login(msg)
-                      public_msgbuffer = done + msgbuffer
+                      url_login(msg)
+                      msgbuffer = str(final_msg) + done
                       payload = {'message': distinguish(public_msgbuffer) }
                       print("有不知名的群組")
                       line_bot_api.push_message(event_temp.source.group_id, TextSendMessage(distinguish(public_msgbuffer)))#除了以上兩個群組
              elif(event.source.type == "user") :
                   line_bot_api.reply_message(event_temp.reply_token, TextSendMessage(recived))
-                  msgbuffer = url_login(msg)
-                  public_msgbuffer = (done + msgbuffer)
+                  url_login(msg)
+                  msgbuffer = str(final_msg) + done
                   line_bot_api.push_message(event_temp.source.user_id, TextSendMessage(public_msgbuffer))
              else:
                  print("錯誤:偵測不到itouch網址訊息類型")
