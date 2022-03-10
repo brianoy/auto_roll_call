@@ -4,3 +4,4 @@ selenium
 beautifulsoup4
 lxml
 discord
+threading

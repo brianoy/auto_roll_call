@@ -16,6 +16,7 @@ import json
 import random
 import sys
 import discord
+import threading
 
 sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
 client = discord.Client()
@@ -46,7 +47,7 @@ public_msgbuffer = str("")
 success_login_status = int(0)
 fail_login_status = int(0)
 
-def url_login(msg):
+def url_login(msg,usr,pwd,name):
   chrome_options = webdriver.ChromeOptions()
   chrome_options.add_argument('--headless')
   chrome_options.add_argument('--no-sandbox')
@@ -56,50 +57,65 @@ def url_login(msg):
   success_login_status = 0
   global fail_login_status
   fail_login_status = 0
-  for i in range(0,len(userlist),1):
-     usr =  userlist[i]
-     pwd = pwlist[i]
-     name = namelist[i]
-     wd = webdriver.Chrome('chromedriver',options=chrome_options)
-     wd.get(url)
-     not_open = "未開放 QRCODE簽到功能" in wd.page_source
-     if not_open:
-         fail_login_status = len(userlist)
-         messageout = "\n🟥警告❌，點名並沒有開放，請稍後再試或自行手點，全數點名失敗\n"
-     else:
-         wd.execute_script('document.getElementById("UserNm").value ="' + usr + '"')
-         wd.execute_script('document.getElementById("UserPasswd").value ="' + pwd + '"')
-         wd.execute_script('document.getElementsByClassName("w3-button w3-block w3-green w3-section w3-padding")[0].click();')
-         from selenium.webdriver.support import expected_conditions as EC
-         password_wrong = EC.alert_is_present()(wd)#如果有錯誤訊息
-         if password_wrong:
-           failmsg = password_wrong.text
-           password_wrong.accept()
-           messageout = (messageout + "學號:" + usr + "\n🟥點名失敗❌\n錯誤訊息:密碼錯誤" + failmsg +'\n\n')#error login
-           print("密碼錯誤\n------------------\n" + messageout)
-           fail_login_status = fail_login_status +1
-           wd.quit()
-         else:
-           soup = BeautifulSoup(wd.page_source, 'html.parser')
-           #print(soup.prettify()) #html details
-           if (soup.find_all(stroke="#D06079") != []):#fail
-               messageout = (messageout + "\n🟥點名失敗❌，"+ name +"好可憐喔😱\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text +'\n\n')
-               print("點名失敗\n------------------\n" + messageout)
-               fail_login_status = fail_login_status +1
-           elif (soup.find_all(stroke="#73AF55") != []):#success
-               detailmsg = wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text
-               messageout = (messageout + "\n🟩點名成功✅，"+ name +"會非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':').replace('<br>','\n')+'\n\n')
-               print("點名成功\n------------------\n" + messageout)
-               success_login_status = success_login_status +1
-           else:
-               messageout = (messageout + name + "\n🟥發生未知的錯誤❌，" + "學號:" + usr + " " + name + "點名失敗😱，趕快聯繫布萊恩，並自行手點" + '\n\n')#unknown failure
-               print("點名失敗\n------------------\n" + messageout)
-               fail_login_status = fail_login_status +1
+  wd = webdriver.Chrome('chromedriver',options=chrome_options)
+  wd.get(url)
+  print("有到第一點")
+  not_open = "未開放 QRCODE簽到功能" in wd.page_source
+  print("有到第二點")
+  if not_open:
+     fail_login_status = len(userlist)
+     messageout = "\n🟥警告❌，點名並沒有開放，請稍後再試或自行手點，全數點名失敗\n"
+  else:
+      print("有到第三點")
+      wd.execute_script('document.getElementById("UserNm").value ="' + usr + '"')
+      wd.execute_script('document.getElementById("UserPasswd").value ="' + pwd + '"')
+      wd.execute_script('document.getElementsByClassName("w3-button w3-block w3-green w3-section w3-padding")[0].click();')
+      print("有到第四點")
+      password_wrong = EC.alert_is_present()(wd)#如果有錯誤訊息
+      print("有到第五點")
+      if password_wrong:
+       failmsg = password_wrong.text
+       password_wrong.accept()
+       messageout = (messageout + "學號:" + usr + "\n🟥點名失敗❌\n錯誤訊息:密碼錯誤" + failmsg +'\n\n')#error login
+       print("密碼錯誤\n------------------\n" + messageout)
+       fail_login_status = fail_login_status +1
+       wd.quit()
+      else:
+        print("有到第六點")
+        soup = BeautifulSoup(wd.page_source, 'html.parser')
+        if (soup.find_all(stroke="#D06079") != []):#fail
+            messageout = (messageout + "\n🟥點名失敗❌，"+ name +"好可憐喔😱\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text +'\n\n')
+            print("點名失敗\n------------------\n" + messageout)
+            fail_login_status = fail_login_status +1
+        elif (soup.find_all(stroke="#73AF55") != []):#success
+            detailmsg = wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text
+            messageout = (messageout + "\n🟩點名成功✅，"+ name +"會非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':').replace('<br>','\n')+'\n\n')
+            print("點名成功\n------------------\n" + messageout)
+            success_login_status = success_login_status +1
+        else:
+            messageout = (messageout + name + "\n🟥發生未知的錯誤❌，" + "學號:" + usr + " " + name + "點名失敗😱，趕快聯繫布萊恩，並自行手點" + '\n\n')#unknown failure
+            print("點名失敗\n------------------\n" + messageout)
+            fail_login_status = fail_login_status +1
+  print("有到第七點")
   wd.quit()
   messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人")
-  messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ['HEROKU_RELEASE_CREATED_AT'] + "GMT+0\n" + "版本:" + os.environ['HEROKU_RELEASE_VERSION'])
   return messageout
 
+
+def test(): 
+  threads = []
+  for i in range(0,len(userlist),1):
+     msg = "https://itouch.cycu.edu.tw/active_system/query_course/learning_activity_stulogin.jsp?act_no=6e2dde02-dd99-43b6-945f-452c7e6c656d"
+     usr =  userlist[i]
+     pwd = pwlist[i]
+     name = namelist[i] 
+     t = threading.Thread(target=url_login,args=(msg,usr,pwd,name)) # 
+     threads.append(t)
+  for t in threads:
+    t.start()
+  for t in threads:
+    t.join()
+  return 
 
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
@@ -266,6 +282,11 @@ def handle_message(event) :
             line_bot_api.push_message(event_temp.source.user_id, TextSendMessage("無法在群組進行綁定，請以私訊的形式進行此動作，謝謝"))
         else:
             print("")
+
+    elif '點名測試' in msg :
+        print("開始測試點名")
+        test()
+        
     else:
         public_msgbuffer = (announce + '無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀')
         if (event.source.type == "group") :
