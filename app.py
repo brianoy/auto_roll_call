@@ -121,7 +121,9 @@ async def url_login(msg):
     messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人")
     messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ['HEROKU_RELEASE_CREATED_AT'] + "GMT+0\n" + "版本:" + os.environ['HEROKU_RELEASE_VERSION']+ "\n此次點名耗費時間:" + str(time.time() - start_time)+"秒")
     print(results)
+    print(messageout)
     final_msg = messageout
+    print(final_msg)
     return final_msg 
 
 # 監聽所有來自 /callback 的 Post Request
@@ -192,7 +194,9 @@ def handle_message(event) :
                       }
                       requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + recived })#翹課大魔王
                       asyncio.run(url_login(msg))
+                      print(final_msg)
                       msgbuffer = str(final_msg) + done
+                      print(msgbuffer)
                       public_msgbuffer = done + msgbuffer
                       payload = {'message': distinguish(public_msgbuffer) }
                       requests.post("https://notify-api.line.me/api/notify", headers = headers, params = payload)
@@ -202,13 +206,17 @@ def handle_message(event) :
                       }
                       requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + recived })#秘密基地
                       asyncio.run(url_login(msg))
+                      print(final_msg)
                       msgbuffer = str(final_msg) + done
+                      print(msgbuffer)
                       payload = {'message': distinguish(public_msgbuffer) }
                       requests.post("https://notify-api.line.me/api/notify", headers = headers, params = payload)
                  else:
                       line_bot_api.reply_message(event_temp.reply_token, TextSendMessage(recived))
                       asyncio.run(url_login(msg))
+                      print(final_msg)
                       msgbuffer = str(final_msg) + done
+                      print(msgbuffer)
                       payload = {'message': distinguish(public_msgbuffer) }
                       print("有不知名的群組")
                       line_bot_api.push_message(event_temp.source.group_id, TextSendMessage(distinguish(public_msgbuffer)))#除了以上兩個群組
