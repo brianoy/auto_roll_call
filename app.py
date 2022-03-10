@@ -17,7 +17,6 @@ import random
 import sys
 import discord
 import threading 
-
 sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
 client = discord.Client()
 app = Flask(__name__)
@@ -64,7 +63,7 @@ def login_pros(msg):
         chrome_options.add_argument('--headless')
         chrome_options.add_argument('--no-sandbox')
         chrome_options.add_argument('--disable-dev-shm-usage')
-        wd = webdriver.Chrome('chromedriver',options=chrome_options)
+        wd = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver',chrome_options=chrome_options)
         wd.get(url)
         not_open = "未開放 QRCODE簽到功能" in wd.page_source
         if not_open:
@@ -108,8 +107,9 @@ def login_pros(msg):
         name = namelist[i]
         threads.append(threading.Thread(target=url_login,args=(url,usr,pwd,name)))
 
-    for threadmission in threads:
-        threadmission.start()
+    for thread in threads:
+        if not thread.is_alive():
+           thread.start()
     for threadmission in threads:
         threadmission.join()
     messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人")
