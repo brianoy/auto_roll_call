@@ -20,6 +20,7 @@ DATABASE_URL = os.environ['DATABASE_URL']
 LINE_CHANNEL_ACCESS_TOKEN = os.environ['LINE_CHANNEL_ACCESS_TOKEN']
 LINE_CHANNEL_SECRET = os.environ['LINE_CHANNEL_SECRET']
 DISCORD_WEBHOOK = os.environ['DISCORD_WEBHOOK']
+OPUUID = os.environ['LINE_OP_UUID']
 client = discord.Client()
 app = Flask(__name__)
 conn   = psycopg2.connect(DATABASE_URL, sslmode='require')
@@ -37,11 +38,10 @@ line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)# Channel Access Token
 handler = WebhookHandler(LINE_CHANNEL_SECRET)# Channel Secret
 discord_webhook = DISCORD_WEBHOOK
 
-userlist = ["11021340","11021339","11021346","11021331","11021338","11021337","11021325"]
-pwlist = ["aA123456789","Zz0123456789","Angel0610","dEEwYupDDCqh9","Daniel@123456","Wolf1017","Ray11021325"]
-namelist = ["歐陽立庭","蔡祐恩","洪晨旻","楊智涵","楊其宸","張子恆","江昱叡"]
-useridlist = []
-opuuId = "Ueca105de2ec07b6c502d6b639f56d119"
+#userlist = ["11021340","11021339","11021346","11021331","11021338","11021337","11021325"]
+#pwlist = ["aA123456789","Zz0123456789","Angel0610","dEEwYupDDCqh9","Daniel@123456","Wolf1017","Ray11021325"]
+#namelist = ["歐陽立庭","蔡祐恩","洪晨旻","楊智涵","楊其宸","張子恆","江昱叡"]
+#useridlist = []
 grouptoken = ["4C0ZkJflAfexSpelBcoEYVobqbbSD0aGFNvpGAVcdUX","vUQ1xrf4cIp7kFlWifowMJf4XHdtUSHeXi1QeUKARa9","WCIuPhhETZysoA6qjdx59kblgzbc6gQuVscBKS91Fi5"]
 groupId = ['Cc97a91380e09611261010e4c5c682711','C0041b628a8712ace35095f505520c0bd','Cdebd7e16f5b52db01c3efd20b12ddd35']
 url = str("")
@@ -49,6 +49,35 @@ msgbuffer = str("")
 public_msgbuffer = str("")
 success_login_status = int(0)
 fail_login_status = int(0)
+
+
+cursor.execute("SELECT * FROM all_info")#choose all the data of target 
+all_user_buffer_list = cursor.fetchall()#start fetch and become a list
+
+def get_all_user():#turn raw data into 4 arguments 
+    global userlist
+    global pwlist
+    global namelist
+    global useridlist
+    userlist = []
+    pwlist = []
+    namelist = []
+    useridlist = []
+    for i in range(len(all_user_buffer_list)):
+        userlist.append(all_user_buffer_list[i][3])
+    print(userlist)
+
+    for i in range(len(all_user_buffer_list)):
+        pwlist.append(all_user_buffer_list[i][4])
+    print(pwlist)
+
+    for i in range(len(all_user_buffer_list)):
+        namelist.append(all_user_buffer_list[i][1])
+    print(namelist)
+
+    for i in range(len(all_user_buffer_list)):
+        useridlist.append(all_user_buffer_list[i][2])
+    print(useridlist)
 
 def url_login(msg):
   start_time = time.time()
@@ -225,7 +254,7 @@ def handle_message(event) :
                 public_msgbuffer = (announce + '此非itouch網域')
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
     elif '變更權杖:' in msg:
-        if opuuId == event.source.user_id :
+        if OPUUID == event.source.user_id :
            print("開始變更權杖")
            line_bot_api.reply_message(event.reply_token, TextSendMessage("已變更權杖"))
         else:
@@ -261,14 +290,12 @@ def handle_message(event) :
         sendbuffer = "小提醒:王顥已單身"+ days +"天"
         print(sendbuffer)
         line_bot_api.reply_message(event.reply_token, TextSendMessage(sendbuffer))
-    elif '開啟' in msg :
-        print("強制喚醒")
-    elif '群組id' in msg :
-        print(line_bot_api.get_group_member_ids("C0041b628a8712ace35095f505520c0bd"))
     elif '開始綁定' in msg :
         if (event.source.type == "group") :
             line_bot_api.push_message(event_temp.source.group_id, TextSendMessage("無法在群組進行綁定，請以私訊的形式進行此動作，謝謝"))
         elif(event.source.type == "user"):
+            ask_user_id = event_temp.source.user_id
+            binding(ask_user_id)
             line_bot_api.push_message(event_temp.source.user_id, TextSendMessage("無法在群組進行綁定，請以私訊的形式進行此動作，謝謝"))
         else:
             print("")
@@ -330,13 +357,13 @@ def handle_sticker_message(event):
     return
 
 
-def binding(uuid):
+def binding(uuid):#start binding the account
     print("")
     return 
 
 
-def my_msg(msg_info):
-    line_bot_api.push_message(opuuId, TextSendMessage(msg_info))
+def my_msg(msg_info):#send msg to me
+    line_bot_api.push_message(OPUUID, TextSendMessage(msg_info))
     print("進入管理員私訊:" + msg_info)
     return
 
@@ -351,5 +378,6 @@ def welcome(event):
     line_bot_api.reply_message(event.reply_token, message)
 
 if __name__ == "__main__":
+    get_all_user()
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
