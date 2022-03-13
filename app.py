@@ -14,8 +14,8 @@ import datetime
 import random
 import sys
 import discord
-
-sys.path.insert(0,'/usr/lib/chromium-browser/chromedriver')
+GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
+CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
 client = discord.Client()
 app = Flask(__name__)
 
