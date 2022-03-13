@@ -231,7 +231,7 @@ def handle_message(event) :
                   line_bot_api.reply_message(event_temp.reply_token, TextSendMessage(recived))
                   msgbuffer = url_login(msg)
                   public_msgbuffer = (done + msgbuffer)
-                  line_bot_api.push_message(event_temp.source.user_id, TextSendMessage(public_msgbuffer))
+                  line_bot_api.push_message(event_temp.source.user_id, TextSendMessage(distinguish(public_msgbuffer)))
              else:
                  print("錯誤:偵測不到itouch網址訊息類型")
                  line_bot_api.reply_message(event.reply_token, TextSendMessage("偵測不到itouch網址類型，請再試一次"))
@@ -320,8 +320,8 @@ def handle_message(event) :
         line_bot_api.push_message(event_temp.source.user_id, TextSendMessage(respond))
 
     elif '我的uuid' in msg:
-        line_bot_api.push_message(event_temp.source.user_id, TextSendMessage(event_temp.source.user_id))
-        
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(event_temp.source.user_id))
+
     elif '/變更密碼' in msg :
         get_now_user_id = event_temp.source.user_id
 
