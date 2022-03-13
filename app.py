@@ -12,10 +12,14 @@ import time
 import os
 import datetime
 import random
-import sys
+import psycopg2
 import discord
 GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
 CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
+DATABASE_URL = os.environ['DATABASE_URL']
+LINE_CHANNEL_ACCESS_TOKEN = os.environ['LINE_CHANNEL_ACCESS_TOKEN']
+LINE_CHANNEL_SECRET = os.environ['LINE_CHANNEL_SECRET']
+DISCORD_WEBHOOK = os.environ['DISCORD_WEBHOOK']
 client = discord.Client()
 app = Flask(__name__)
 
@@ -27,10 +31,10 @@ STICKER_LIST = {'465400171':'ㄌㄩㄝ','465400158':'才不美','465400159':'Woo
 '465400165':'累屁','465400166':'聽話 讓我看看','465400169':'到底??????','465400172':'他在已讀你','465400173':'大概24小時後才會回你','13744852':'哼',
 '349572675':'可憐哪','352138078':'吃屎阿','464946842':'對咩對咩','464946834':'ㄏㄏ','464946841':'亂講','435674449':'嘿嘿','435674452':'兇屁'}
 
-static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
-line_bot_api = LineBotApi('mn0w8gkHEbWQQAbRC7sw1F1J9SFegKNHPVDsRfsAsuOJ2vgQPgx0/zB/ZeB6sM2ybrFrLh8qKKKsc97iPyW5/qUg0mPp7Tpfhkc9+RncWfdW4TUmscADLAW4FfurNsKgdElaTaLlzDA39SJG357lFgdB04t89/1O/w1cDnyilFU=')# Channel Access Token
-handler = WebhookHandler('3e6656d8b069ab3bf6c057c1e1a84018')# Channel Secret
-discord_webhook = 'https://discord.com/api/webhooks/919053709307179029/5whB53gtFXSykfAVcqsFOSSMA6-b_Y1yk4koHC0fx3snjTIweNuAz4qgGlYtIdVvHlev'
+line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)# Channel Access Token
+handler = WebhookHandler(LINE_CHANNEL_SECRET)# Channel Secret
+discord_webhook = DISCORD_WEBHOOK
+
 userlist = ["11021340","11021339","11021346","11021331","11021338","11021337","11021325"]
 pwlist = ["aA123456789","Zz0123456789","Angel0610","dEEwYupDDCqh9","Daniel@123456","Wolf1017","Ray11021325"]
 namelist = ["歐陽立庭","蔡祐恩","洪晨旻","楊智涵","楊其宸","張子恆","江昱叡"]
