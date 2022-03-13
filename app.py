@@ -78,7 +78,12 @@ def get_all_user():#turn raw data into 4 arguments
     for i in range(len(all_user_buffer_list)):
         useridlist.append(all_user_buffer_list[i][2])
     print(useridlist)
+    count = cursor.rowcount
+    print(count, "筆資料已進入伺服器")
+    cursor.close()
+    conn.close()
 
+    
 def url_login(msg):
   start_time = time.time()
   chrome_options = webdriver.ChromeOptions()
