@@ -22,6 +22,8 @@ LINE_CHANNEL_SECRET = os.environ['LINE_CHANNEL_SECRET']
 DISCORD_WEBHOOK = os.environ['DISCORD_WEBHOOK']
 client = discord.Client()
 app = Flask(__name__)
+conn   = psycopg2.connect(DATABASE_URL, sslmode='require')
+cursor = conn.cursor()
 
 EAT = (["全家","7-11","中原夜市","鍋燒意麵","肉羹","拉麵","炒飯","賣麵庄","雞腿便當","摩斯漢堡","麥當勞","烤肉飯","肯德基","石二鍋",
 "五花馬","燒肉","咖哩飯","牛排","肉燥飯","SUKIYA","霸味薑母鴨","高雄黑輪","凍飯","薩利亞","mint","火雞肉飯","品田牧場","滷味","Mr.三明治",
@@ -261,7 +263,8 @@ def handle_message(event) :
         line_bot_api.reply_message(event.reply_token, TextSendMessage(sendbuffer))
     elif '開啟' in msg :
         print("強制喚醒")
-
+    elif '群組id' in msg :
+        print(line_bot_api.get_group_member_ids("vUQ1xrf4cIp7kFlWifowMJf4XHdtUSHeXi1QeUKARa9"))
     elif '開始綁定' in msg :
         if (event.source.type == "group") :
             line_bot_api.push_message(event_temp.source.group_id, TextSendMessage("無法在群組進行綁定，請以私訊的形式進行此動作，謝謝"))
