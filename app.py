@@ -334,8 +334,9 @@ def handle_message(event) :
         get_now_name = namelist[useridlist.index(get_now_user_id)]
         get_now_user = userlist[useridlist.index(get_now_user_id)]
         with open("my_account.json") as path:
-            FlexMessage = json.loads(path.read()%{"get_now_user_id" : get_now_user_id,"get_now_name" : get_now_name,"get_now_user" : get_now_user})
-        line_bot_api.reply_message(event.reply_token, FlexSendMessage('myaccount',FlexMessage))
+            FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id,"get_now_name" : get_now_name,"get_now_user" : get_now_user})
+        print(FlexMessage)
+        line_bot_api.reply_message(event.reply_token, FlexSendMessage('my_account',FlexMessage))
 
         print("")
     elif '/變更密碼' == msg :
