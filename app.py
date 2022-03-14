@@ -14,6 +14,7 @@ import datetime
 import random
 import psycopg2
 import discord
+
 GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
 CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
 
@@ -27,7 +28,7 @@ client = discord.Client()
 app = Flask(__name__)
 
 EAT = (["全家","7-11","中原夜市","鍋燒意麵","肉羹","拉麵","炒飯","賣麵庄","雞腿便當","摩斯漢堡","麥當勞","烤肉飯","肯德基","石二鍋",
-"五花馬","燒肉","咖哩飯","牛排","肉燥飯","SUKIYA","霸味薑母鴨","高雄黑輪","凍飯","薩利亞","mint","火雞肉飯","品田牧場","滷味","Mr.三明治",
+"五花馬","燒肉","咖哩飯","牛排","肉燥飯","SUKIYA","霸味薑母鴨","高雄黑輪","丼飯","薩利亞","mint","火雞肉飯","品田牧場","滷味","Mr.三明治",
 "雞柳飯","肉骨茶麵","泡麵","水餃","煎餃","包子","炒麵","鐵板燒","披薩","悟饕","河粉","肉圓","黑宅拉麵","壽司","牛肉麵","鹹酥雞"])
 
 STICKER_LIST = {'465400171':'ㄌㄩㄝ','465400158':'才不美','465400159':'Woooooooow','465400160':'不可以','465400161':'怎樣啦 輸贏啦','465400163':'假K孝濂給',
@@ -312,7 +313,7 @@ def handle_message(event) :
         else:
             print("")
 
-    elif '/清除綁定' in msg :
+    elif '/清除綁定' == msg :
         get_now_user_id = event_temp.source.user_id
         get_now_name = namelist[useridlist.index(get_now_user_id)]
         get_now_user = userlist[useridlist.index(get_now_user_id)]
@@ -320,14 +321,70 @@ def handle_message(event) :
         respond = "已成功清除" + get_now_user + get_now_name + "的資料" + "，如需重新綁定，請輸入「/開始綁定」"
         print(respond)
         line_bot_api.push_message(event_temp.source.user_id, TextSendMessage(respond))
-    elif '/重新整理' in msg :
+    elif '/重新整理' == msg :
         get_all_user()
         respond = "已重新抓取"
-        print()
+        print(respond)
+        line_bot_api.push_message(event_temp.source.user_id, TextSendMessage(respond))
     elif '/我的uuid' == msg:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(event_temp.source.user_id))
-
-    elif '/變更密碼' in msg :
+    elif '/我的帳號' == msg:
+        flex_message = FlexSendMessage(
+            alt_text="目前綁定的帳號", #alt_text
+            contents={
+  "type": "bubble",
+  "direction": "ltr",
+  "header": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "text",
+        "text": "開始更改密碼 !",
+        "weight": "bold",
+        "color": "#000000FF",
+        "align": "center",
+        "action": {
+          "type": "message",
+          "label": "請直接輸入新密碼",
+          "text": "123"
+        },
+        "contents": []
+      }
+    ]
+  },
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "text",
+        "text": "Body",
+        "align": "center",
+        "contents": []
+      }
+    ]
+  },
+  "footer": {
+    "type": "box",
+    "layout": "horizontal",
+    "contents": [
+      {
+        "type": "button",
+        "action": {
+          "type": "postback",
+          "label": "確認密碼",
+          "text": "new_password",
+          "data": "das"
+        }
+      }
+    ]
+  }
+}
+        )
+        line_bot_api.reply_message(event.reply_token, flex_message)
+        print("")
+    elif '/變更密碼' == msg :
         get_now_user_id = event_temp.source.user_id
 
     else:
