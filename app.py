@@ -402,7 +402,7 @@ def handle_message(event) :
             "size": "lg",
             "color": "#EFEFEF",
             "align": "start",
-            "wrap": true,
+            "wrap": True,
             "position": "relative",
             "contents": []
           },
@@ -412,7 +412,7 @@ def handle_message(event) :
             "size": "sm",
             "color": "#FFFFFFFF",
             "align": "start",
-            "wrap": true,
+            "wrap": True,
             "contents": []
           },
           {
@@ -425,7 +425,7 @@ def handle_message(event) :
             "size": "sm",
             "color": "#FFFFFFFF",
             "align": "start",
-            "wrap": true,
+            "wrap": True,
             "contents": []
           },
           {
@@ -438,7 +438,7 @@ def handle_message(event) :
             "size": "sm",
             "color": "#FFFFFFFF",
             "align": "start",
-            "wrap": true,
+            "wrap": True,
             "contents": []
           }
         ]
