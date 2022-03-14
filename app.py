@@ -329,6 +329,8 @@ def handle_message(event) :
         line_bot_api.push_message(event_temp.source.user_id, TextSendMessage(respond))
     elif '/我的uuid' == msg:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(event_temp.source.user_id))
+
+        
     elif '/我的帳號' == msg:
         get_now_user_id = str(event_temp.source.user_id)
         get_now_name = str(namelist[useridlist.index(get_now_user_id)])
@@ -338,119 +340,9 @@ def handle_message(event) :
         flex_message = FlexSendMessage(
                        alt_text = 'my_account' ,
                        contents = FlexMessage)
-        line_bot_api.push_message(event_temp.source.user_id, flex_message)
-
-        print("")
-
-    elif '/我的帳號測試' == msg:
-        flex_message = FlexSendMessage(
-                       alt_text = 'my_account' ,
-                       contents = {
-  "type": "bubble",
-  "direction": "ltr",
-  "header": {
-    "type": "box",
-    "layout": "vertical",
-    "spacing": "none",
-    "margin": "none",
-    "paddingAll": "0px",
-    "width": "0px",
-    "height": "0px",
-    "backgroundColor": "#464F69",
-    "borderColor": "#464F69",
-    "contents": [
-      {
-        "type": "filler"
-      }
-    ]
-  },
-  "hero": {
-    "type": "image",
-    "url": "https://raw.githubusercontent.com/brianoy/auto_roll_call/main/36030103.jpg",
-    "size": "full",
-    "aspectRatio": "2:1",
-    "aspectMode": "cover",
-    "backgroundColor": "#464F69"
-  },
-  "body": {
-    "type": "box",
-    "layout": "vertical",
-    "backgroundColor": "#464F69",
-    "borderColor": "#464F69",
-    "contents": [
-      {
-        "type": "box",
-        "layout": "vertical",
-        "spacing": "md",
-        "margin": "sm",
-        "paddingAll": "8px",
-        "backgroundColor": "#FFFFFF1A",
-        "borderColor": "#FFFFFF1A",
-        "contents": [
-          {
-            "type": "text",
-            "text": "此line帳號目前已被綁定",
-            "weight": "bold",
-            "size": "lg",
-            "color": "#EFEFEF",
-            "align": "start",
-            "wrap": True,
-            "position": "relative",
-            "contents": []
-          },
-          {
-            "type": "text",
-            "text": "Line隱碼：",
-            "size": "sm",
-            "color": "#FFFFFFFF",
-            "align": "start",
-            "wrap": True,
-            "contents": []
-          },
-          {
-            "type": "separator",
-            "color": "#999999"
-          },
-          {
-            "type": "text",
-            "text": "名字：歐陽立庭",
-            "size": "sm",
-            "color": "#FFFFFFFF",
-            "align": "start",
-            "wrap": True,
-            "contents": []
-          },
-          {
-            "type": "separator",
-            "color": "#999999"
-          },
-          {
-            "type": "text",
-            "text": "學號：11021340",
-            "size": "sm",
-            "color": "#FFFFFFFF",
-            "align": "start",
-            "wrap": True,
-            "contents": []
-          }
-        ]
-      }
-    ]
-  },
-  "footer": {
-    "type": "box",
-    "layout": "horizontal",
-    "backgroundColor": "#464F69",
-    "contents": [
-      {
-        "type": "filler"
-      }
-    ]
-  }
-})
         line_bot_api.reply_message(event.reply_token, flex_message)
 
-        print("")
+
     elif '/變更密碼' == msg :
         get_now_user_id = event_temp.source.user_id
 

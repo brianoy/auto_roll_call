@@ -13,8 +13,7 @@
       "borderColor": "#464F69",
       "contents": [
         {
-          "type": "spacer",
-          "size": "xs"
+          "type": "filler"
         }
       ]
     },
@@ -89,8 +88,7 @@
       "backgroundColor": "#464F69",
       "contents": [
         {
-          "type": "spacer",
-          "size": "xs"
+          "type": "filler"
         }
       ]
     }
