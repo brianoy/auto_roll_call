@@ -399,7 +399,7 @@ def handle_message(event) :
           },
           {
             "type": "text",
-            "text": "Line隱碼：",
+            "text": "Line隱碼",
             "size": "sm",
             "color": "#FFFFFFFF",
             "align": "start"
@@ -410,7 +410,7 @@ def handle_message(event) :
           },
           {
             "type": "text",
-            "text": "名字：歐陽立庭",
+            "text": "名字歐陽立庭",
             "size": "sm",
             "color": "#FFFFFFFF",
             "align": "start"
@@ -421,7 +421,7 @@ def handle_message(event) :
           },
           {
             "type": "text",
-            "text": "學號：11021340",
+            "text": "學號11021340",
             "size": "sm",
             "color": "#FFFFFFFF",
             "align": "start"
