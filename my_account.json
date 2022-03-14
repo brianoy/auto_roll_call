@@ -48,7 +48,7 @@
               "size": "lg",
               "color": "#EFEFEF",
               "align": "start",
-              "wrap": true,
+              "wrap": "True",
               "position": "relative",
               "contents": []
             },
@@ -58,7 +58,7 @@
               "size": "sm",
               "color": "#FFFFFFFF",
               "align": "start",
-              "wrap": true,
+              "wrap": "True",
               "contents": []
             },
             {
@@ -71,7 +71,7 @@
               "size": "sm",
               "color": "#FFFFFFFF",
               "align": "start",
-              "wrap": true,
+              "wrap": "True",
               "contents": []
             },
             {
@@ -84,7 +84,7 @@
               "size": "sm",
               "color": "#FFFFFFFF",
               "align": "start",
-              "wrap": true,
+              "wrap": "True",
               "contents": []
             }
           ]
