@@ -268,6 +268,8 @@ def handle_message(event) :
             line_bot_api.reply_message(event.reply_token, TextSendMessage("沒有權限，無法變更權杖"))
     elif '要吃什麼' in msg or msg == '吃什麼':
         line_bot_api.reply_message(event.reply_token, TextSendMessage(EAT[random.randint(0,len(EAT))]))
+    elif '要吃啥' in msg or msg == '吃啥':
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(EAT[random.randint(0,len(EAT))]))
     elif '陪我' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("我不想跟你欸"))
     elif '在一次' in msg :
@@ -301,7 +303,7 @@ def handle_message(event) :
             line_bot_api.push_message(event_temp.source.group_id, TextSendMessage("無法在群組進行綁定，請以私訊機器人的形式進行此動作，謝謝"))
         elif(event.source.type == "user"):
             get_now_user_id = event_temp.source.user_id
-            if (get_now_user_id in userlist):
+            if (get_now_user_id in useridlist):
                 print("使用者重複綁定")
                 line_bot_api.push_message(event_temp.source.user_id, TextSendMessage("已有帳號密碼綁定於此line帳戶上，無法使用同一個Line帳戶綁定多支ilearning帳號\n若需要清除綁定，請輸入「/清除綁定」"))
             else:
@@ -318,8 +320,11 @@ def handle_message(event) :
         respond = "已成功清除" + get_now_user + get_now_name + "的資料" + "，如需重新綁定，請輸入「/開始綁定」"
         print(respond)
         line_bot_api.push_message(event_temp.source.user_id, TextSendMessage(respond))
-
-    elif '我的uuid' in msg:
+    elif '/重新整理' in msg :
+        get_all_user()
+        respond = "已重新抓取"
+        print()
+    elif '/我的uuid' == msg:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(event_temp.source.user_id))
 
     elif '/變更密碼' in msg :
