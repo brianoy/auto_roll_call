@@ -355,9 +355,9 @@ def handle_message(event) :
     elif '/變更密碼' in msg :
         get_now_user_id = event_temp.source.user_id
         if get_now_user_id in useridlist:#帳號存在
-            change_password = msg.replace("/變更密碼","")
+            change_password = msg.replace("/變更密碼 ","")
             with open("change_password.json") as path:
-                    FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id , "change_password" : change_password})
+                    FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id , "change_password" : change_password , "change_password" : change_password})
             flex_message = FlexSendMessage(
                                alt_text = '(請點擊聊天室已取得更多消息)' ,
                                contents = FlexMessage)
@@ -375,7 +375,7 @@ def handle_message(event) :
     elif '/changepassword' in msg :
         get_now_user_id = event_temp.source.user_id
         if get_now_user_id in useridlist:#帳號存在
-            change_password = msg.replace("/changepassword","")
+            change_password = msg.replace("/changepassword ","")
             change_password_via_uuid(change_password , get_now_user_id)
             with open("changed_password.json") as path:
                     FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id})
