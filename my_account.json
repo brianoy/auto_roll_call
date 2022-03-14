@@ -48,7 +48,6 @@
               "size": "lg",
               "color": "#EFEFEF",
               "align": "start",
-              "wrap": True,
               "position": "relative",
               "contents": []
             },
@@ -58,7 +57,6 @@
               "size": "sm",
               "color": "#FFFFFFFF",
               "align": "start",
-              "wrap": True,
               "contents": []
             },
             {
@@ -71,7 +69,6 @@
               "size": "sm",
               "color": "#FFFFFFFF",
               "align": "start",
-              "wrap": True,
               "contents": []
             },
             {
@@ -84,7 +81,6 @@
               "size": "sm",
               "color": "#FFFFFFFF",
               "align": "start",
-              "wrap": True,
               "contents": []
             }
           ]
