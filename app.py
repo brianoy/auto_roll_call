@@ -346,10 +346,112 @@ def handle_message(event) :
     elif '/我的帳號測試' == msg:
         flex_message = FlexSendMessage(
                        alt_text = 'my_account' ,
-                       contents = {"type": "bubble", "direction": "ltr", "header": 
-{"type": "box", "layout": "vertical", "spacing": "none", "margin": "none", "paddingAll": "0px", "width": "0px", "height": "0px", "backgroundColor": "#464F69", "borderColor": "#464F69", "contents": [{"type": "spacer", "size": "xs"}]}, "hero": {"type": "image", "url": "https://raw.githubusercontent.com/brianoy/auto_roll_call/main/36030103.jpg", "size": "full", "aspectRatio": 
-"2:1", "aspectMode": "cover", "backgroundColor": "#464F69"}, "body": {"type": "box", "layout": "vertical", "backgroundColor": "#464F69", "borderColor": "#464F69", "contents": [{"type": "box", "layout": "vertical", "spacing": "md", "margin": "sm", "paddingAll": "8px", "backgroundColor": "#FFFFFF1A", "borderColor": "#FFFFFF1A", "contents": [{"type": "text", "text": "\u6b64line\u5e33\u865f\u76ee\u524d\u5df2\u88ab\u7d81\u5b9a", "weight": "bold", "size": "lg", "color": "#EFEFEF", "align": "start", "wrap": True, "position": "relative", "contents": []}, {"type": "text", "text": "Line\u96b1\u78bc\uff1aUeca105de2ec07b6c502d6b639f56d119", "size": "sm", "color": "#FFFFFFFF", "align": "start", "wrap": True, "contents": []}, {"type": "separator", "color": "#999999"}, {"type": "text", "text": "\u540d\u5b57\uff1a\u6b50\u967d\u7acb\u5ead", "size": "sm", "color": "#FFFFFFFF", "align": "start", "wrap": True, "contents": []}, {"type": "separator", "color": "#999999"}, {"type": "text", "text": "\u5b78\u865f\uff1a11021340", "size": "sm", "color": "#FFFFFFFF", "align": "start", "wrap": True, "contents": []}]}]}, "footer": {"type": "box", "layout": "horizontal", "backgroundColor": "#464F69", "contents": [{"type": "spacer", "size": "xs"}]}})
-        line_bot_api.push_message(event_temp.source.user_id, flex_message)
+                       contents = {
+  "type": "bubble",
+  "direction": "ltr",
+  "header": {
+    "type": "box",
+    "layout": "vertical",
+    "spacing": "none",
+    "margin": "none",
+    "paddingAll": "0px",
+    "width": "0px",
+    "height": "0px",
+    "backgroundColor": "#464F69",
+    "borderColor": "#464F69",
+    "contents": [
+      {
+        "type": "spacer",
+        "size": "xs"
+      }
+    ]
+  },
+  "hero": {
+    "type": "image",
+    "url": "https://raw.githubusercontent.com/brianoy/auto_roll_call/main/36030103.jpg",
+    "size": "full",
+    "aspectRatio": "2:1",
+    "aspectMode": "cover",
+    "backgroundColor": "#464F69"
+  },
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "backgroundColor": "#464F69",
+    "borderColor": "#464F69",
+    "contents": [
+      {
+        "type": "box",
+        "layout": "vertical",
+        "spacing": "md",
+        "margin": "sm",
+        "paddingAll": "8px",
+        "backgroundColor": "#FFFFFF1A",
+        "borderColor": "#FFFFFF1A",
+        "contents": [
+          {
+            "type": "text",
+            "text": "此line帳號目前已被綁定",
+            "weight": "bold",
+            "size": "lg",
+            "color": "#EFEFEF",
+            "align": "start",
+            "wrap": true,
+            "position": "relative",
+            "contents": []
+          },
+          {
+            "type": "text",
+            "text": "Line隱碼：",
+            "size": "sm",
+            "color": "#FFFFFFFF",
+            "align": "start",
+            "wrap": true,
+            "contents": []
+          },
+          {
+            "type": "separator",
+            "color": "#999999"
+          },
+          {
+            "type": "text",
+            "text": "名字：歐陽立庭",
+            "size": "sm",
+            "color": "#FFFFFFFF",
+            "align": "start",
+            "wrap": true,
+            "contents": []
+          },
+          {
+            "type": "separator",
+            "color": "#999999"
+          },
+          {
+            "type": "text",
+            "text": "學號：11021340",
+            "size": "sm",
+            "color": "#FFFFFFFF",
+            "align": "start",
+            "wrap": true,
+            "contents": []
+          }
+        ]
+      }
+    ]
+  },
+  "footer": {
+    "type": "box",
+    "layout": "horizontal",
+    "backgroundColor": "#464F69",
+    "contents": [
+      {
+        "type": "spacer",
+        "size": "xs"
+      }
+    ]
+  }
+})
+        line_bot_api.reply_message(event.reply_token, flex_message)
 
         print("")
     elif '/變更密碼' == msg :
