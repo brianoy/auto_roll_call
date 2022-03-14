@@ -362,6 +362,13 @@ def handle_message(event) :
       {
         "type": "spacer",
         "size": "xs"
+      },
+      {
+        "type": "text",
+        "text": "asdf",
+        "size": "xxs",
+        "color": "#00000000",
+        "contents": []
       }
     ]
   },
@@ -395,14 +402,18 @@ def handle_message(event) :
             "size": "lg",
             "color": "#EFEFEF",
             "align": "start",
-            "position": "relative"
+            "wrap": true,
+            "position": "relative",
+            "contents": []
           },
           {
             "type": "text",
-            "text": "Line隱碼",
+            "text": "Line隱碼：",
             "size": "sm",
             "color": "#FFFFFFFF",
-            "align": "start"
+            "align": "start",
+            "wrap": true,
+            "contents": []
           },
           {
             "type": "separator",
@@ -410,10 +421,12 @@ def handle_message(event) :
           },
           {
             "type": "text",
-            "text": "名字歐陽立庭",
+            "text": "名字：歐陽立庭",
             "size": "sm",
             "color": "#FFFFFFFF",
-            "align": "start"
+            "align": "start",
+            "wrap": true,
+            "contents": []
           },
           {
             "type": "separator",
@@ -421,10 +434,12 @@ def handle_message(event) :
           },
           {
             "type": "text",
-            "text": "學號11021340",
+            "text": "學號：11021340",
             "size": "sm",
             "color": "#FFFFFFFF",
-            "align": "start"
+            "align": "start",
+            "wrap": true,
+            "contents": []
           }
         ]
       }
@@ -438,6 +453,13 @@ def handle_message(event) :
       {
         "type": "spacer",
         "size": "xs"
+      },
+      {
+        "type": "text",
+        "text": "hello, world",
+        "size": "xxs",
+        "color": "#00000000",
+        "contents": []
       }
     ]
   }
