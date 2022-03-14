@@ -395,16 +395,14 @@ def handle_message(event) :
             "size": "lg",
             "color": "#EFEFEF",
             "align": "start",
-            "position": "relative",
-            "contents": []
+            "position": "relative"
           },
           {
             "type": "text",
             "text": "Line隱碼：",
             "size": "sm",
             "color": "#FFFFFFFF",
-            "align": "start",
-            "contents": []
+            "align": "start"
           },
           {
             "type": "separator",
@@ -415,8 +413,7 @@ def handle_message(event) :
             "text": "名字：歐陽立庭",
             "size": "sm",
             "color": "#FFFFFFFF",
-            "align": "start",
-            "contents": []
+            "align": "start"
           },
           {
             "type": "separator",
@@ -427,8 +424,7 @@ def handle_message(event) :
             "text": "學號：11021340",
             "size": "sm",
             "color": "#FFFFFFFF",
-            "align": "start",
-            "contents": []
+            "align": "start"
           }
         ]
       }

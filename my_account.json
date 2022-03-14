@@ -48,16 +48,14 @@
               "size": "lg",
               "color": "#EFEFEF",
               "align": "start",
-              "position": "relative",
-              "contents": []
+              "position": "relative"
             },
             {
               "type": "text",
               "text": "Line隱碼：%(get_now_user_id)s",
               "size": "sm",
               "color": "#FFFFFFFF",
-              "align": "start",
-              "contents": []
+              "align": "start"
             },
             {
               "type": "separator",
@@ -68,8 +66,7 @@
               "text": "名字：%(get_now_name)s",
               "size": "sm",
               "color": "#FFFFFFFF",
-              "align": "start",
-              "contents": []
+              "align": "start"
             },
             {
               "type": "separator",
@@ -80,8 +77,7 @@
               "text": "學號：%(get_now_user)s",
               "size": "sm",
               "color": "#FFFFFFFF",
-              "align": "start",
-              "contents": []
+              "align": "start"
             }
           ]
         }
