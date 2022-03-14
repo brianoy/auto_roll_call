@@ -336,7 +336,10 @@ def handle_message(event) :
         with open("my_account.json") as path:
             FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id,"get_now_name" : get_now_name,"get_now_user" : get_now_user})
             load = json.dumps(FlexMessage) 
+        print(type(FlexMessage)) 
         print(FlexMessage)
+        print(type(load)) 
+        print(load)
         flex_message = FlexSendMessage(
                        alt_text='my_account' ,
                        contents=load)
