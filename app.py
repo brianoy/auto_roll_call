@@ -196,6 +196,7 @@ def handle_message(event) :
     msg = event.message.text
     msg_type = event.message.type
     postback  = event.type#or this 
+    print(event)
     print(msg_type)
     print(postback)
     event_temp = event
@@ -206,7 +207,7 @@ def handle_message(event) :
         print("已收到回傳")
         print(event.postback.data)
 
-        
+
     if 'itouch.cycu.edu.tw' in msg :
          if 'learning_activity' in msg :
              if (event.source.type == "group") :
