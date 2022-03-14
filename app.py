@@ -333,7 +333,6 @@ def handle_message(event) :
         get_now_user_id = str(event_temp.source.user_id)
         get_now_name = str(namelist[useridlist.index(get_now_user_id)])
         get_now_user = str(userlist[useridlist.index(get_now_user_id)])
-        print(type(get_now_name))
         with open("my_account.json") as path:
             FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id,"get_now_name" : get_now_name,"get_now_user" : get_now_user})
         flex_message = FlexSendMessage(
@@ -396,7 +395,7 @@ def handle_message(event) :
             "size": "lg",
             "color": "#EFEFEF",
             "align": "start",
-            "wrap": true,
+            "wrap": True,
             "position": "relative",
             "contents": []
           },
@@ -406,7 +405,7 @@ def handle_message(event) :
             "size": "sm",
             "color": "#FFFFFFFF",
             "align": "start",
-            "wrap": true,
+            "wrap": True,
             "contents": []
           },
           {
@@ -419,7 +418,7 @@ def handle_message(event) :
             "size": "sm",
             "color": "#FFFFFFFF",
             "align": "start",
-            "wrap": true,
+            "wrap": True,
             "contents": []
           },
           {
@@ -432,7 +431,7 @@ def handle_message(event) :
             "size": "sm",
             "color": "#FFFFFFFF",
             "align": "start",
-            "wrap": true,
+            "wrap": True,
             "contents": []
           }
         ]
