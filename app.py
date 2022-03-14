@@ -24,7 +24,7 @@ LINE_CHANNEL_ACCESS_TOKEN = os.environ['LINE_CHANNEL_ACCESS_TOKEN']
 LINE_CHANNEL_SECRET = os.environ['LINE_CHANNEL_SECRET']
 DISCORD_WEBHOOK = os.environ['DISCORD_WEBHOOK']
 OPUUID = os.environ['LINE_OP_UUID']
-
+changelog = "flexmsg"
 client = discord.Client()
 app = Flask(__name__)
 
@@ -139,7 +139,7 @@ def url_login(msg):
                fail_login_status = fail_login_status +1
   wd.quit()
   messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人")
-  messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ['HEROKU_RELEASE_CREATED_AT'] + "GMT+0\n" + "版本:" + os.environ['HEROKU_RELEASE_VERSION']+ "\n此次點名耗費時間:" + str(round(time.time() - start_time)) +"秒")
+  messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ['HEROKU_RELEASE_CREATED_AT'] + "GMT+0\n" + "版本:" + os.environ['HEROKU_RELEASE_VERSION']+ "\n此次點名耗費時間:" + str(round(time.time() - start_time)) +"秒" +"\n更新日誌:" + changelog)
   return messageout
 
 
@@ -322,30 +322,76 @@ def handle_message(event) :
         respond = "已成功清除" + get_now_user + get_now_name + "的資料" + "，如需重新綁定，請輸入「/開始綁定」"
         print(respond)
         line_bot_api.push_message(event_temp.source.user_id, TextSendMessage(respond))
+
     elif '/重新整理' == msg :
         get_all_user()
         respond = "已重新抓取"
         print(respond)
         line_bot_api.push_message(event_temp.source.user_id, TextSendMessage(respond))
+
     elif '/我的uuid' == msg:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(event_temp.source.user_id))
 
-        
     elif '/我的帳號' == msg:
-        get_now_user_id = str(event_temp.source.user_id)
-        get_now_name = str(namelist[useridlist.index(get_now_user_id)])
-        get_now_user = str(userlist[useridlist.index(get_now_user_id)])
-        with open("my_account.json") as path:
-            FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id,"get_now_name" : get_now_name,"get_now_user" : get_now_user})
-        flex_message = FlexSendMessage(
-                       alt_text = 'my_account' ,
-                       contents = FlexMessage)
-        line_bot_api.reply_message(event.reply_token, flex_message)
-
-
-    elif '/變更密碼' == msg :
         get_now_user_id = event_temp.source.user_id
+        if get_now_user_id in useridlist:#帳號存在
+            get_now_name = namelist[useridlist.index(get_now_user_id)]
+            get_now_user = userlist[useridlist.index(get_now_user_id)]
+            with open("my_account.json") as path:
+                FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id,"get_now_name" : get_now_name,"get_now_user" : get_now_user})
+            flex_message = FlexSendMessage(
+                           alt_text = '(請點擊聊天室已取得更多消息)' ,
+                           contents = FlexMessage)
+            line_bot_api.reply_message(event.reply_token, flex_message)
+        else:#帳號不存在
+            with open("account_not_exist.json") as path:
+                FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id})
+            flex_message = FlexSendMessage(
+                           alt_text = '(請點擊聊天室已取得更多消息)' ,
+                           contents = FlexMessage)
+            line_bot_api.reply_message(event.reply_token, flex_message)
 
+
+    elif '/變更密碼' in msg :
+        get_now_user_id = event_temp.source.user_id
+        if get_now_user_id in useridlist:#帳號存在
+            change_password = msg.replace("/變更密碼","")
+            with open("change_password.json") as path:
+                    FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id , "change_password" : change_password})
+            flex_message = FlexSendMessage(
+                               alt_text = '(請點擊聊天室已取得更多消息)' ,
+                               contents = FlexMessage)
+            line_bot_api.reply_message(event.reply_token, flex_message)
+        else:#帳號不存在
+            with open("account_not_exist.json") as path:
+                FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id})
+            flex_message = FlexSendMessage(
+                           alt_text = '(請點擊聊天室已取得更多消息)' ,
+                           contents = FlexMessage)
+            line_bot_api.reply_message(event.reply_token, flex_message)
+        
+
+
+    elif '/changepassword' in msg :
+        get_now_user_id = event_temp.source.user_id
+        if get_now_user_id in useridlist:#帳號存在
+            change_password = msg.replace("/changepassword","")
+            change_password_via_uuid(change_password , get_now_user_id)
+            with open("changed_password.json") as path:
+                    FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id})
+            flex_message = FlexSendMessage(
+                               alt_text = '(請點擊聊天室已取得更多消息)' ,
+                               contents = FlexMessage)
+            line_bot_api.reply_message(event.reply_token, flex_message)
+
+        else:#帳號不存在
+            with open("account_not_exist.json") as path:
+                    FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id})
+            flex_message = FlexSendMessage(
+                            alt_text = '(請點擊聊天室已取得更多消息)' ,
+                            contents = FlexMessage)
+            line_bot_api.reply_message(event.reply_token, flex_message)
+        
     else:
         public_msgbuffer = (announce + '無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀')
         if (event.source.type == "group") :
@@ -426,6 +472,16 @@ def delete_on_database_via_uuid(delete_uuid):
     get_all_user()
     return
 
+def change_password_via_uuid(change_password , uuid):
+    conn   = psycopg2.connect(DATABASE_URL, sslmode='require')
+    cursor = conn.cursor()
+    postgres_update_query = f"""UPDATE all_info set password = %s WHERE uuid = %s"""
+    cursor.execute(postgres_update_query, (change_password, uuid))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    get_all_user()
+    return
 
 
 @handler.add(MemberJoinedEvent)
