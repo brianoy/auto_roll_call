@@ -333,7 +333,8 @@ def handle_message(event) :
         get_now_user_id = event_temp.source.user_id
         get_now_name = namelist[useridlist.index(get_now_user_id)]
         get_now_user = userlist[useridlist.index(get_now_user_id)]
-        FlexMessage = json.load(open('my_account.json','r',encoding='utf-8').read()%{"get_now_user_id" : get_now_user_id,"get_now_name" : get_now_name,"get_now_user" : get_now_user})
+        with open("my_account.json") as path:
+            FlexMessage = json.load(path.read()%{"get_now_user_id" : get_now_user_id,"get_now_name" : get_now_name,"get_now_user" : get_now_user})
         line_bot_api.reply_message(event.reply_token, FlexSendMessage('myaccount',FlexMessage))
 
         print("")
