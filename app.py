@@ -150,6 +150,11 @@ def callback():
     body = request.get_data(as_text=True)
     app.logger.info("Request body: " + body)
     print("訊息從line進入:\n" + body)
+
+    postback  = body.events.type#or this 
+    if postback == "postback":
+        print("已收到回傳")
+        print(body.events.postback.data)
     # handle webhook body
     try:
         handler.handle(body, signature)
@@ -195,19 +200,11 @@ def handle_message(event) :
     public_msgbuffer = ""
     msg = event.message.text
     msg_type = event.message.type
-    postback  = event.type#or this 
-    print(event)
     print(msg_type)
-    print(postback)
     event_temp = event
     recived = '已收到網址，正在點名中，請靜待約20~30秒，若看見此訊息後請盡量不要重複傳送相同的訊息，以免造成系統塞車'
     done = '點名結束\n每次過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n仍在測試中，不建議將此系統作為正式使用，在系統回覆點名狀態前建議不要離開本對話框，以免失效時來不及通知其他人手動點名\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' 
     announce = '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n'
-    if postback == "postback":
-        print("已收到回傳")
-        print(event.postback.data)
-
-
     if 'itouch.cycu.edu.tw' in msg :
          if 'learning_activity' in msg :
              if (event.source.type == "group") :
