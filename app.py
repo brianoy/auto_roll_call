@@ -360,15 +360,7 @@ def handle_message(event) :
     "borderColor": "#464F69",
     "contents": [
       {
-        "type": "spacer",
-        "size": "xs"
-      },
-      {
-        "type": "text",
-        "text": "asdf",
-        "size": "xxs",
-        "color": "#00000000",
-        "contents": []
+        "type": "filler"
       }
     ]
   },
@@ -451,15 +443,7 @@ def handle_message(event) :
     "backgroundColor": "#464F69",
     "contents": [
       {
-        "type": "spacer",
-        "size": "xs"
-      },
-      {
-        "type": "text",
-        "text": "hello, world",
-        "size": "xxs",
-        "color": "#00000000",
-        "contents": []
+        "type": "filler"
       }
     ]
   }
