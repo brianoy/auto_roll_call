@@ -342,7 +342,7 @@ def handle_message(event) :
         print(load)
         flex_message = FlexSendMessage(
                        alt_text='my_account' ,
-                       contents=load)
+                       contents='"'+ load + '"')
         line_bot_api.reply_message(event.reply_token, flex_message)
 
         print("")
