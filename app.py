@@ -14,6 +14,7 @@ import datetime
 import random
 import psycopg2
 import discord
+import json
 
 GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
 CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
@@ -332,114 +333,9 @@ def handle_message(event) :
         get_now_user_id = event_temp.source.user_id
         get_now_name = namelist[useridlist.index(get_now_user_id)]
         get_now_user = userlist[useridlist.index(get_now_user_id)]
-        flex_message = FlexSendMessage(
-            alt_text="目前綁定的帳號", #alt_text
-            contents={
-  "type": "bubble",
-  "direction": "ltr",
-  "header": {
-    "type": "box",
-    "layout": "vertical",
-    "spacing": "none",
-    "margin": "none",
-    "paddingAll": "0px",
-    "width": "0px",
-    "height": "0px",
-    "backgroundColor": "#464F69",
-    "borderColor": "#464F69",
-    "contents": [
-      {
-        "type": "spacer",
-        "size": "xs"
-      }
-    ]
-  },
-  "hero": {
-    "type": "image",
-    "url": "https://raw.githubusercontent.com/brianoy/auto_roll_call/main/36030103.jpg",
-    "size": "full",
-    "aspectRatio": "2:1",
-    "aspectMode": "cover",
-    "backgroundColor": "#464F69"
-  },
-  "body": {
-    "type": "box",
-    "layout": "vertical",
-    "backgroundColor": "#464F69",
-    "borderColor": "#464F69",
-    "contents": [
-      {
-        "type": "box",
-        "layout": "vertical",
-        "spacing": "md",
-        "margin": "sm",
-        "paddingAll": "8px",
-        "backgroundColor": "#FFFFFF1A",
-        "borderColor": "#FFFFFF1A",
-        "contents": [
-          {
-            "type": "text",
-            "text": "此line帳號目前已被綁定",
-            "weight": "bold",
-            "size": "lg",
-            "color": "#EFEFEF",
-            "align": "start",
-            "wrap": true,
-            "position": "relative",
-            "contents": []
-          },
-          {
-            "type": "text",
-            "text": "Line隱碼：" + get_now_user_id,
-            "size": "sm",
-            "color": "#FFFFFFFF",
-            "align": "start",
-            "wrap": true,
-            "contents": []
-          },
-          {
-            "type": "separator",
-            "color": "#999999"
-          },
-          {
-            "type": "text",
-            "text": "名字：" + get_now_name,
-            "size": "sm",
-            "color": "#FFFFFFFF",
-            "align": "start",
-            "wrap": true,
-            "contents": []
-          },
-          {
-            "type": "separator",
-            "color": "#999999"
-          },
-          {
-            "type": "text",
-            "text": "學號：" + get_now_user,
-            "size": "sm",
-            "color": "#FFFFFFFF",
-            "align": "start",
-            "wrap": true,
-            "contents": []
-          }
-        ]
-      }
-    ]
-  },
-  "footer": {
-    "type": "box",
-    "layout": "horizontal",
-    "backgroundColor": "#464F69",
-    "contents": [
-      {
-        "type": "spacer",
-        "size": "xs"
-      }
-    ]
-  }
-})
-        line_bot_api.reply_message(event.reply_token, flex_message)
+        FlexMessage = json.load(open('myaccount.json','r',encoding='utf-8').read()%{"get_now_user_id" : get_now_user_id,"get_now_name" : get_now_name,"get_now_user" : get_now_user})
+        line_bot_api.reply_message(event.reply_token, FlexSendMessage('myaccount',FlexMessage))
+
         print("")
     elif '/變更密碼' == msg :
         get_now_user_id = event_temp.source.user_id
