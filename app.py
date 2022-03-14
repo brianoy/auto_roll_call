@@ -335,11 +335,11 @@ def handle_message(event) :
         get_now_user = userlist[useridlist.index(get_now_user_id)]
         with open("my_account.json") as path:
             FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id,"get_now_name" : get_now_name,"get_now_user" : get_now_user})
-            FlexMessage = str(FlexMessage)
+            load = json.dumps(FlexMessage) 
         print(FlexMessage)
-        flex_message = FlexSendMessage.new_from_json_dict(
+        flex_message = FlexSendMessage(
                        alt_text='my_account' ,
-                       contents=FlexMessage,)
+                       contents=load)
         line_bot_api.reply_message(event.reply_token, flex_message)
 
         print("")
