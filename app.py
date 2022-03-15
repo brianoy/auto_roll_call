@@ -328,6 +328,32 @@ def handle_message(event) :
 
     elif '/' in msg:#all command
             command(msg,event)
+
+    elif '快速回覆' == msg or 'quick reply' == msg:
+        quick_reply = TextSendMessage(
+        text="(此為快速回覆訊息)",
+        quick_reply=QuickReply(
+            items=[
+                QuickReplyButton(
+                    action=MessageAction(label="今天要吃什麼",text="今天要吃什麼")
+                    ),
+                QuickReplyButton(
+                    action=MessageAction(label="指令列表",text="/help")
+                    ),
+                QuickReplyButton(
+                    action=MessageAction(label="我的帳號",text="/我的帳號")
+                    ),
+                QuickReplyButton(
+                    action=MessageAction(label="我的uuid",text="/我的uuid")
+                    ),
+                QuickReplyButton(
+                    action=MessageAction(label="重新整理",text="/重新整理")
+                    )
+            ]
+        )
+        )
+        line_bot_api.reply_message(event.reply_token, quick_reply)
+        
     else:
         public_msgbuffer = (announce + '無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀')
         if (event.source.type == "group") :
@@ -372,7 +398,7 @@ def command(msg,event):
                 respond = respond + str(all_user_buffer_list[x][y])
                 respond = respond + str("\n")
         my_msg(str(respond))
-
+    
     elif '/我的帳號' == msg:
         get_now_user_id = event.source.user_id
         if get_now_user_id in useridlist:#帳號存在
@@ -412,7 +438,7 @@ def limited_command(msg,event):
     if '/變更密碼' in msg or '/更改密碼' in msg:
         get_now_user_id = event.source.user_id
         if get_now_user_id in useridlist:#帳號存在
-            change_password = msg.replace("/變更密碼","").replace(" ","")
+            change_password = msg.replace("/變更密碼","").replace(" ","").replace("/更改密碼","")
             if change_password == "":
                 line_bot_api.reply_message(event.reply_token, TextSendMessage("警告 密碼不能為空"))  
             else:
