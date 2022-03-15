@@ -163,7 +163,7 @@ def handle_postback(event):
         delete_on_database_via_uuid(get_now_user_id)
         respond = "已成功清除" + get_now_user + get_now_name + "的資料" + "，如需重新綁定，請輸入「/開始綁定」"
         print(respond)
-        line_bot_api.push_message(event_temp.source.user_id, TextSendMessage(respond))
+        line_bot_api.push_message(event.source.user_id, TextSendMessage(respond))
 
         print()
     else:
