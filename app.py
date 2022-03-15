@@ -145,11 +145,10 @@ def url_login(msg):
 @handler.add(PostbackEvent)
 def handle_postback(event):
     postback_msg = event.postback.data
+    get_now_user_id = event.source.user_id
     if '/changepassword' in postback_msg :
-        get_now_user_id = event.source.user_id
         if get_now_user_id in useridlist:#帳號存在
-            change_password = postback_msg.replace("/changepassword ","")
-            change_password = change_password.replace(" ","")
+            change_password = postback_msg.replace("/changepassword","").replace(" ","")
             change_password_via_uuid(change_password , get_now_user_id)
             with open("changed_password.json") as path:
                     FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id})
@@ -158,8 +157,9 @@ def handle_postback(event):
                                contents = FlexMessage)
             line_bot_api.reply_message(event.reply_token, flex_message)
     elif("/deleteall" in postback_msg):
-        get_now_user_id = postback_msg.replace("/deleteall","")
-        get_now_user_id = get_now_user_id.replace(" ","")
+        get_now_name = namelist[useridlist.index(get_now_user_id)]
+        get_now_user = userlist[useridlist.index(get_now_user_id)]
+        get_now_user_id = postback_msg.replace("/deleteall","").replace(" ","")
         delete_on_database_via_uuid(get_now_user_id)
         respond = "已成功清除" + get_now_user + get_now_name + "的資料" + "，如需重新綁定，請輸入「/開始綁定」"
         print(respond)
@@ -406,8 +406,7 @@ def handle_message(event) :
     elif '/變更密碼' in msg :
         get_now_user_id = event_temp.source.user_id
         if get_now_user_id in useridlist:#帳號存在
-            change_password = msg.replace("/變更密碼 ","")
-            change_password = change_password.replace(" ","")
+            change_password = msg.replace("/變更密碼","").replace(" ","")
             if change_password == "":
                 line_bot_api.reply_message(event.reply_token, "警告 密碼不能為空")  
             else:
