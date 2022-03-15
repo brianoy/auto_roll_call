@@ -329,31 +329,6 @@ def handle_message(event) :
     elif '/' in msg:#all command
             command(msg,event)
 
-    elif '快速回覆' == msg or 'quick reply' == msg:
-        quick_reply = TextSendMessage(
-        text="(此為快速回覆訊息)",
-        quick_reply=QuickReply(
-            items=[
-                QuickReplyButton(
-                    action=MessageAction(label="今天要吃什麼",text="今天要吃什麼")
-                    ),
-                QuickReplyButton(
-                    action=MessageAction(label="指令列表",text="/help")
-                    ),
-                QuickReplyButton(
-                    action=MessageAction(label="我的帳號",text="/我的帳號")
-                    ),
-                QuickReplyButton(
-                    action=MessageAction(label="我的uuid",text="/我的uuid")
-                    ),
-                QuickReplyButton(
-                    action=MessageAction(label="重新整理",text="/重新整理")
-                    )
-            ]
-        )
-        )
-        line_bot_api.reply_message(event.reply_token, quick_reply)
-        
     else:
         public_msgbuffer = (announce + '無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀')
         if (event.source.type == "group") :
@@ -378,6 +353,10 @@ def handle_message(event) :
             line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
     request_data = deliver_data(public_msgbuffer, event_temp, event.message.text)
     requests.post(url=discord_webhook, data=request_data)
+    if (event.source.type == "group") :
+        quick_reply(event.source.group_id)
+    if (event.source.type == "user") :
+        quick_reply(event.source.user_id)
     return 
 
 def command(msg,event):
@@ -434,6 +413,32 @@ def command(msg,event):
         print("指令不存在此區")
     return
 
+def quick_reply(id):
+    quick_reply = TextSendMessage(
+    text="(此為快速回覆訊息)",
+    quick_reply=QuickReply(
+        items=[
+            QuickReplyButton(
+                action=MessageAction(label="今天要吃什麼",text="今天要吃什麼")
+                ),
+            QuickReplyButton(
+                action=MessageAction(label="指令列表",text="/help")
+                ),
+            QuickReplyButton(
+                action=MessageAction(label="我的帳號",text="/我的帳號")
+                ),
+            QuickReplyButton(
+                action=MessageAction(label="我的uuid",text="/我的uuid")
+                ),
+            QuickReplyButton(
+                action=MessageAction(label="重新整理",text="/重新整理")
+                )
+        ]
+    )
+    )
+    line_bot_api.push_message(id, quick_reply)
+    return
+        
 def limited_command(msg,event):
     if '/變更密碼' in msg or '/更改密碼' in msg:
         get_now_user_id = event.source.user_id
@@ -492,10 +497,6 @@ def limited_command(msg,event):
         line_bot_api.reply_message(event.reply_token, TextSendMessage("沒有這個指令"))
 
     
-
-
-
-
 
 
 @handler.add(MessageEvent, message=StickerMessage)
