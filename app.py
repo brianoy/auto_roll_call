@@ -420,7 +420,7 @@ def command(msg,event):
 
 def quick_reply(id):
     quick_reply = TextSendMessage(
-    text=" ",
+    text="⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀",
     quick_reply=QuickReply(
         items=[
             QuickReplyButton(
