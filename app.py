@@ -367,6 +367,7 @@ def command(msg,event):
     elif '/資料庫' == msg and event.source.user_id == OPUUID :
         respond = ""
         for x in range(0,len(all_user_buffer_list),1):
+            respond = respond + str("\n")
             for y in range(0,len(all_user_buffer_list[x]),1):
                 respond = respond + str(all_user_buffer_list[x][y])
         my_msg(str(respond))
