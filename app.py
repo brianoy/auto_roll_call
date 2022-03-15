@@ -150,14 +150,13 @@ def callback():
     body = request.get_data(as_text=True)
     app.logger.info("Request body: " + body)
     print("訊息從line進入:\n" + body)
-
-    #postback  = body.events.type#or this 
-    #if postback == "postback":
-        #print("已收到回傳")
-        #print(body.events.postback.data)
     # handle webhook body
     try:
         handler.handle(body, signature)
+        postback  = body.events.type#or this 
+        if postback == "postback":
+            print("已收到回傳")
+            print(body.events.postback.data)
     except InvalidSignatureError:
         print("嚴重失敗!")
         abort(400)
