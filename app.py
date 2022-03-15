@@ -338,12 +338,12 @@ def handle_message(event) :
                 print("使用者重複綁定")
                 line_bot_api.push_message(event_temp.source.user_id, TextSendMessage("已有帳號密碼綁定於此line帳戶上，無法使用同一個Line帳戶綁定多支ilearning帳號\n若需要清除綁定，請輸入「/清除綁定」"))
             else:
-                spilt_msg = []
-                spilt_msg = msg.spilt(' ')
-                set_now_name = spilt_msg[1]
-                set_now_password = spilt_msg[3]
+                split_msg = []
+                split_msg = msg.split(' ')
+                set_now_name = split_msg[1]
+                set_now_password = split_msg[3]
                 try:
-                    set_now_account = int(spilt_msg[2])
+                    set_now_account = int(split_msg[2])
                     register(set_now_name, get_now_user_id, set_now_account, set_now_password)
                     with open("my_account.json") as path:
                         FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id,"get_now_name" : set_now_name,"get_now_user" : set_now_name,"get_now_password" : set_now_password})
