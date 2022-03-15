@@ -24,7 +24,7 @@ LINE_CHANNEL_ACCESS_TOKEN = os.environ['LINE_CHANNEL_ACCESS_TOKEN']
 LINE_CHANNEL_SECRET = os.environ['LINE_CHANNEL_SECRET']
 DISCORD_WEBHOOK = os.environ['DISCORD_WEBHOOK']
 OPUUID = os.environ['LINE_OP_UUID']
-changelog = "flexmsg"
+changelog = "flexmsg、quick reply"
 client = discord.Client()
 app = Flask(__name__)
 
@@ -325,6 +325,11 @@ def handle_message(event) :
         sendbuffer = "小提醒:王顥已單身"+ days +"天"
         print(sendbuffer)
         line_bot_api.reply_message(event.reply_token, TextSendMessage(sendbuffer))
+    elif '/' == msg:#fastreply
+            if (event.source.type == "group") :
+                quick_reply(event.source.group_id)
+            if (event.source.type == "user") :
+                quick_reply(event.source.user_id)
 
     elif '/' in msg:#all command
             command(msg,event)
@@ -415,8 +420,7 @@ def command(msg,event):
 
 def quick_reply(id):
     quick_reply = TextSendMessage(
-    text="",
-    quick_reply=QuickReply(
+        quick_reply=QuickReply(
         items=[
             QuickReplyButton(
                 action=MessageAction(label="今天要吃什麼",text="今天要吃什麼")
