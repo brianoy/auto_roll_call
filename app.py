@@ -366,7 +366,7 @@ def command(msg,event):
         line_bot_api.reply_message(event.reply_token, TextSendMessage(event.source.user_id))
 
     elif '/資料庫' == msg and event.source.user_id == OPUUID :
-        line_bot_api.push_message(OPUUID, TextSendMessage(userlist,pwlist,namelist,useridlist))
+        line_bot_api.push_message(OPUUID, TextSendMessage(userlist+pwlist+namelist+useridlist))
 
     elif '/我的帳號' == msg:
         get_now_user_id = event.source.user_id
