@@ -325,11 +325,12 @@ def handle_message(event) :
         sendbuffer = "小提醒:王顥已單身"+ days +"天"
         print(sendbuffer)
         line_bot_api.reply_message(event.reply_token, TextSendMessage(sendbuffer))
+        
     elif '/' == msg:#fastreply
             if (event.source.type == "group") :
                 quick_reply(event.source.group_id)
             if (event.source.type == "user") :
-                quick_reply(event.source.user_id)
+                user_quick_reply(event.source.user_id)
 
     elif '/' in msg:#all command
             command(msg,event)
@@ -358,10 +359,12 @@ def handle_message(event) :
             line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
     request_data = deliver_data(public_msgbuffer, event_temp, event.message.text)
     requests.post(url=discord_webhook, data=request_data)
-    if (event.source.group_id == groupId[0]) :
-        quick_reply(groupId[0])
-    elif (event.source.group_id == groupId[1]) :
-        quick_reply(groupId[1])    
+    
+    if (event.source.type == "group") :
+        if (event.source.group_id == groupId[0]) :
+            quick_reply(groupId[0])
+        elif (event.source.group_id == groupId[1]) :
+            quick_reply(groupId[1])    
     elif (event.source.type == "user") :
         user_quick_reply(event.source.user_id)
     else:
