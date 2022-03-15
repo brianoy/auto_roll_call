@@ -415,7 +415,7 @@ def command(msg,event):
 
 def quick_reply(id):
     quick_reply = TextSendMessage(
-    text="(此為快速回覆訊息)",
+    text="",
     quick_reply=QuickReply(
         items=[
             QuickReplyButton(
