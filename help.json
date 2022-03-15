@@ -89,7 +89,7 @@
             },
             {
               "type": "text",
-              "text": "綁定帳戶：/開始綁定",
+              "text": "知道自己是否已被綁定：/我的帳號",
               "size": "sm",
               "color": "#EEEEEEBB",
               "align": "start",
@@ -98,7 +98,16 @@
             },
             {
               "type": "text",
-              "text": "知道自己是否已被綁定：/我的帳號",
+              "text": "綁定帳戶：/開始綁定 [姓名] [學號] [密碼]",
+              "size": "sm",
+              "color": "#EEEEEEBB",
+              "align": "start",
+              "wrap": true,
+              "contents": []
+            },
+            {
+              "type": "text",
+              "text": "例如：我要綁定帳號，即輸入「/開始綁定 陳洨明 11021387 abcd1234」",
               "size": "sm",
               "color": "#EEEEEEBB",
               "align": "start",
