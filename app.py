@@ -149,6 +149,7 @@ def handle_postback(event):
         get_now_user_id = event.source.user_id
         if get_now_user_id in useridlist:#帳號存在
             change_password = postback_msg.replace("/changepassword ","")
+            change_password = change_password.replace(" ","")
             change_password_via_uuid(change_password , get_now_user_id)
             with open("changed_password.json") as path:
                     FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id})
@@ -156,7 +157,14 @@ def handle_postback(event):
                                alt_text = '(請點擊聊天室已取得更多消息)' ,
                                contents = FlexMessage)
             line_bot_api.reply_message(event.reply_token, flex_message)
-    elif():
+    elif("/deleteall" in postback_msg):
+        get_now_user_id = postback_msg.replace("/deleteall","")
+        get_now_user_id = get_now_user_id.replace(" ","")
+        delete_on_database_via_uuid(get_now_user_id)
+        respond = "已成功清除" + get_now_user + get_now_name + "的資料" + "，如需重新綁定，請輸入「/開始綁定」"
+        print(respond)
+        line_bot_api.push_message(event_temp.source.user_id, TextSendMessage(respond))
+
         print()
     else:
         print()
@@ -318,7 +326,10 @@ def handle_message(event) :
         sendbuffer = "小提醒:王顥已單身"+ days +"天"
         print(sendbuffer)
         line_bot_api.reply_message(event.reply_token, TextSendMessage(sendbuffer))
+
+
     elif '/開始綁定' in msg :
+        get_now_user_id = event_temp.source.user_id
         if (event.source.type == "group") :
             line_bot_api.push_message(event_temp.source.group_id, TextSendMessage("無法在群組進行綁定，請以私訊機器人的形式進行此動作，謝謝"))
         elif(event.source.type == "user"):
@@ -327,19 +338,33 @@ def handle_message(event) :
                 print("使用者重複綁定")
                 line_bot_api.push_message(event_temp.source.user_id, TextSendMessage("已有帳號密碼綁定於此line帳戶上，無法使用同一個Line帳戶綁定多支ilearning帳號\n若需要清除綁定，請輸入「/清除綁定」"))
             else:
-                binding(get_now_user_id)
-                line_bot_api.push_message(event_temp.source.user_id, TextSendMessage("你已成功綁定！"))
+                spilt_msg = []
+                spilt_msg = msg.spilt(' ')
+                set_now_name = spilt_msg[1]
+                set_now_password = spilt_msg[3]
+                try:
+                    set_now_account = int(spilt_msg[2])
+                    register(set_now_name, get_now_user_id, set_now_account, set_now_password)
+                    with open("my_account.json") as path:
+                        FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id,"get_now_name" : set_now_name,"get_now_user" : set_now_name,"get_now_password" : set_now_password})
+                    flex_message = FlexSendMessage(
+                                   alt_text = '(請點擊聊天室已取得更多消息)' ,
+                                   contents = FlexMessage)
+                    line_bot_api.reply_message(event.reply_token, flex_message)
+                except ValueError:
+                    line_bot_api.reply_message(event.reply_token, "帳號請輸入學號(純數字)")
         else:
             print("")
 
     elif '/清除綁定' == msg :
         get_now_user_id = event_temp.source.user_id
-        get_now_name = namelist[useridlist.index(get_now_user_id)]
-        get_now_user = userlist[useridlist.index(get_now_user_id)]
-        delete_on_database_via_uuid(get_now_user_id)
-        respond = "已成功清除" + get_now_user + get_now_name + "的資料" + "，如需重新綁定，請輸入「/開始綁定」"
-        print(respond)
-        line_bot_api.push_message(event_temp.source.user_id, TextSendMessage(respond))
+        #get_now_name = namelist[useridlist.index(get_now_user_id)]
+        #get_now_user = userlist[useridlist.index(get_now_user_id)]
+        with open("comfirmed_delete.json") as path:
+                FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id})
+        flex_message = FlexSendMessage(
+                        alt_text = '(請點擊聊天室已取得更多消息)' ,
+                        contents = FlexMessage)
 
     elif '/重新整理' == msg :
         get_all_user()
@@ -382,12 +407,16 @@ def handle_message(event) :
         get_now_user_id = event_temp.source.user_id
         if get_now_user_id in useridlist:#帳號存在
             change_password = msg.replace("/變更密碼 ","")
-            with open("change_password.json") as path:
+            change_password = change_password.replace(" ","")
+            if change_password == "":
+                line_bot_api.reply_message(event.reply_token, "警告 密碼不能為空")  
+            else:
+                with open("change_password.json") as path:
                     FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id , "change_password" : change_password})
-            flex_message = FlexSendMessage(
-                               alt_text = '(請點擊聊天室已取得更多消息)' ,
-                               contents = FlexMessage)
-            line_bot_api.reply_message(event.reply_token, flex_message)
+                flex_message = FlexSendMessage(
+                            alt_text = '(請點擊聊天室已取得更多消息)' ,
+                            contents = FlexMessage)
+                line_bot_api.reply_message(event.reply_token, flex_message)
         else:#帳號不存在
             with open("account_not_exist.json") as path:
                 FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id})
@@ -487,6 +516,18 @@ def change_password_via_uuid(change_password , uuid):
     get_all_user()
     return
 
+def register(name,uuid,account,password):
+    conn   = psycopg2.connect(DATABASE_URL, sslmode='require')
+    cursor = conn.cursor()
+    insert_arguments = (name, uuid, account, password)
+    table_columns = '(name, uuid, account, password)'
+    postgres_insert_query = f"""INSERT INTO all_info {table_columns} VALUES (%s,%s,%s,%s)"""
+    cursor.execute(postgres_insert_query, insert_arguments)
+    conn.commit()
+    cursor.close()
+    conn.close()
+    get_all_user()
+    return
 
 @handler.add(MemberJoinedEvent)
 def welcome(event):
