@@ -356,7 +356,7 @@ def handle_message(event) :
         else:
             print("")
 
-    elif '/清除綁定' == msg :
+    elif '/清除綁定' == msg or '/清楚綁定' == msg:
         get_now_user_id = event_temp.source.user_id
         #get_now_name = namelist[useridlist.index(get_now_user_id)]
         #get_now_user = userlist[useridlist.index(get_now_user_id)]
@@ -365,7 +365,7 @@ def handle_message(event) :
         flex_message = FlexSendMessage(
                         alt_text = '(請點擊聊天室已取得更多消息)' ,
                         contents = FlexMessage)
-
+        line_bot_api.reply_message(event.reply_token, flex_message)
     elif '/重新整理' == msg :
         get_all_user()
         respond = "已重新抓取"
