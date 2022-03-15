@@ -368,7 +368,7 @@ def command(msg,event):
         respond = ""
         for x in range(0,len(all_user_buffer_list),1):
             for y in range(0,len(all_user_buffer_list[x]),1):
-                respond = respond + all_user_buffer_list[x][y]
+                respond = respond + str(all_user_buffer_list[x][y])
         my_msg(str(respond))
 
     elif '/我的帳號' == msg:
