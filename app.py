@@ -370,7 +370,7 @@ def command(msg,event):
             respond = respond + str("\n")
             for y in range(0,len(all_user_buffer_list[x]),1):
                 respond = respond + str(all_user_buffer_list[x][y])
-                respond = respond + str("\n@")
+                respond = respond + str("\n")
         my_msg(str(respond))
 
     elif '/我的帳號' == msg:
@@ -409,12 +409,12 @@ def command(msg,event):
     return
 
 def limited_command(msg,event):
-    if '/變更密碼' in msg :
+    if '/變更密碼' in msg or '/更改密碼' in msg:
         get_now_user_id = event.source.user_id
         if get_now_user_id in useridlist:#帳號存在
             change_password = msg.replace("/變更密碼","").replace(" ","")
             if change_password == "":
-                line_bot_api.reply_message(event.reply_token, "警告 密碼不能為空")  
+                line_bot_api.reply_message(event.reply_token, TextSendMessage("警告 密碼不能為空"))  
             else:
                 with open("change_password.json") as path:
                     FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id , "change_password" : change_password})
