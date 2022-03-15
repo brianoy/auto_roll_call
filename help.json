@@ -98,7 +98,7 @@
             },
             {
               "type": "text",
-              "text": "綁定帳戶：/開始綁定 [姓名] [學號] [密碼]",
+              "text": "綁定ilearning：/開始綁定 [姓名] [學號] [密碼]",
               "size": "sm",
               "color": "#EEEEEEBB",
               "align": "start",

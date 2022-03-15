@@ -477,7 +477,6 @@ def user_quick_reply(id):
     line_bot_api.push_message(id, quick_reply)
     return
 
-
 def limited_command(msg,event):
     if '/變更密碼' in msg or '/更改密碼' in msg:
         get_now_user_id = event.source.user_id
@@ -534,9 +533,6 @@ def limited_command(msg,event):
                 line_bot_api.reply_message(event.reply_token, TextSendMessage("帳號請輸入學號(純數字)"))
     else:
         line_bot_api.reply_message(event.reply_token, TextSendMessage("沒有這個指令"))
-
-    
-
 
 @handler.add(MessageEvent, message=StickerMessage)
 def handle_sticker_message(event):
@@ -616,7 +612,7 @@ def welcome(event):
     profile = line_bot_api.get_group_member_profile(gid, uid)
     name = profile.display_name
     quick_reply = TextSendMessage(
-    text = name + "歡淫加入\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n如要完成點名，請傳送該網址即可\n歡迎邀請其他人",
+    text ="歡淫加入\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n如要完成點名，請傳送該網址即可\n歡迎邀請其他人\n如需綁定請參考快速回覆的指令按鈕或是直接輸入「/help」",
     quick_reply=QuickReply(
         items=[
             QuickReplyButton(
