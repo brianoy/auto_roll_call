@@ -370,6 +370,7 @@ def command(msg,event):
             respond = respond + str("\n")
             for y in range(0,len(all_user_buffer_list[x]),1):
                 respond = respond + str(all_user_buffer_list[x][y])
+                respond = respond + str("\n@")
         my_msg(str(respond))
 
     elif '/我的帳號' == msg:
