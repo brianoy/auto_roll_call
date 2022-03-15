@@ -148,8 +148,9 @@ def url_login(msg):
 def callback():
     signature = request.headers['X-Line-Signature']
     body = request.get_data(as_text=True)
-    body_ori = request.get_data(as_text=False)
+    body_ori = json.loads(body.decode('utf-8'))
     print(body_ori)
+    print(type(body_ori))
     app.logger.info("Request body: " + body)
     print("訊息從line進入:\n" + body)
     # handle webhook body
