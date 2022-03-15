@@ -148,7 +148,7 @@ def url_login(msg):
 def callback():
     signature = request.headers['X-Line-Signature']
     body = request.get_data(as_text=True)
-    body_ori = json.loads(body.decode('utf-8'))
+    body_ori = json.dumps()
     print(body_ori)
     print(type(body_ori))
     app.logger.info("Request body: " + body)
