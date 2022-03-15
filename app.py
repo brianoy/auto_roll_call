@@ -142,24 +142,23 @@ def url_login(msg):
   messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ['HEROKU_RELEASE_CREATED_AT'] + "GMT+0\n" + "版本:" + os.environ['HEROKU_RELEASE_VERSION']+ "\n此次點名耗費時間:" + str(round(time.time() - start_time)) +"秒" +"\n更新日誌:" + changelog)
   return messageout
 
+@handler.add(PostbackEvent)
+def handle_postback(event):
+    ta = event.type
+    ts = event.postback.data
+    print(ts)
+    print(ta)
 
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
 def callback():
     signature = request.headers['X-Line-Signature']
     body = request.get_data(as_text=True)
-    body_ori = json.loads(body)
-    print(body_ori)
-    print(type(body_ori))
     app.logger.info("Request body: " + body)
     print("訊息從line進入:\n" + body)
     # handle webhook body
     try:
         handler.handle(body, signature)
-        postback  = body_ori.events.type#or this 
-        if postback == "postback":
-            print("已收到回傳")
-            print(body_ori.events.postback.data)
     except InvalidSignatureError:
         print("嚴重失敗!")
         abort(400)
