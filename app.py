@@ -420,7 +420,8 @@ def command(msg,event):
 
 def quick_reply(id):
     quick_reply = TextSendMessage(
-        quick_reply=QuickReply(
+    text=" ",
+    quick_reply=QuickReply(
         items=[
             QuickReplyButton(
                 action=MessageAction(label="今天要吃什麼",text="今天要吃什麼")
