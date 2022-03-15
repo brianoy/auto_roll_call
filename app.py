@@ -57,11 +57,12 @@ def get_all_user():#turn raw data into 4 argument lists
     conn   = psycopg2.connect(DATABASE_URL, sslmode='require')
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM all_info")#choose all the data of target 
-    all_user_buffer_list = cursor.fetchall()#start fetch and become a list 
+    global all_user_buffer_list
     global userlist
     global pwlist
     global namelist
     global useridlist
+    all_user_buffer_list = cursor.fetchall()#start fetch and become a list 
     userlist = []
     pwlist = []
     namelist = []
@@ -164,10 +165,8 @@ def handle_postback(event):
         respond = "已成功清除" + get_now_user + get_now_name + "的資料" + "，如需重新綁定，請輸入「/開始綁定」"
         print(respond)
         line_bot_api.push_message(event.source.user_id, TextSendMessage(respond))
-
-        print()
     else:
-        print()
+        print("invalid postback event")
 
 
 # 監聽所有來自 /callback 的 Post Request
@@ -366,7 +365,11 @@ def command(msg,event):
         line_bot_api.reply_message(event.reply_token, TextSendMessage(event.source.user_id))
 
     elif '/資料庫' == msg and event.source.user_id == OPUUID :
-        line_bot_api.push_message(OPUUID, TextSendMessage(userlist+pwlist+namelist+useridlist))
+        respond = ""
+        for x in range(0,len(all_user_buffer_list),1):
+            for y in range(0,len(all_user_buffer_list[x]),1):
+                respond += all_user_buffer_list[x][y]
+        my_msg(str(respond))
 
     elif '/我的帳號' == msg:
         get_now_user_id = event.source.user_id
