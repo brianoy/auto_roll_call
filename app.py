@@ -327,13 +327,41 @@ def handle_message(event) :
         print(sendbuffer)
         line_bot_api.reply_message(event.reply_token, TextSendMessage(sendbuffer))
 
-
-    elif '/開始綁定' in msg :
-        get_now_user_id = event_temp.source.user_id
+    elif '/' in msg:
+        commend(msg,event)
+    else:
+        public_msgbuffer = (announce + '無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀')
         if (event.source.type == "group") :
-            line_bot_api.push_message(event_temp.source.group_id, TextSendMessage("無法在群組進行綁定，請以私訊機器人的形式進行此動作，謝謝"))
+            if(event.source.group_id == groupId[0]):
+                headers= {
+                "Authorization": "Bearer " + grouptoken[0], 
+                }
+                #requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': public_msgbuffer })#翹課大魔王
+            elif(event.source.group_id == groupId[1]):
+                headers= {
+                "Authorization": "Bearer " + grouptoken[1], 
+                }
+                requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': (public_msgbuffer) })#秘密基地
+            elif(event.source.group_id == groupId[2]):
+                headers= {
+                "Authorization": "Bearer " + grouptoken[2], 
+                }
+                #requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': (public_msgbuffer) })#煤船組
+            else:
+                print("有不知名的群組傳送了非相關訊息")
+        else:
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
+    request_data = deliver_data(public_msgbuffer, event_temp, event.message.text)
+    requests.post(url=discord_webhook, data=request_data)
+    return 
+
+def commend(msg,event):
+    if '/開始綁定' in msg :
+        get_now_user_id = event.source.user_id
+        if (event.source.type == "group") :
+            line_bot_api.push_message(event.source.group_id, TextSendMessage("無法在群組進行綁定，請以私訊機器人的形式進行此動作，謝謝"))
         elif(event.source.type == "user"):
-            get_now_user_id = event_temp.source.user_id
+            get_now_user_id = event.source.user_id
             if (get_now_user_id in useridlist):
                 print("使用者重複綁定")
                 line_bot_api.push_message(event_temp.source.user_id, TextSendMessage("已有帳號密碼綁定於此line帳戶上，無法使用同一個Line帳戶綁定多支ilearning帳號\n若需要清除綁定，請輸入「/清除綁定」"))
@@ -352,7 +380,7 @@ def handle_message(event) :
                                    contents = FlexMessage)
                     line_bot_api.reply_message(event.reply_token, flex_message)
                 except ValueError:
-                    line_bot_api.reply_message(event.reply_token, "帳號請輸入學號(純數字)")
+                    line_bot_api.reply_message(event.reply_token, TextSendMessage("帳號請輸入學號(純數字)"))
         else:
             print("")
 
@@ -423,32 +451,9 @@ def handle_message(event) :
                            alt_text = '(請點擊聊天室已取得更多消息)' ,
                            contents = FlexMessage)
             line_bot_api.reply_message(event.reply_token, flex_message)
-
     else:
-        public_msgbuffer = (announce + '無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀')
-        if (event.source.type == "group") :
-            if(event.source.group_id == groupId[0]):
-                headers= {
-                "Authorization": "Bearer " + grouptoken[0], 
-                }
-                #requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': public_msgbuffer })#翹課大魔王
-            elif(event.source.group_id == groupId[1]):
-                headers= {
-                "Authorization": "Bearer " + grouptoken[1], 
-                }
-                requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': (public_msgbuffer) })#秘密基地
-            elif(event.source.group_id == groupId[2]):
-                headers= {
-                "Authorization": "Bearer " + grouptoken[2], 
-                }
-                #requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': (public_msgbuffer) })#煤船組
-            else:
-                print("有不知名的群組傳送了非相關訊息")
-        else:
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
-    request_data = deliver_data(public_msgbuffer, event_temp, event.message.text)
-    requests.post(url=discord_webhook, data=request_data)
-    return 
+        print("指令不存在")
+
 
 
 @handler.add(MessageEvent, message=StickerMessage)
