@@ -345,8 +345,8 @@ def handle_message(event) :
                 try:
                     set_now_account = int(split_msg[2])
                     register(set_now_name, get_now_user_id, set_now_account, set_now_password)
-                    with open("my_account.json") as path:
-                        FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id,"get_now_name" : set_now_name,"get_now_user" : set_now_name,"get_now_password" : set_now_password})
+                    with open("create_account.json") as path:
+                        FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id,"get_now_name" : set_now_name,"get_now_user" : set_now_account,"get_now_password" : set_now_password})
                     flex_message = FlexSendMessage(
                                    alt_text = '(請點擊聊天室已取得更多消息)' ,
                                    contents = FlexMessage)
