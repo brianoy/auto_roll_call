@@ -327,8 +327,8 @@ def handle_message(event) :
         print(sendbuffer)
         line_bot_api.reply_message(event.reply_token, TextSendMessage(sendbuffer))
 
-    elif '/' in msg:
-        commend(msg,event)
+    elif '/' in msg:#all command
+            command(msg,event)
     else:
         public_msgbuffer = (announce + '無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀')
         if (event.source.type == "group") :
@@ -355,56 +355,18 @@ def handle_message(event) :
     requests.post(url=discord_webhook, data=request_data)
     return 
 
-def commend(msg,event):
-    if '/開始綁定' in msg :
-        get_now_user_id = event.source.user_id
-        if (event.source.type == "group") :
-            line_bot_api.push_message(event.source.group_id, TextSendMessage("無法在群組進行綁定，請以私訊機器人的形式進行此動作，謝謝"))
-        elif(event.source.type == "user"):
-            get_now_user_id = event.source.user_id
-            if (get_now_user_id in useridlist):
-                print("使用者重複綁定")
-                line_bot_api.push_message(event_temp.source.user_id, TextSendMessage("已有帳號密碼綁定於此line帳戶上，無法使用同一個Line帳戶綁定多支ilearning帳號\n若需要清除綁定，請輸入「/清除綁定」"))
-            else:
-                split_msg = []
-                split_msg = msg.split(' ')
-                set_now_name = split_msg[1]
-                set_now_password = split_msg[3]
-                try:
-                    set_now_account = int(split_msg[2])
-                    register(set_now_name, get_now_user_id, set_now_account, set_now_password)
-                    with open("create_account.json") as path:
-                        FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id,"get_now_name" : set_now_name,"get_now_user" : set_now_account,"get_now_password" : set_now_password})
-                    flex_message = FlexSendMessage(
-                                   alt_text = '(請點擊聊天室已取得更多消息)' ,
-                                   contents = FlexMessage)
-                    line_bot_api.reply_message(event.reply_token, flex_message)
-                except ValueError:
-                    line_bot_api.reply_message(event.reply_token, TextSendMessage("帳號請輸入學號(純數字)"))
-        else:
-            print("")
-
-    elif '/清除綁定' == msg or '/清楚綁定' == msg:
-        get_now_user_id = event_temp.source.user_id
-        #get_now_name = namelist[useridlist.index(get_now_user_id)]
-        #get_now_user = userlist[useridlist.index(get_now_user_id)]
-        with open("comfirmed_delete.json") as path:
-                FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id})
-        flex_message = FlexSendMessage(
-                        alt_text = '(請點擊聊天室已取得更多消息)' ,
-                        contents = FlexMessage)
-        line_bot_api.reply_message(event.reply_token, flex_message)
-    elif '/重新整理' == msg :
+def command(msg,event):
+    if '/重新整理' == msg :
         get_all_user()
         respond = "已重新抓取"
         print(respond)
-        line_bot_api.push_message(event_temp.source.user_id, TextSendMessage(respond))
+        line_bot_api.push_message(event.source.user_id, TextSendMessage(respond))
 
     elif '/我的uuid' == msg:
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(event_temp.source.user_id))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(event.source.user_id))
 
     elif '/我的帳號' == msg:
-        get_now_user_id = event_temp.source.user_id
+        get_now_user_id = event.source.user_id
         if get_now_user_id in useridlist:#帳號存在
             get_now_name = namelist[useridlist.index(get_now_user_id)]
             get_now_user = userlist[useridlist.index(get_now_user_id)]
@@ -430,9 +392,17 @@ def commend(msg,event):
                        contents = FlexMessage)
         line_bot_api.reply_message(event.reply_token, flex_message)
 
+    else:
+        if (event.source.type == "user") :
+            limited_command(msg,event)
+        else:
+            line_bot_api.push_message(event.source.group_id, TextSendMessage("無法在群組使用此指令，請以私訊機器人的形式進行，謝謝"))
+        print("指令不存在此區")
+    return
 
-    elif '/變更密碼' in msg :
-        get_now_user_id = event_temp.source.user_id
+def limited_command(msg,event):
+    if '/變更密碼' in msg :
+        get_now_user_id = event.source.user_id
         if get_now_user_id in useridlist:#帳號存在
             change_password = msg.replace("/變更密碼","").replace(" ","")
             if change_password == "":
@@ -451,8 +421,46 @@ def commend(msg,event):
                            alt_text = '(請點擊聊天室已取得更多消息)' ,
                            contents = FlexMessage)
             line_bot_api.reply_message(event.reply_token, flex_message)
+
+    elif '/清除綁定' == msg or '/清楚綁定' == msg:
+        get_now_user_id = event.source.user_id
+        #get_now_name = namelist[useridlist.index(get_now_user_id)]
+        #get_now_user = userlist[useridlist.index(get_now_user_id)]
+        with open("comfirmed_delete.json") as path:
+                FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id})
+        flex_message = FlexSendMessage(
+                        alt_text = '(請點擊聊天室已取得更多消息)' ,
+                        contents = FlexMessage)
+        line_bot_api.reply_message(event.reply_token, flex_message)
+
+    elif '/開始綁定' in msg :
+        get_now_user_id = event.source.user_id
+        if (get_now_user_id in useridlist):
+            print("使用者重複綁定")
+            line_bot_api.push_message(event.source.user_id, TextSendMessage("已有帳號密碼綁定於此line帳戶上，無法使用同一個Line帳戶綁定多支ilearning帳號\n若需要清除綁定，請輸入「/清除綁定」"))
+        else:
+            split_msg = []
+            split_msg = msg.split(' ')
+            set_now_name = split_msg[1]
+            set_now_password = split_msg[3]
+            try:
+                set_now_account = int(split_msg[2])
+                register(set_now_name, get_now_user_id, set_now_account, set_now_password)
+                with open("create_account.json") as path:
+                    FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id,"get_now_name" : set_now_name,"get_now_user" : set_now_account,"get_now_password" : set_now_password})
+                flex_message = FlexSendMessage(
+                                alt_text = '(請點擊聊天室已取得更多消息)' ,
+                                contents = FlexMessage)
+                line_bot_api.reply_message(event.reply_token, flex_message)
+            except ValueError:
+                line_bot_api.reply_message(event.reply_token, TextSendMessage("帳號請輸入學號(純數字)"))
     else:
-        print("指令不存在")
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("沒有這個指令"))
+
+    
+
+
+
 
 
 
