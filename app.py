@@ -144,10 +144,23 @@ def url_login(msg):
 
 @handler.add(PostbackEvent)
 def handle_postback(event):
-    ta = event.type
-    ts = event.postback.data
-    print(ts)
-    print(ta)
+    postback_msg = event.postback.data
+    if '/changepassword' in postback_msg :
+        get_now_user_id = event.source.user_id
+        if get_now_user_id in useridlist:#帳號存在
+            change_password = postback_msg.replace("/changepassword ","")
+            change_password_via_uuid(change_password , get_now_user_id)
+            with open("changed_password.json") as path:
+                    FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id})
+            flex_message = FlexSendMessage(
+                               alt_text = '(請點擊聊天室已取得更多消息)' ,
+                               contents = FlexMessage)
+            line_bot_api.reply_message(event.reply_token, flex_message)
+    elif():
+        print()
+    else:
+        print()
+
 
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
@@ -337,22 +350,6 @@ def handle_message(event) :
     elif '/我的uuid' == msg:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(event_temp.source.user_id))
 
-
-
-
-
-    elif "我只是測試" == msg :#flex msg postback respond 
-        with open("test.json") as path:
-                FlexMessage = json.loads(path.read())
-        flex_message = FlexSendMessage(
-                           alt_text = '(請點擊聊天室已取得更多消息)' ,
-                           contents = FlexMessage)
-        line_bot_api.reply_message(event.reply_token, flex_message)
-
-
-
-
-
     elif '/我的帳號' == msg:
         get_now_user_id = event_temp.source.user_id
         if get_now_user_id in useridlist:#帳號存在
@@ -372,6 +369,14 @@ def handle_message(event) :
                            contents = FlexMessage)
             line_bot_api.reply_message(event.reply_token, flex_message)
 
+    elif '/help' == msg or '/幫助' == msg:
+        with open("help.json") as path:
+                FlexMessage = json.loads(path.read())
+        flex_message = FlexSendMessage(
+                       alt_text = '(請點擊聊天室已取得更多消息)' ,
+                       contents = FlexMessage)
+        line_bot_api.reply_message(event.reply_token, flex_message)
+
 
     elif '/變更密碼' in msg :
         get_now_user_id = event_temp.source.user_id
@@ -390,29 +395,7 @@ def handle_message(event) :
                            alt_text = '(請點擊聊天室已取得更多消息)' ,
                            contents = FlexMessage)
             line_bot_api.reply_message(event.reply_token, flex_message)
-        
 
-
-    elif '/changepassword' in msg :
-        get_now_user_id = event_temp.source.user_id
-        if get_now_user_id in useridlist:#帳號存在
-            change_password = msg.replace("/changepassword ","")
-            change_password_via_uuid(change_password , get_now_user_id)
-            with open("changed_password.json") as path:
-                    FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id})
-            flex_message = FlexSendMessage(
-                               alt_text = '(請點擊聊天室已取得更多消息)' ,
-                               contents = FlexMessage)
-            line_bot_api.reply_message(event.reply_token, flex_message)
-
-        else:#帳號不存在
-            with open("account_not_exist.json") as path:
-                    FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id})
-            flex_message = FlexSendMessage(
-                            alt_text = '(請點擊聊天室已取得更多消息)' ,
-                            contents = FlexMessage)
-            line_bot_api.reply_message(event.reply_token, flex_message)
-        
     else:
         public_msgbuffer = (announce + '無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀')
         if (event.source.type == "group") :

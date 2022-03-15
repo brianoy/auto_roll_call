@@ -1,0 +1,122 @@
+{
+    "type": "bubble",
+    "direction": "ltr",
+    "header": {
+      "type": "box",
+      "layout": "vertical",
+      "spacing": "none",
+      "margin": "none",
+      "paddingAll": "0px",
+      "width": "0px",
+      "height": "0px",
+      "backgroundColor": "#464F69",
+      "borderColor": "#464F69",
+      "contents": [
+        {
+          "type": "filler"
+        }
+      ]
+    },
+    "hero": {
+      "type": "image",
+      "url": "https://raw.githubusercontent.com/brianoy/auto_roll_call/main/2109.w023.n001.1042B.p1.1042.jpg",
+      "size": "full",
+      "aspectRatio": "2.19:1",
+      "aspectMode": "cover",
+      "backgroundColor": "#4D1470FF"
+    },
+    "body": {
+      "type": "box",
+      "layout": "vertical",
+      "backgroundColor": "#4D1470FF",
+      "borderColor": "#4D1470FF",
+      "contents": [
+        {
+          "type": "box",
+          "layout": "vertical",
+          "spacing": "md",
+          "margin": "sm",
+          "paddingAll": "8px",
+          "backgroundColor": "#FFFFFF1A",
+          "borderColor": "#FFFFFF1A",
+          "contents": [
+            {
+              "type": "text",
+              "text": "指令操作手冊",
+              "weight": "bold",
+              "size": "lg",
+              "color": "#DDDDDDBB",
+              "align": "start",
+              "wrap": true,
+              "position": "relative",
+              "contents": []
+            },
+            {
+              "type": "text",
+              "text": "如需變更密碼：/變更密碼  [更改後的密碼]",
+              "size": "sm",
+              "color": "#EEEEEEBB",
+              "align": "start",
+              "wrap": true,
+              "contents": []
+            },
+            {
+              "type": "text",
+              "text": "如需重新抓取資料：/重新整理",
+              "size": "sm",
+              "color": "#EEEEEEBB",
+              "align": "start",
+              "wrap": true,
+              "contents": []
+            },
+            {
+              "type": "text",
+              "text": "抓取自己的uuid：/我的uuid",
+              "size": "sm",
+              "color": "#EEEEEEBB",
+              "align": "start",
+              "wrap": true,
+              "contents": []
+            },
+            {
+              "type": "text",
+              "text": "將帳戶上的帳號強制清除：/清除綁定",
+              "size": "sm",
+              "color": "#EEEEEEBB",
+              "align": "start",
+              "wrap": true,
+              "contents": []
+            },
+            {
+              "type": "text",
+              "text": "綁定帳戶：/開始綁定",
+              "size": "sm",
+              "color": "#EEEEEEBB",
+              "align": "start",
+              "wrap": true,
+              "contents": []
+            },
+            {
+              "type": "text",
+              "text": "知道自己是否已被綁定：/我的帳號",
+              "size": "sm",
+              "color": "#EEEEEEBB",
+              "align": "start",
+              "wrap": true,
+              "contents": []
+            }
+          ]
+        }
+      ]
+    },
+    "footer": {
+      "type": "box",
+      "layout": "horizontal",
+      "backgroundColor": "#4D1470FF",
+      "contents": [
+        {
+          "type": "filler"
+        }
+      ]
+    }
+  }
