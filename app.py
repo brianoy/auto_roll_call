@@ -361,10 +361,11 @@ def handle_message(event) :
     requests.post(url=discord_webhook, data=request_data)
     
     if (event.source.type == "group") :
-        if (event.source.group_id == groupId[0]) :
-            quick_reply(groupId[0])
-        elif (event.source.group_id == groupId[1]) :
-            quick_reply(groupId[1])    
+        #if (event.source.group_id == groupId[0]) :
+            #quick_reply(groupId[0])
+        #elif (event.source.group_id == groupId[1]) :
+            #quick_reply(groupId[1])    
+        print("限制使用")
     elif (event.source.type == "user") :
         user_quick_reply(event.source.user_id)
     else:
