@@ -267,7 +267,7 @@ def curriculum(event):
 
 def today_curriculum(event):
     get_now_user_id = event.source.user_id
-    day_list_num = datetime.datetime.today().weekday()*14-14
+    day_list_num = (datetime.datetime.today().isoweekday()*14)-14
     if get_now_user_id in useridlist:#帳號存在
         get_now_user = userlist[useridlist.index(get_now_user_id)]
         get_now_pwd = pwlist[useridlist.index(get_now_user_id)]
@@ -278,7 +278,7 @@ def today_curriculum(event):
         substitute = '"day" : ' + switcher.get(str(datetime.datetime.today().isoweekday()))
         for k in range(day_list_num , day_list_num+15 , 1):
             substitute = (substitute + ',' + '"curriculum_' + str(k - day_list_num + 1) + '" : "' + curriculum_list[k] + '",' + '"place_' + str(k - day_list_num + 1) + '" : "' +classroom_list[k] + '"') 
-        substitute = "{" + substitute + "}"
+        #substitute = "{" + substitute + "}"
         print(substitute)
         print(type(substitute))
         substitute = ast.literal_eval(substitute)
