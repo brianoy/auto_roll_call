@@ -278,14 +278,14 @@ def today_curriculum(event):
         substitute = '"day" : ' + switcher.get(str(datetime.datetime.today().isoweekday()))
         for k in range(day_list_num , day_list_num+15 , 1):
             substitute = (substitute + ',' + '"curriculum_' + str(k - day_list_num + 1) + '" : "' + curriculum_list[k] + '",' + '"place_' + str(k - day_list_num + 1) + '" : "' +classroom_list[k] + '"') 
-        #substitute = "{" + substitute + "}"
+        substitute = "{" + substitute + "}"
         print(substitute)
         print(type(substitute))
         substitute = ast.literal_eval(substitute)
         print(substitute)
         print(type(substitute))
         with open("json/today_curriculum.json") as path:
-            FlexMessage = json.loads(path.read() % {substitute})
+            FlexMessage = json.loads(path.read() % substitute)
             flex_message = FlexSendMessage(
                 alt_text = '(請點擊聊天室已取得更多消息)' ,
                 contents = FlexMessage)
