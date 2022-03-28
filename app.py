@@ -2,6 +2,7 @@ from flask import Flask, request, abort
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import *
+from lxml import etree #find with xpath
 from selenium import webdriver
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
@@ -10,12 +11,12 @@ from datetime import datetime
 import requests
 import time
 import os
-import datetime
+import datetime #倒數 星期幾
 import random
 import psycopg2
 import discord
 import json
-from lxml import etree
+import ast #str to mapping
 
 GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
 CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
@@ -244,6 +245,8 @@ def get_curriculum_pros(get_now_user,get_now_pwd):
                 a = ""
             classroom_list.append(str(b))
             curriculum_list.append(str(a))
+            print(classroom_list)
+            print(curriculum_list)
     return curriculum_list,classroom_list
 
 
@@ -260,7 +263,7 @@ def curriculum(event):
                 contents = FlexMessage)
             line_bot_api.reply_message(event.reply_token, flex_message)
     else:
-        line_bot_api.reply_message(event_temp.reply_token, TextSendMessage("你尚未綁定帳號"))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("你尚未綁定帳號"))
     return
         
 
@@ -274,7 +277,8 @@ def today_curriculum(event):
         switcher = { "1": "星期一", "2": "星期二", "3": "星期三", "4": "星期四", "5": "星期五", "6": "星期六", "7": "星期日"}
         substitute = '"day" : ' + switcher.get(str(datetime.datetime.today().isoweekday()))
         for k in range(day_list_num , day_list_num+15 , 1):
-            substitute = (substitute + ',' + '"curriculum_' + str(k - day_list_num + 1) + '" : ' + curriculum_list[k] + ',' + '"place_' + str(k - day_list_num + 1) + '" : ' +classroom_list[k]) 
+            substitute = (substitute + ',' + '"curriculum_' + str(k - day_list_num + 1) + '" : "' + curriculum_list[k] + '",' + '"place_' + str(k - day_list_num + 1) + '" : "' +classroom_list[k] + '"') 
+        substitute = "{" + substitute + "}"
         print(substitute)
         with open("json/today_curriculum.json") as path:
             FlexMessage = json.loads(path.read() % {substitute})
@@ -283,7 +287,7 @@ def today_curriculum(event):
                 contents = FlexMessage)
             line_bot_api.reply_message(event.reply_token, flex_message)
     else:
-        line_bot_api.reply_message(event_temp.reply_token, TextSendMessage("你尚未綁定帳號"))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("你尚未綁定帳號"))
     return
 
 
