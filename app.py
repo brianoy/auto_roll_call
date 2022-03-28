@@ -15,11 +15,7 @@ import random
 import psycopg2
 import discord
 import json
-
-import group_chat
-import login_process
-import personal_chat
-import msg_process
+from lxml import etree
 
 GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
 CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
@@ -29,7 +25,7 @@ LINE_CHANNEL_ACCESS_TOKEN = os.environ['LINE_CHANNEL_ACCESS_TOKEN']
 LINE_CHANNEL_SECRET = os.environ['LINE_CHANNEL_SECRET']
 DISCORD_WEBHOOK = os.environ['DISCORD_WEBHOOK']
 OPUUID = os.environ['LINE_OP_UUID']
-changelog = "flexmsg、quick reply"
+changelog = "flexmsg、quick reply、加速、課表"
 client = discord.Client()
 app = Flask(__name__)
 
@@ -44,11 +40,6 @@ STICKER_LIST = {'465400171':'ㄌㄩㄝ','465400158':'才不美','465400159':'Woo
 line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)# Channel Access Token
 handler = WebhookHandler(LINE_CHANNEL_SECRET)# Channel Secret
 discord_webhook = DISCORD_WEBHOOK
-
-#userlist = ["11021340","11021339","11021346","11021331","11021338","11021337","11021325"]
-#pwlist = ["aA123456789","Zz0123456789","Angel0610","dEEwYupDDCqh9","Daniel@123456","Wolf1017","Ray11021325"]
-#namelist = ["歐陽立庭","蔡祐恩","洪晨旻","楊智涵","楊其宸","張子恆","江昱叡"]
-#useridlist = []
 grouptoken = ["4C0ZkJflAfexSpelBcoEYVobqbbSD0aGFNvpGAVcdUX","vUQ1xrf4cIp7kFlWifowMJf4XHdtUSHeXi1QeUKARa9","WCIuPhhETZysoA6qjdx59kblgzbc6gQuVscBKS91Fi5"]
 groupId = ['Cc97a91380e09611261010e4c5c682711','C0041b628a8712ace35095f505520c0bd','Cdebd7e16f5b52db01c3efd20b12ddd35']
 
@@ -92,6 +83,62 @@ def get_all_user():#turn raw data into 4 argument lists
     cursor.close()
     conn.close()
 
+
+def url_login(msg):
+  start_time = time.time()
+  chrome_options = webdriver.ChromeOptions()
+  chrome_options.add_argument('--headless')
+  chrome_options.add_argument('--no-sandbox')
+  chrome_options.add_argument('--disable-dev-shm-usage')
+  url = str(msg)
+  messageout = ""
+  success_login_status = 0
+  global fail_login_status
+  fail_login_status = 0
+  for i in range(0,len(userlist),1):
+     usr =  userlist[i]
+     pwd = pwlist[i]
+     name = namelist[i]
+     wd = webdriver.Chrome('chromedriver',options=chrome_options)
+     wd.get(url)
+     not_open = "未開放 QRCODE簽到功能" in wd.page_source
+     if not_open:
+         fail_login_status = len(userlist)
+         messageout = "\n🟥警告❌，點名並沒有開放，請稍後再試或自行手點，全數點名失敗\n"
+         break
+     else:
+         wd.execute_script('document.getElementById("UserNm").value ="' + usr + '"')
+         wd.execute_script('document.getElementById("UserPasswd").value ="' + pwd + '"')
+         wd.execute_script('document.getElementsByClassName("w3-button w3-block w3-green w3-section w3-padding")[0].click();')
+         password_wrong = EC.alert_is_present()(wd)#如果有錯誤訊息
+         if password_wrong:
+           failmsg = password_wrong.text
+           password_wrong.accept()
+           messageout = (messageout + "學號:" + usr + "\n🟥點名失敗❌\n錯誤訊息:密碼錯誤" + failmsg +'\n\n')#error login
+           print("密碼錯誤\n------------------\n" + messageout)
+           fail_login_status = fail_login_status +1
+           wd.quit()
+         else:
+           soup = BeautifulSoup(wd.page_source, 'html.parser')
+           #print(soup.prettify()) #html details
+           if (soup.find_all(stroke="#D06079") != []):#fail
+               messageout = (messageout + "\n🟥點名失敗❌，"+ name +"好可憐喔😱\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text +'\n\n')
+               print("點名失敗\n------------------\n" + messageout)
+               fail_login_status = fail_login_status +1
+           elif (soup.find_all(stroke="#73AF55") != []):#success
+               detailmsg = wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text
+               messageout = (messageout + "\n🟩點名成功✅，"+ name +"會非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':').replace('<br>','\n')+'\n\n')
+               print("點名成功\n------------------\n" + messageout)
+               success_login_status = success_login_status +1
+           else:
+               messageout = (messageout + name + "\n🟥發生未知的錯誤❌，" + "學號:" + usr + " " + name + "點名失敗😱，趕快聯繫布萊恩，並自行手點" + '\n\n')#unknown failure
+               print("點名失敗\n------------------\n" + messageout)
+               fail_login_status = fail_login_status +1
+  wd.quit()
+  messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人")
+  messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ['HEROKU_RELEASE_CREATED_AT'] + "GMT+0\n" + "版本:" + os.environ['HEROKU_RELEASE_VERSION']+ "\n此次點名耗費時間:" + str(round(time.time() - start_time)) +"秒" +"\n更新日誌:" + changelog)
+  return messageout
+
 @handler.add(PostbackEvent)
 def handle_postback(event):
     postback_msg = event.postback.data
@@ -100,7 +147,7 @@ def handle_postback(event):
         if get_now_user_id in useridlist:#帳號存在
             change_password = postback_msg.replace("/changepassword","").replace(" ","")
             change_password_via_uuid(change_password , get_now_user_id)
-            with open("changed_password.json") as path:
+            with open("json/changed_password.json") as path:
                     FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id})
             flex_message = FlexSendMessage(
                                alt_text = '(請點擊聊天室已取得更多消息)' ,
@@ -164,6 +211,83 @@ def distinguish(msgbuffer):
         msgbuffer = "🟩\n" + msgbuffer
     return msgbuffer
 
+
+def get_curriculum_pros(get_now_user,get_now_pwd):
+    curriculum_list = []
+    classroom_list = []
+    url="https://itouch.cycu.edu.tw/active_system/login/loginfailt.jsp?User_url=/active_system/quary/s_query_course_list.jsp"
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    wd = webdriver.Chrome('chromedriver',options=chrome_options)
+    wd.get(url)
+    wd.execute_script('document.getElementById("UserNm").value ="' + get_now_user + '"')
+    wd.execute_script('document.getElementById("UserPasswd").value ="' + get_now_pwd + '"')
+    xpath = "/html/body/div[3]/form/table/tbody/tr[1]/td/table/tbody/tr[4]/td/div[1]/input"
+    wd.find_element(by=By.XPATH, value=xpath).click()
+    wd.get("https://itouch.cycu.edu.tw/active_system/quary/s_query_course_list.jsp");
+    soup = BeautifulSoup(wd.page_source, 'html.parser')
+    dom = etree.HTML(str(soup))
+    wd.quit
+    for j in range(3,10,1):#星期
+        for i in range(3,32,2):#一天14節課
+            a = dom.xpath('/html/body/table[1]/tbody/tr['+ str(i) + ']/td[' + str(j) + ']')[0].text#課程名
+            if a != None:#有課
+                try:
+                    b = dom.xpath('/html/body/table[1]/tbody/tr['+ str(i) +']/td[' + str(j) +']/font')[0].text#如果有課程，課程的教室
+                except IndexError: #有課程但是沒教室
+                    print("") 
+                    b = ""
+            else:#沒課
+                b = ""
+                a = ""
+            classroom_list.append(str(b))
+            curriculum_list.append(str(a))
+    return curriculum_list,classroom_list
+
+
+def curriculum(event):
+    get_now_user_id = event.source.user_id
+    if get_now_user_id in useridlist:#帳號存在
+        get_now_user = userlist[useridlist.index(get_now_user_id)]
+        get_now_pwd = pwlist[useridlist.index(get_now_user_id)]
+        curriculum_list,classroom_list = get_curriculum_pros(get_now_user,get_now_pwd)
+        with open("json/curriculum.json") as path:
+            FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id})
+            flex_message = FlexSendMessage(
+                alt_text = '(請點擊聊天室已取得更多消息)' ,
+                contents = FlexMessage)
+            line_bot_api.reply_message(event.reply_token, flex_message)
+    else:
+        line_bot_api.reply_message(event_temp.reply_token, TextSendMessage("你尚未綁定帳號"))
+    return
+        
+
+def today_curriculum(event):
+    get_now_user_id = event.source.user_id
+    day_list_num = datetime.today().weekday()*14-14
+    if get_now_user_id in useridlist:#帳號存在
+        get_now_user = userlist[useridlist.index(get_now_user_id)]
+        get_now_pwd = pwlist[useridlist.index(get_now_user_id)]
+        curriculum_list,classroom_list = get_curriculum_pros(get_now_user,get_now_pwd)
+        switcher = { 1: "星期一", 2: "星期二", 3: "星期三", 4: "星期四", 5: "星期五", 6: "星期六", 7: "星期日"}
+        substitute = '"day" : ' + switcher.get(datetime.today().weekday(),1)
+        for k in range(day_list_num , day_list_num+15 , 1):
+            substitute = (substitute + ',' + '"curriculum_' + str(k - day_list_num + 1) + '" : ' + curriculum_list[k] + ',' + '"place_' + str(k - day_list_num + 1) + '" : ' +classroom_list[k]) 
+        print(substitute)
+        with open("json/today_curriculum.json") as path:
+            FlexMessage = json.loads(path.read() % {substitute})
+            flex_message = FlexSendMessage(
+                alt_text = '(請點擊聊天室已取得更多消息)' ,
+                contents = FlexMessage)
+            line_bot_api.reply_message(event.reply_token, flex_message)
+    else:
+        line_bot_api.reply_message(event_temp.reply_token, TextSendMessage("你尚未綁定帳號"))
+    return
+
+
+    
  #warning! reply token would expired after send msg about 30seconds. use push msg! 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event) :
@@ -235,13 +359,6 @@ def handle_message(event) :
             else:
                 public_msgbuffer = (announce + '此非itouch網域')
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
-    elif '變更權杖:' in msg:
-        if OPUUID == event.source.user_id :
-           print("開始變更權杖")
-           line_bot_api.reply_message(event.reply_token, TextSendMessage("已變更權杖"))
-        else:
-            print("變更權杖失敗，沒有權限")
-            line_bot_api.reply_message(event.reply_token, TextSendMessage("沒有權限，無法變更權杖"))
     elif '要吃什麼' in msg or msg == '吃什麼':
         line_bot_api.reply_message(event.reply_token, TextSendMessage(EAT[random.randint(0,len(EAT)-1)]))
     elif '要吃啥' in msg or msg == '吃啥':
@@ -345,14 +462,14 @@ def command(msg,event):
         if get_now_user_id in useridlist:#帳號存在
             get_now_name = namelist[useridlist.index(get_now_user_id)]
             get_now_user = userlist[useridlist.index(get_now_user_id)]
-            with open("my_account.json") as path:
+            with open("json/my_account.json") as path:
                 FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id,"get_now_name" : get_now_name,"get_now_user" : get_now_user})
             flex_message = FlexSendMessage(
                            alt_text = '(請點擊聊天室已取得更多消息)' ,
                            contents = FlexMessage)
             line_bot_api.reply_message(event.reply_token, flex_message)
         else:#帳號不存在
-            with open("account_not_exist.json") as path:
+            with open("json/account_not_exist.json") as path:
                 FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id})
             flex_message = FlexSendMessage(
                            alt_text = '(請點擊聊天室已取得更多消息)' ,
@@ -360,12 +477,13 @@ def command(msg,event):
             line_bot_api.reply_message(event.reply_token, flex_message)
 
     elif '/help' == msg or '/幫助' == msg:
-        with open("help.json") as path:
+        with open("json/help.json") as path:
                 FlexMessage = json.loads(path.read())
         flex_message = FlexSendMessage(
                        alt_text = '(請點擊聊天室已取得更多消息)' ,
                        contents = FlexMessage)
         line_bot_api.reply_message(event.reply_token, flex_message)
+    
 
     else:
         if (event.source.type == "user") :
@@ -374,6 +492,7 @@ def command(msg,event):
             line_bot_api.push_message(event.source.group_id, TextSendMessage("無法在群組使用此指令，請以私訊機器人的形式進行，謝謝"))
         print("指令不存在此區")
     return
+
 
 def quick_reply(id):
     quick_reply = TextSendMessage(
@@ -438,25 +557,31 @@ def limited_command(msg,event):
             if change_password == "":
                 line_bot_api.reply_message(event.reply_token, TextSendMessage("警告 密碼不能為空"))  
             else:
-                with open("change_password.json") as path:
+                with open("json/change_password.json") as path:
                     FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id , "change_password" : change_password})
                 flex_message = FlexSendMessage(
                             alt_text = '(請點擊聊天室已取得更多消息)' ,
                             contents = FlexMessage)
                 line_bot_api.reply_message(event.reply_token, flex_message)
         else:#帳號不存在
-            with open("account_not_exist.json") as path:
+            with open("json/account_not_exist.json") as path:
                 FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id})
             flex_message = FlexSendMessage(
                            alt_text = '(請點擊聊天室已取得更多消息)' ,
                            contents = FlexMessage)
             line_bot_api.reply_message(event.reply_token, flex_message)
 
+    elif '/整日課表' == msg or '/我的課表' == msg :
+        curriculum(event)
+
+    elif '/今日課表' == msg or '/今天的課表' == msg :
+        today_curriculum(event)
+
     elif '/清除綁定' == msg or '/清楚綁定' == msg:
         get_now_user_id = event.source.user_id
         #get_now_name = namelist[useridlist.index(get_now_user_id)]
         #get_now_user = userlist[useridlist.index(get_now_user_id)]
-        with open("comfirmed_delete.json") as path:
+        with open("json/comfirmed_delete.json") as path:
                 FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id})
         flex_message = FlexSendMessage(
                         alt_text = '(請點擊聊天室已取得更多消息)' ,
@@ -476,7 +601,7 @@ def limited_command(msg,event):
             try:
                 set_now_account = int(split_msg[2])
                 register(set_now_name, get_now_user_id, set_now_account, set_now_password)
-                with open("create_account.json") as path:
+                with open("json/create_account.json") as path:
                     FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id,"get_now_name" : set_now_name,"get_now_user" : set_now_account,"get_now_password" : set_now_password})
                 flex_message = FlexSendMessage(
                                 alt_text = '(請點擊聊天室已取得更多消息)' ,

@@ -1,0 +1,736 @@
+{
+  "type": "carousel",
+  "contents": [
+    {
+      "type": "bubble",
+      "header": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "text",
+            "text": "%(day)s",
+            "weight": "bold",
+            "size": "xxl",
+            "margin": "md",
+            "contents": [],
+            "wrap": true
+          }
+        ],
+        "margin": "none",
+        "backgroundColor": "#25535916",
+        "spacing": "none",
+        "cornerRadius": "md",
+        "borderWidth": "none"
+      },
+      "body": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "separator"
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "spacing": "sm",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "vertical",
+                "flex": 5,
+                "contents": [
+                  {
+                    "type": "text",
+                    "size": "sm",
+                    "text": "07:10 ~ 08:00",
+                    "align": "start"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "spacing": "sm",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "%(curriculum_1)s",
+                        "flex": 3,
+                        "align": "start"
+                      },
+                      {
+                        "type": "text",
+                        "text": "%(place_1)s",
+                        "flex": 1,
+                        "align": "center"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "separator"
+              }
+            ],
+            "backgroundColor": "#25535916"
+          },
+          {
+            "type": "separator"
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "spacing": "sm",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "vertical",
+                "flex": 5,
+                "contents": [
+                  {
+                    "type": "text",
+                    "size": "sm",
+                    "text": "08:10 ~ 09:00",
+                    "align": "start"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "spacing": "sm",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "%(curriculum_2)s",
+                        "flex": 3,
+                        "align": "start"
+                      },
+                      {
+                        "type": "text",
+                        "text": "%(place_2)s",
+                        "flex": 1,
+                        "align": "center"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "separator"
+              }
+            ]
+          },
+          {
+            "type": "separator"
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "spacing": "sm",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "vertical",
+                "flex": 5,
+                "contents": [
+                  {
+                    "type": "text",
+                    "size": "sm",
+                    "text": "09:10 ~ 10:00",
+                    "align": "start"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "spacing": "sm",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "%(curriculum_3)s",
+                        "flex": 3,
+                        "align": "start"
+                      },
+                      {
+                        "type": "text",
+                        "text": "%(place_3)s",
+                        "flex": 1,
+                        "align": "center"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "separator"
+              }
+            ],
+            "backgroundColor": "#25535916"
+          },
+          {
+            "type": "separator"
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "spacing": "sm",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "vertical",
+                "flex": 5,
+                "contents": [
+                  {
+                    "type": "text",
+                    "size": "sm",
+                    "text": "10:10 ~ 11:00",
+                    "align": "start"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "spacing": "sm",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "%(curriculum_4)s",
+                        "flex": 3,
+                        "align": "start"
+                      },
+                      {
+                        "type": "text",
+                        "text": "%(place_4)s",
+                        "flex": 1,
+                        "align": "center"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "separator"
+              }
+            ]
+          },
+          {
+            "type": "separator"
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "spacing": "sm",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "vertical",
+                "flex": 5,
+                "contents": [
+                  {
+                    "type": "text",
+                    "size": "sm",
+                    "text": "11:10 ~ 12:00",
+                    "align": "start"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "spacing": "sm",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "%(curriculum_5)s",
+                        "flex": 3,
+                        "align": "start"
+                      },
+                      {
+                        "type": "text",
+                        "text": "%(place_5)s",
+                        "flex": 1,
+                        "align": "center"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "separator"
+              }
+            ],
+            "backgroundColor": "#25535916"
+          },
+          {
+            "type": "separator"
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "spacing": "sm",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "vertical",
+                "flex": 5,
+                "contents": [
+                  {
+                    "type": "text",
+                    "size": "sm",
+                    "text": "12:10 ~ 13:00",
+                    "align": "start"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "spacing": "sm",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "%(curriculum_6)s",
+                        "flex": 3,
+                        "align": "start"
+                      },
+                      {
+                        "type": "text",
+                        "text": "%(place_6)s",
+                        "flex": 1,
+                        "align": "center"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "separator"
+              }
+            ]
+          },
+          {
+            "type": "separator"
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "spacing": "sm",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "vertical",
+                "flex": 5,
+                "contents": [
+                  {
+                    "type": "text",
+                    "size": "sm",
+                    "text": "13:10 ~ 14:00",
+                    "align": "start"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "spacing": "sm",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "%(curriculum_7)s",
+                        "flex": 3,
+                        "align": "start"
+                      },
+                      {
+                        "type": "text",
+                        "text": "%(place_7)s",
+                        "flex": 1,
+                        "align": "center"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "separator"
+              }
+            ],
+            "backgroundColor": "#25535916"
+          },
+          {
+            "type": "separator"
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "spacing": "sm",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "vertical",
+                "flex": 5,
+                "contents": [
+                  {
+                    "type": "text",
+                    "size": "sm",
+                    "text": "14:10 ~ 15:00",
+                    "align": "start"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "spacing": "sm",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "%(curriculum_8)s",
+                        "flex": 3,
+                        "align": "start"
+                      },
+                      {
+                        "type": "text",
+                        "text": "%(place_8)s",
+                        "flex": 1,
+                        "align": "center"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "separator"
+              }
+            ]
+          },
+          {
+            "type": "separator"
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "spacing": "sm",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "vertical",
+                "flex": 5,
+                "contents": [
+                  {
+                    "type": "text",
+                    "size": "sm",
+                    "text": "15:10 ~16:00",
+                    "align": "start"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "spacing": "sm",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "%(curriculum_9)s",
+                        "flex": 3,
+                        "align": "start"
+                      },
+                      {
+                        "type": "text",
+                        "text": "%(place_9)s",
+                        "flex": 1,
+                        "align": "center"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "separator"
+              }
+            ],
+            "backgroundColor": "#25535916"
+          },
+          {
+            "type": "separator"
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "spacing": "sm",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "vertical",
+                "flex": 5,
+                "contents": [
+                  {
+                    "type": "text",
+                    "size": "sm",
+                    "text": "16:10 ~ 17:00",
+                    "align": "start"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "spacing": "sm",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "%(curriculum_10)s",
+                        "flex": 3,
+                        "align": "start"
+                      },
+                      {
+                        "type": "text",
+                        "text": "%(place_10)s",
+                        "flex": 1,
+                        "align": "center"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "separator"
+              }
+            ]
+          },
+          {
+            "type": "separator"
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "spacing": "sm",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "vertical",
+                "flex": 5,
+                "contents": [
+                  {
+                    "type": "text",
+                    "size": "sm",
+                    "text": "17:05 ~ 17:55",
+                    "align": "start"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "spacing": "sm",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "%(curriculum_11)s",
+                        "flex": 3,
+                        "align": "start"
+                      },
+                      {
+                        "type": "text",
+                        "text": "%(place_11)s",
+                        "flex": 1,
+                        "align": "center"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "separator"
+              }
+            ],
+            "backgroundColor": "#25535916"
+          },
+          {
+            "type": "separator"
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "spacing": "sm",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "vertical",
+                "flex": 5,
+                "contents": [
+                  {
+                    "type": "text",
+                    "size": "sm",
+                    "text": "18:00 ~ 18:50",
+                    "align": "start"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "spacing": "sm",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "%(curriculum_12)s",
+                        "flex": 3,
+                        "align": "start"
+                      },
+                      {
+                        "type": "text",
+                        "text": "%(place_12)s",
+                        "flex": 1,
+                        "align": "center"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "separator"
+              }
+            ]
+          },
+          {
+            "type": "separator"
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "spacing": "sm",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "vertical",
+                "flex": 5,
+                "contents": [
+                  {
+                    "type": "text",
+                    "size": "sm",
+                    "text": "18:55 ~ 19:45",
+                    "align": "start"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "spacing": "sm",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "%(curriculum_13)s",
+                        "flex": 3,
+                        "align": "start"
+                      },
+                      {
+                        "type": "text",
+                        "text": "%(place_13)s",
+                        "flex": 1,
+                        "align": "center"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "separator"
+              }
+            ],
+            "backgroundColor": "#25535916"
+          },
+          {
+            "type": "separator"
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "spacing": "sm",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "vertical",
+                "flex": 5,
+                "contents": [
+                  {
+                    "type": "text",
+                    "size": "sm",
+                    "text": "19:50 ~ 20:40",
+                    "align": "start"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "spacing": "sm",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "%(curriculum_14)s",
+                        "flex": 3,
+                        "align": "start"
+                      },
+                      {
+                        "type": "text",
+                        "text": "%(place_14)s",
+                        "flex": 1,
+                        "align": "center"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "separator"
+              }
+            ]
+          },
+          {
+            "type": "separator"
+          },
+          {
+            "type": "box",
+            "layout": "horizontal",
+            "spacing": "sm",
+            "contents": [
+              {
+                "type": "box",
+                "layout": "vertical",
+                "flex": 5,
+                "contents": [
+                  {
+                    "type": "text",
+                    "size": "sm",
+                    "text": "20:45 ~ 21:35",
+                    "align": "start"
+                  },
+                  {
+                    "type": "box",
+                    "layout": "baseline",
+                    "spacing": "sm",
+                    "contents": [
+                      {
+                        "type": "text",
+                        "text": "%(curriculum_15)s",
+                        "flex": 3,
+                        "align": "start"
+                      },
+                      {
+                        "type": "text",
+                        "text": "%(place_15)s",
+                        "flex": 1,
+                        "align": "center"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "type": "separator"
+              }
+            ],
+            "backgroundColor": "#25535916"
+          }
+        ],
+        "backgroundColor": "#33A6B850"
+      },
+      "footer": {
+        "type": "box",
+        "layout": "vertical",
+        "contents": [
+          {
+            "type": "filler"
+          }
+        ]
+      },
+      "styles": {
+        "header": {
+          "backgroundColor": "#33A6B856",
+          "separator": false
+        },
+        "footer": {
+          "backgroundColor": "#33A6B856"
+        }
+      }
+    }
+  ]
+}
