@@ -245,8 +245,6 @@ def get_curriculum_pros(get_now_user,get_now_pwd):
                 a = ""
             classroom_list.append(str(b))
             curriculum_list.append(str(a))
-            print(classroom_list)
-            print(curriculum_list)
     return curriculum_list,classroom_list
 
 
@@ -274,12 +272,18 @@ def today_curriculum(event):
         get_now_user = userlist[useridlist.index(get_now_user_id)]
         get_now_pwd = pwlist[useridlist.index(get_now_user_id)]
         curriculum_list,classroom_list = get_curriculum_pros(get_now_user,get_now_pwd)
-        switcher = { "1": "星期一", "2": "星期二", "3": "星期三", "4": "星期四", "5": "星期五", "6": "星期六", "7": "星期日"}
+        print(classroom_list)
+        print(curriculum_list)
+        switcher = { "1": '"星期一"', "2": '"星期二"', "3": '"星期三"', "4": '"星期四"', "5": '"星期五"', "6": '"星期六"', "7": '"星期日"'}
         substitute = '"day" : ' + switcher.get(str(datetime.datetime.today().isoweekday()))
         for k in range(day_list_num , day_list_num+15 , 1):
             substitute = (substitute + ',' + '"curriculum_' + str(k - day_list_num + 1) + '" : "' + curriculum_list[k] + '",' + '"place_' + str(k - day_list_num + 1) + '" : "' +classroom_list[k] + '"') 
         substitute = "{" + substitute + "}"
         print(substitute)
+        print(type(substitute))
+        substitute = ast.literal_eval(substitute)
+        print(substitute)
+        print(type(substitute))
         with open("json/today_curriculum.json") as path:
             FlexMessage = json.loads(path.read() % {substitute})
             flex_message = FlexSendMessage(
