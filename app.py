@@ -110,6 +110,7 @@ def url_login(msg,event,force):
      pwd = pwlist[i]
      name = namelist[i]
      wd.get(url)
+     time.sleep(1)
      soup_1 = BeautifulSoup(wd.page_source, 'html.parser')
      dom = etree.HTML(str(soup_1))
      not_open = "未開放 QRCODE簽到功能" in wd.page_source
@@ -250,7 +251,6 @@ def get_curriculum_pros(get_now_user,get_now_pwd):
     #chrome_options.add_argument('--disable-dev-shm-usage')
     #wd = webdriver.Chrome('chromedriver',options=chrome_options)
     wd.get(url)
-    time.sleep(1)
     wd.execute_script('document.getElementById("UserNm").value ="' + get_now_user + '"')
     wd.execute_script('document.getElementById("UserPasswd").value ="' + get_now_pwd + '"')
     xpath = "/html/body/div[3]/form/table/tbody/tr[1]/td/table/tbody/tr[4]/td/div[1]/input"
