@@ -95,7 +95,6 @@ def url_login(msg,event,force):
   chrome_options.add_argument('--no-sandbox')
   chrome_options.add_argument('--disable-dev-shm-usage')
   print(type(msg))
-  print(type(url))
   url = str(msg)
   print(type(msg))
   print(type(url))
