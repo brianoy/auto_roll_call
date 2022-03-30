@@ -51,7 +51,6 @@ discord_webhook = DISCORD_WEBHOOK
 grouptoken = ["4C0ZkJflAfexSpelBcoEYVobqbbSD0aGFNvpGAVcdUX","vUQ1xrf4cIp7kFlWifowMJf4XHdtUSHeXi1QeUKARa9","WCIuPhhETZysoA6qjdx59kblgzbc6gQuVscBKS91Fi5"]
 groupId = ['Cc97a91380e09611261010e4c5c682711','C0041b628a8712ace35095f505520c0bd','Cdebd7e16f5b52db01c3efd20b12ddd35']
 
-url = ""
 msgbuffer = ""
 public_msgbuffer = ""
 success_login_status = 0
@@ -94,15 +93,13 @@ def get_all_user():#turn raw data into 4 argument lists
 
 def url_login(msg,event,force):
   start_time = time.time()
-  chrome_options = webdriver.ChromeOptions()
-  chrome_options.add_argument('--headless')
-  chrome_options.add_argument('--no-sandbox')
-  chrome_options.add_argument('--disable-dev-shm-usage')
+  #chrome_options = webdriver.ChromeOptions()
+  #chrome_options.add_argument('--headless')
+  #chrome_options.add_argument('--no-sandbox')
+  #chrome_options.add_argument('--disable-dev-shm-usage')
   url = str(msg)
   print(msg)
   print(url)
-  #url = "https://itouch.cycu.edu.tw/active_system/query_course/learning_activity_stusign.jsp?act_no=351de561-ef18-4aeb-a82d-dc4a52b01210&afterLogin=true"
-  #wd = webdriver.Chrome('chromedriver',options=chrome_options)
   messageout = ""
   success_login_status = 0
   global fail_login_status
@@ -115,8 +112,8 @@ def url_login(msg,event,force):
      soup_1 = BeautifulSoup(wd.page_source, 'html.parser')
      dom = etree.HTML(str(soup_1))
      not_open = "未開放 QRCODE簽到功能" in wd.page_source
-     time_class = dom.xpath('/html/body/div/div[2]/p/text()[1]')[0].text
-     curriculum_name = dom.xpath('/html/body/div/div[2]/p/text()[2]')[0].text  
+     time_and_class = dom.xpath('/html/body/div/div[2]/p/text()[3]')[0]
+     curriculum_name = dom.xpath('/html/body/div/div[2]/p/text()[4]')[0]
      if not_open:
          fail_login_status = len(userlist)
          messageout = "🟥警告❌，點名並沒有開放，請稍後再試或自行手點，全數點名失敗\n"
@@ -159,7 +156,7 @@ def url_login(msg,event,force):
                    print("點名失敗\n------------------\n" + messageout)
                    fail_login_status = fail_login_status +1
   wd.quit()
-  messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人\n" + str(time_class) + "\n" + str(curriculum_name))
+  messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人\n" + str(time_and_class) + "\n" + str(curriculum_name))
   messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ['HEROKU_RELEASE_CREATED_AT'] + "GMT+0\n" + "版本:" + os.environ['HEROKU_RELEASE_VERSION']+ "\n此次點名耗費時間:" + str(round(time.time() - start_time)) +"秒" +"\n更新日誌:" + changelog)
   return messageout
 
@@ -245,10 +242,10 @@ def get_curriculum_pros(get_now_user,get_now_pwd):
     curriculum_list = []
     classroom_list = []
     url="https://itouch.cycu.edu.tw/active_system/login/loginfailt.jsp?User_url=/active_system/quary/s_query_course_list.jsp"
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument('--headless')
-    chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument('--disable-dev-shm-usage')
+    #chrome_options = webdriver.ChromeOptions()
+    #chrome_options.add_argument('--headless')
+    #chrome_options.add_argument('--no-sandbox')
+    #chrome_options.add_argument('--disable-dev-shm-usage')
     #wd = webdriver.Chrome('chromedriver',options=chrome_options)
     wd.get(url)
     wd.execute_script('document.getElementById("UserNm").value ="' + get_now_user + '"')
