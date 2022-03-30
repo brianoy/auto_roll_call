@@ -4,7 +4,7 @@ from linebot.exceptions import InvalidSignatureError
 from linebot.models import *
 from lxml import etree #find with xpath
 from selenium import webdriver
-#from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
@@ -35,7 +35,7 @@ chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument('--headless')
 chrome_options.add_argument('--no-sandbox')
 chrome_options.add_argument('--disable-dev-shm-usage')
-wd = webdriver.Chrome('chromedriver',options=chrome_options)
+wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
 
 EAT = (["全家","7-11","中原夜市","鍋燒意麵","肉羹","拉麵","炒飯","賣麵庄","雞腿便當","摩斯漢堡","麥當勞","烤肉飯","肯德基","石二鍋",
 "五花馬","燒肉","咖哩飯","牛排","肉燥飯","SUKIYA","霸味薑母鴨","高雄黑輪","丼飯","薩利亞","mint","火雞肉飯","品田牧場","滷味","Mr.三明治",
@@ -154,7 +154,7 @@ def url_login(msg,event,force):
                    messageout = (messageout + name + "\n🟥發生未知的錯誤❌，" + "學號:" + usr + " " + name + "點名失敗😱，趕快聯繫布萊恩，並自行手點" + '\n\n')#unknown failure
                    print("點名失敗\n------------------\n" + messageout)
                    fail_login_status = fail_login_status +1
-  wd.quit()
+     wd.quit()
   messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人\n" + str(time_and_class) + "\n" + str(curriculum_name))
   messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ['HEROKU_RELEASE_CREATED_AT'] + "GMT+0\n" + "版本:" + os.environ['HEROKU_RELEASE_VERSION']+ "\n此次點名耗費時間:" + str(round(time.time() - start_time)) +"秒" +"\n更新日誌:" + changelog)
   return messageout
