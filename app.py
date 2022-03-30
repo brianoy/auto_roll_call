@@ -98,6 +98,7 @@ def get_all_user():#turn raw data into 4 argument lists
 
 
 def url_login(msg,event,force):
+  wd = webdriver.Chrome(ChromeDriverManager().install(),options=chrome_options)
   start_time = time.time()
   url = str(msg).replace("&afterLogin=true","")
   messageout = ""
@@ -127,7 +128,6 @@ def url_login(msg,event,force):
                                 alt_text = '(請點擊聊天室已取得更多消息)' ,
                                 contents = FlexMessage)
                  line_bot_api.reply_message(event.reply_token, flex_message)
-             wd.close()
              break
          else:
              wd.execute_script('document.getElementById("UserNm").value ="' + usr + '"')
