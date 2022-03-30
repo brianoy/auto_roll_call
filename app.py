@@ -94,10 +94,7 @@ def url_login(msg,event,force):
   chrome_options.add_argument('--headless')
   chrome_options.add_argument('--no-sandbox')
   chrome_options.add_argument('--disable-dev-shm-usage')
-  print(type(msg))
   url = str(msg)
-  print(type(msg))
-  print(type(url))
   #wd = webdriver.Chrome('chromedriver',options=chrome_options)
   messageout = ""
   success_login_status = 0
@@ -107,7 +104,7 @@ def url_login(msg,event,force):
      usr =  userlist[i]
      pwd = pwlist[i]
      name = namelist[i]
-     wd.get(url)
+     wd.get("https://itouch.cycu.edu.tw:443/active_system/query_course/learning_activity_stusign.jsp?act_no=c217013c-4423-4daf-b9b8-b8ba96a909b5")
      not_open = "未開放 QRCODE簽到功能" in wd.page_source
      if not_open:
          fail_login_status = len(userlist)
