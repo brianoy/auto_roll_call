@@ -361,7 +361,7 @@ def handle_message(event) :
                       print("有不知名的群組")
                       line_bot_api.push_message(event_temp.source.group_id, TextSendMessage(distinguish(public_msgbuffer)))#除了以上兩個群組
              elif(event.source.type == "user") :
-                  line_bot_api.reply_message(event_temp.reply_token, TextSendMessage(recived))
+                  line_bot_api.reply_message(event_temp.source.user_id, TextSendMessage(recived))
                   msgbuffer = url_login(msg,event,force=False)
                   public_msgbuffer = (done + msgbuffer)
                   line_bot_api.push_message(event_temp.source.user_id, TextSendMessage(distinguish(public_msgbuffer)))
