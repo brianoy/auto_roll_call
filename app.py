@@ -94,10 +94,11 @@ def get_all_user():#turn raw data into 4 argument lists
 
 def url_login(msg,event,force):
   start_time = time.time()
-  #chrome_options = webdriver.ChromeOptions()
-  #chrome_options.add_argument('--headless')
-  #chrome_options.add_argument('--no-sandbox')
-  #chrome_options.add_argument('--disable-dev-shm-usage')
+  chrome_options = webdriver.ChromeOptions()
+  chrome_options.add_argument('--headless')
+  chrome_options.add_argument('--no-sandbox')
+  chrome_options.add_argument('--disable-dev-shm-usage')
+  wd = webdriver.Chrome(ChromeDriverManager().install(),options=chrome_options)
   url = str(msg)
   print(msg)
   print(url)
