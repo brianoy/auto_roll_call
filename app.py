@@ -119,7 +119,7 @@ def url_login(msg,event,force):
          messageout = "🟥警告❌，點名並沒有開放，請稍後再試或自行手點，全數點名失敗\n"
          break
      else:
-         if ((curriculum_name in "英文" or curriculum_name in "化學實驗") and force != True):
+         if (("英文" in curriculum_name or "化學實驗" in curriculum_name) and force != True):
              with open("json/limited_class.json") as path:
                  FlexMessage = json.loads(path.read() % {"force_url_login" : url})
                  flex_message = FlexSendMessage(
