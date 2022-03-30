@@ -1,0 +1,78 @@
+{
+    "type": "bubble",
+    "direction": "ltr",
+    "header": {
+      "type": "box",
+      "layout": "vertical",
+      "spacing": "none",
+      "margin": "none",
+      "paddingAll": "0px",
+      "width": "0px",
+      "height": "0px",
+      "backgroundColor": "#464F69",
+      "borderColor": "#464F69",
+      "contents": [
+        {
+          "type": "filler"
+        }
+      ]
+    },
+    "hero": {
+      "type": "image",
+      "url": "https://raw.githubusercontent.com/brianoy/auto_roll_call/main/86868686.png",
+      "size": "full",
+      "aspectRatio": "2:1",
+      "aspectMode": "cover",
+      "backgroundColor": "#464F69"
+    },
+    "body": {
+      "type": "box",
+      "layout": "vertical",
+      "backgroundColor": "#d600ff",
+      "borderColor": "#d600ff",
+      "contents": [
+        {
+          "type": "box",
+          "layout": "vertical",
+          "spacing": "md",
+          "margin": "sm",
+          "paddingAll": "8px",
+          "backgroundColor": "#FFFFFF44",
+          "borderColor": "#FFFFFF44",
+          "contents": [
+            {
+              "type": "text",
+              "text": "此課程不建議全體點名，確定要點名?",
+              "weight": "bold",
+              "size": "lg",
+              "color": "#EFEFEF",
+              "align": "start",
+              "wrap": true,
+              "position": "relative",
+              "contents": []
+            }
+          ]
+        }
+      ]
+    },
+    "footer": {
+      "type": "box",
+      "layout": "horizontal",
+      "backgroundColor": "#d600ff",
+      "contents": [
+        {
+          "type": "filler"
+        },
+        {
+          "type": "button",
+          "action": {
+            "type": "postback",
+            "label": "確定",
+            "data": "/force_url_login %(force_url_login)s"
+          },
+          "color": "#FFFFFF66",
+          "style": "primary"
+        }
+      ]
+    }
+  }
