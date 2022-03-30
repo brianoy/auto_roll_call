@@ -41,7 +41,7 @@ chrome_options.add_argument('--headless')
 chrome_options.add_argument('--no-sandbox')
 chrome_options.add_argument('--disable-dev-shm-usage')
 chrome_options.add_argument('user-agent=Mozilla/5.0')
-wd = webdriver.Chrome(ChromeDriverManager().install(),options=chrome_options)
+wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
 
 EAT = (["全家","7-11","中原夜市","鍋燒意麵","肉羹","拉麵","炒飯","賣麵庄","雞腿便當","摩斯漢堡","麥當勞","烤肉飯","肯德基","石二鍋",
 "五花馬","燒肉","咖哩飯","牛排","肉燥飯","SUKIYA","霸味薑母鴨","高雄黑輪","丼飯","薩利亞","mint","火雞肉飯","品田牧場","滷味","Mr.三明治",
@@ -98,7 +98,7 @@ def get_all_user():#turn raw data into 4 argument lists
 
 
 def url_login(msg,event,force):
-  wd = webdriver.Chrome(ChromeDriverManager().install(),options=chrome_options)
+  wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
   start_time = time.time()
   url = str(msg).replace("&afterLogin=true","")
   messageout = ""
@@ -110,7 +110,7 @@ def url_login(msg,event,force):
      pwd = pwlist[i]
      name = namelist[i]
      wd.get(url)
-     time.sleep(1)
+     #time.sleep(1)
      soup_1 = BeautifulSoup(wd.page_source, 'html.parser')
      dom = etree.HTML(str(soup_1))
      not_open = "未開放 QRCODE簽到功能" in wd.page_source
