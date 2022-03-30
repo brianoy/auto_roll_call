@@ -31,7 +31,11 @@ OPUUID = os.environ['LINE_OP_UUID']
 changelog = "flexmsg、quick reply、加速、課表"
 client = discord.Client()
 app = Flask(__name__)
-wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+chrome_options = webdriver.ChromeOptions()
+chrome_options.add_argument('--headless')
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument('--disable-dev-shm-usage')
+wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
 
 EAT = (["全家","7-11","中原夜市","鍋燒意麵","肉羹","拉麵","炒飯","賣麵庄","雞腿便當","摩斯漢堡","麥當勞","烤肉飯","肯德基","石二鍋",
 "五花馬","燒肉","咖哩飯","牛排","肉燥飯","SUKIYA","霸味薑母鴨","高雄黑輪","丼飯","薩利亞","mint","火雞肉飯","品田牧場","滷味","Mr.三明治",
