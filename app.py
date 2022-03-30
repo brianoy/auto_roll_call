@@ -3,8 +3,9 @@ from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import *
 from lxml import etree #find with xpath
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -30,7 +31,7 @@ OPUUID = os.environ['LINE_OP_UUID']
 changelog = "flexmsg、quick reply、加速、課表"
 client = discord.Client()
 app = Flask(__name__)
-driver = webdriver.Chrome(ChromeDriverManager().install())
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
 
 EAT = (["全家","7-11","中原夜市","鍋燒意麵","肉羹","拉麵","炒飯","賣麵庄","雞腿便當","摩斯漢堡","麥當勞","烤肉飯","肯德基","石二鍋",
 "五花馬","燒肉","咖哩飯","牛排","肉燥飯","SUKIYA","霸味薑母鴨","高雄黑輪","丼飯","薩利亞","mint","火雞肉飯","品田牧場","滷味","Mr.三明治",
@@ -94,6 +95,7 @@ def url_login(msg,event,force):
   chrome_options.add_argument('--no-sandbox')
   chrome_options.add_argument('--disable-dev-shm-usage')
   url = str(msg)
+  wd = webdriver.Chrome('chromedriver',options=chrome_options)
   messageout = ""
   success_login_status = 0
   global fail_login_status
@@ -102,7 +104,6 @@ def url_login(msg,event,force):
      usr =  userlist[i]
      pwd = pwlist[i]
      name = namelist[i]
-     wd = webdriver.Chrome('chromedriver',options=chrome_options)
      wd.get(url)
      not_open = "未開放 QRCODE簽到功能" in wd.page_source
      if not_open:
