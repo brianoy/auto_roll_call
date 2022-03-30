@@ -99,8 +99,9 @@ def url_login(msg,event,force):
   chrome_options.add_argument('--no-sandbox')
   chrome_options.add_argument('--disable-dev-shm-usage')
   url = str(msg)
+  print(msg)
   print(url)
-  url = "https://itouch.cycu.edu.tw/active_system/query_course/learning_activity_stusign.jsp?act_no=351de561-ef18-4aeb-a82d-dc4a52b01210&afterLogin=true"
+  #url = "https://itouch.cycu.edu.tw/active_system/query_course/learning_activity_stusign.jsp?act_no=351de561-ef18-4aeb-a82d-dc4a52b01210&afterLogin=true"
   #wd = webdriver.Chrome('chromedriver',options=chrome_options)
   messageout = ""
   success_login_status = 0
@@ -110,7 +111,7 @@ def url_login(msg,event,force):
      usr =  userlist[i]
      pwd = pwlist[i]
      name = namelist[i]
-     wd.get(msg)
+     wd.get(url)
      soup_1 = BeautifulSoup(wd.page_source, 'html.parser')
      dom = etree.HTML(str(soup_1))
      not_open = "未開放 QRCODE簽到功能" in wd.page_source
@@ -342,7 +343,7 @@ def handle_message(event) :
                       "Authorization": "Bearer " + grouptoken[0], 
                       }
                       requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + recived })#翹課大魔王
-                      msgbuffer = url_login(url,event,force=False)
+                      msgbuffer = url_login(msg,event,force=False)
                       public_msgbuffer = done + msgbuffer
                       payload = {'message': distinguish(public_msgbuffer) }
                       requests.post("https://notify-api.line.me/api/notify", headers = headers, params = payload)
@@ -351,20 +352,20 @@ def handle_message(event) :
                       "Authorization": "Bearer " + grouptoken[1], 
                       }
                       requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + recived })#秘密基地
-                      msgbuffer = url_login(url,event,force=False)
+                      msgbuffer = url_login(msg,event,force=False)
                       public_msgbuffer = done + msgbuffer
                       payload = {'message': distinguish(public_msgbuffer) }
                       requests.post("https://notify-api.line.me/api/notify", headers = headers, params = payload)
                  else:
                       line_bot_api.reply_message(event_temp.reply_token, TextSendMessage(recived))
-                      msgbuffer = url_login(url,event,force=False)
+                      msgbuffer = url_login(msg,event,force=False)
                       public_msgbuffer = done + msgbuffer
                       payload = {'message': distinguish(public_msgbuffer) }
                       print("有不知名的群組")
                       line_bot_api.push_message(event_temp.source.group_id, TextSendMessage(distinguish(public_msgbuffer)))#除了以上兩個群組
              elif(event.source.type == "user") :
                   line_bot_api.reply_message(event_temp.reply_token, TextSendMessage(recived))
-                  msgbuffer = url_login(url,event,force=False)
+                  msgbuffer = url_login(msg,event,force=False)
                   public_msgbuffer = (done + msgbuffer)
                   line_bot_api.push_message(event_temp.source.user_id, TextSendMessage(distinguish(public_msgbuffer)))
              else:
