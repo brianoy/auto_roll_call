@@ -6,3 +6,4 @@ lxml
 discord
 psycopg2
 webdriver-manager
+chromedriver==99.0.4844.51
