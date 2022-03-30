@@ -104,17 +104,17 @@ def url_login(msg,event,force):
      usr =  userlist[i]
      pwd = pwlist[i]
      name = namelist[i]
-     wd.get("https://itouch.cycu.edu.tw:443/active_system/query_course/learning_activity_stusign.jsp?act_no=c217013c-4423-4daf-b9b8-b8ba96a909b5")
+     wd.get(msg)
+     soup_1 = BeautifulSoup(wd.page_source, 'html.parser')
+     dom = etree.HTML(str(soup_1))
      not_open = "未開放 QRCODE簽到功能" in wd.page_source
+     time_class = dom.xpath('/html/body/div/div[2]/p/text()[1]')[0].text
+     curriculum_name = dom.xpath('/html/body/div/div[2]/p/text()[2]')[0].text  
      if not_open:
          fail_login_status = len(userlist)
          messageout = "🟥警告❌，點名並沒有開放，請稍後再試或自行手點，全數點名失敗\n"
          break
      else:
-         soup_1 = BeautifulSoup(wd.page_source, 'html.parser')
-         dom = etree.HTML(str(soup_1))
-         time_class = dom.xpath('/html/body/div/div[2]/p/text()[1]')[0].text
-         curriculum_name = dom.xpath('/html/body/div/div[2]/p/text()[2]')[0].text  
          if ((curriculum_name in "英文" or curriculum_name in "化學實驗") and force != True):
              with open("json/limited_class.json") as path:
                  FlexMessage = json.loads(path.read() % {"force_url_login" : url})
