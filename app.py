@@ -250,6 +250,7 @@ def get_curriculum_pros(get_now_user,get_now_pwd):
     #chrome_options.add_argument('--disable-dev-shm-usage')
     #wd = webdriver.Chrome('chromedriver',options=chrome_options)
     wd.get(url)
+    time.sleep(1)
     wd.execute_script('document.getElementById("UserNm").value ="' + get_now_user + '"')
     wd.execute_script('document.getElementById("UserPasswd").value ="' + get_now_pwd + '"')
     xpath = "/html/body/div[3]/form/table/tbody/tr[1]/td/table/tbody/tr[4]/td/div[1]/input"
