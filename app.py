@@ -3,6 +3,7 @@ from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import *
 from lxml import etree #find with xpath
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium import webdriver
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
@@ -100,7 +101,7 @@ def url_login(msg,event,force):
      usr =  userlist[i]
      pwd = pwlist[i]
      name = namelist[i]
-     wd = webdriver.Chrome('chromedriver',options=chrome_options)
+     wd = webdriver.Chrome(ChromeDriverManager().install())
      wd.get(url)
      not_open = "未開放 QRCODE簽到功能" in wd.page_source
      if not_open:
@@ -239,7 +240,7 @@ def get_curriculum_pros(get_now_user,get_now_pwd):
     chrome_options.add_argument('--headless')
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument('--disable-dev-shm-usage')
-    wd = webdriver.Chrome('chromedriver',options=chrome_options)
+    wd = webdriver.Chrome(ChromeDriverManager().install())
     wd.get(url)
     wd.execute_script('document.getElementById("UserNm").value ="' + get_now_user + '"')
     wd.execute_script('document.getElementById("UserPasswd").value ="' + get_now_pwd + '"')
