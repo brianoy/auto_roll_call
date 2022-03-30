@@ -5,3 +5,4 @@ beautifulsoup4
 lxml
 discord
 psycopg2
+webdriver-manager
