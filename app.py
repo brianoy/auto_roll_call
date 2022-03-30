@@ -98,8 +98,8 @@ def url_login(msg,event,force):
   #chrome_options.add_argument('--no-sandbox')
   #chrome_options.add_argument('--disable-dev-shm-usage')
   url = str(msg)
-  print(msg)
-  print(url)
+  #print(msg)
+  #print(url)
   messageout = ""
   success_login_status = 0
   global fail_login_status
@@ -138,7 +138,6 @@ def url_login(msg,event,force):
                messageout = (messageout + "學號:" + usr + "\n🟥點名失敗❌\n錯誤訊息:密碼錯誤" + failmsg +'\n\n')#error login
                print("密碼錯誤\n------------------\n" + messageout)
                fail_login_status = fail_login_status +1
-               wd.quit()
              else:
                soup_2 = BeautifulSoup(wd.page_source, 'html.parser')
                #print(soup_2.prettify()) #html details
@@ -255,7 +254,6 @@ def get_curriculum_pros(get_now_user,get_now_pwd):
     wd.get("https://itouch.cycu.edu.tw/active_system/quary/s_query_course_list.jsp");
     soup = BeautifulSoup(wd.page_source, 'html.parser')
     dom = etree.HTML(str(soup))
-    wd.quit
     for j in range(3,10,1):#星期
         for i in range(3,32,2):#一天14節課
             a = dom.xpath('/html/body/table[1]/tbody/tr['+ str(i) + ']/td[' + str(j) + ']')[0].text#課程名
@@ -270,6 +268,7 @@ def get_curriculum_pros(get_now_user,get_now_pwd):
                 a = ""
             classroom_list.append(str(b))
             curriculum_list.append(str(a))
+    wd.quit
     return curriculum_list,classroom_list
 
 
