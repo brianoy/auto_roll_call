@@ -99,6 +99,8 @@ def url_login(msg,event,force):
   chrome_options.add_argument('--no-sandbox')
   chrome_options.add_argument('--disable-dev-shm-usage')
   url = str(msg)
+  print(url)
+  url = "https://itouch.cycu.edu.tw/active_system/query_course/learning_activity_stusign.jsp?act_no=351de561-ef18-4aeb-a82d-dc4a52b01210&afterLogin=true"
   #wd = webdriver.Chrome('chromedriver',options=chrome_options)
   messageout = ""
   success_login_status = 0
