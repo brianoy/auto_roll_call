@@ -129,7 +129,7 @@ def url_login(msg,event,force):
                                 contents = FlexMessage)
                  line_bot_api.reply_message(event.reply_token, flex_message)
              wd.quit()
-             break
+             #break
          else:
              print(usr)
              wd.execute_script('document.getElementById("UserNm").value ="' + usr + '"')
