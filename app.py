@@ -127,6 +127,7 @@ def url_login(msg,event,force):
                                 alt_text = '(請點擊聊天室已取得更多消息)' ,
                                 contents = FlexMessage)
                  line_bot_api.reply_message(event.reply_token, flex_message)
+             wd.quit()
              break
          else:
              wd.execute_script('document.getElementById("UserNm").value ="' + usr + '"')
