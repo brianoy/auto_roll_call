@@ -20,12 +20,17 @@ import discord
 import json
 import ast #str to mapping
 
+mode = "test"
 GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
 CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
 
 DATABASE_URL = os.environ['DATABASE_URL']
-LINE_CHANNEL_ACCESS_TOKEN = os.environ['LINE_CHANNEL_ACCESS_TOKEN']
-LINE_CHANNEL_SECRET = os.environ['LINE_CHANNEL_SECRET']
+if mode == "test":
+    LINE_CHANNEL_ACCESS_TOKEN = os.environ['TEST_LINE_CHANNEL_ACCESS_TOKEN']
+    LINE_CHANNEL_SECRET = os.environ['TEST_LINE_CHANNEL_SECRET']
+else:
+    LINE_CHANNEL_ACCESS_TOKEN = os.environ['LINE_CHANNEL_ACCESS_TOKEN']
+    LINE_CHANNEL_SECRET = os.environ['LINE_CHANNEL_SECRET']
 DISCORD_WEBHOOK = os.environ['DISCORD_WEBHOOK']
 OPUUID = os.environ['LINE_OP_UUID']
 changelog = "flexmsg、quick reply、加速、課表"
@@ -94,14 +99,7 @@ def get_all_user():#turn raw data into 4 argument lists
 
 def url_login(msg,event,force):
   start_time = time.time()
-  chrome_options = webdriver.ChromeOptions()
-  chrome_options.add_argument('--headless')
-  chrome_options.add_argument('--no-sandbox')
-  chrome_options.add_argument('--disable-dev-shm-usage')
-  wd = webdriver.Chrome(ChromeDriverManager().install(),options=chrome_options)
-  url = str(msg)
-  print(msg)
-  print(url)
+  url = str(msg).replace("&afterLogin=true","")
   messageout = ""
   success_login_status = 0
   global fail_login_status
@@ -129,10 +127,9 @@ def url_login(msg,event,force):
                                 alt_text = '(請點擊聊天室已取得更多消息)' ,
                                 contents = FlexMessage)
                  line_bot_api.reply_message(event.reply_token, flex_message)
-             wd.quit()
-             #break
+             wd.close()
+             break
          else:
-             print(usr)
              wd.execute_script('document.getElementById("UserNm").value ="' + usr + '"')
              wd.execute_script('document.getElementById("UserPasswd").value ="' + pwd + '"')
              wd.execute_script('document.getElementsByClassName("w3-button w3-block w3-green w3-section w3-padding")[0].click();')
@@ -161,7 +158,7 @@ def url_login(msg,event,force):
                    fail_login_status = fail_login_status +1
   messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人\n" + str(time_and_class) + "\n" + str(curriculum_name))
   messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ['HEROKU_RELEASE_CREATED_AT'] + "GMT+0\n" + "版本:" + os.environ['HEROKU_RELEASE_VERSION']+ "\n此次點名耗費時間:" + str(round(time.time() - start_time)) +"秒" +"\n更新日誌:" + changelog)
-  wd.quit()
+  wd.close()
   return messageout
 
 @handler.add(PostbackEvent)
@@ -190,7 +187,7 @@ def handle_postback(event):
         get_now_name = namelist[useridlist.index(get_now_user_id)]
         get_now_user = userlist[useridlist.index(get_now_user_id)]
         url = postback_msg.replace("/force_url_login","").replace(" ","")
-        url_login(url,event,force=True)
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(url_login(url,event,force=True)))
     else:
         print("invalid postback event")
 
