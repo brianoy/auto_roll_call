@@ -94,7 +94,7 @@ def url_login(msg,event,force):
   chrome_options.add_argument('--headless')
   chrome_options.add_argument('--no-sandbox')
   chrome_options.add_argument('--disable-dev-shm-usage')
-  url = str(msg)
+  url = str(msg, "utf-8")
   #wd = webdriver.Chrome('chromedriver',options=chrome_options)
   messageout = ""
   success_login_status = 0
