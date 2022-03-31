@@ -11,7 +11,7 @@
             "type": "text",
             "text": "%(day)s",
             "weight": "bold",
-            "size": "xxl",
+            "size": "xl",
             "margin": "md",
             "contents": [],
             "wrap": true,
@@ -43,7 +43,7 @@
                 "contents": [
                   {
                     "type": "text",
-                    "size": "sm",
+                    "size": "xs",
                     "text": "07:10 ~ 08:00",
                     "align": "start",
                     "color": "#FFFFFFAF"
@@ -58,14 +58,16 @@
                         "text": "%(curriculum_1)s",
                         "flex": 1,
                         "align": "start",
-                        "color": "#FFFFFF"
+                        "color": "#FFFFFF",
+                        "size": "sm"
                       },
                       {
                         "type": "text",
                         "text": "%(place_1)s",
                         "flex": 1,
                         "align": "center",
-                        "color": "#FFFFFF"
+                        "color": "#FFFFFF",
+                        "size": "sm"
                       }
                     ]
                   }
@@ -89,7 +91,7 @@
                 "contents": [
                   {
                     "type": "text",
-                    "size": "sm",
+                    "size": "xs",
                     "text": "08:10 ~ 09:00",
                     "align": "start",
                     "color": "#FFFFFFAF"
@@ -104,14 +106,16 @@
                         "text": "%(curriculum_2)s",
                         "flex": 1,
                         "align": "start",
-                        "color": "#FFFFFF"
+                        "color": "#FFFFFF",
+                        "size": "sm"
                       },
                       {
                         "type": "text",
                         "text": "%(place_2)s",
                         "flex": 1,
                         "align": "center",
-                        "color": "#FFFFFF"
+                        "color": "#FFFFFF",
+                        "size": "sm"
                       }
                     ]
                   }
@@ -134,7 +138,7 @@
                 "contents": [
                   {
                     "type": "text",
-                    "size": "sm",
+                    "size": "xs",
                     "text": "09:10 ~ 10:00",
                     "align": "start",
                     "color": "#FFFFFFAF"
@@ -149,14 +153,16 @@
                         "text": "%(curriculum_3)s",
                         "flex": 1,
                         "align": "start",
-                        "color": "#FFFFFF"
+                        "color": "#FFFFFF",
+                        "size": "sm"
                       },
                       {
                         "type": "text",
                         "text": "%(place_3)s",
                         "flex": 1,
                         "align": "center",
-                        "color": "#FFFFFF"
+                        "color": "#FFFFFF",
+                        "size": "sm"
                       }
                     ]
                   }
@@ -180,7 +186,7 @@
                 "contents": [
                   {
                     "type": "text",
-                    "size": "sm",
+                    "size": "xs",
                     "text": "10:10 ~ 11:00",
                     "align": "start",
                     "color": "#FFFFFFAF"
@@ -195,14 +201,16 @@
                         "text": "%(curriculum_4)s",
                         "flex": 1,
                         "align": "start",
-                        "color": "#FFFFFF"
+                        "color": "#FFFFFF",
+                        "size": "sm"
                       },
                       {
                         "type": "text",
                         "text": "%(place_4)s",
                         "flex": 1,
                         "align": "center",
-                        "color": "#FFFFFF"
+                        "color": "#FFFFFF",
+                        "size": "sm"
                       }
                     ]
                   }
@@ -225,7 +233,7 @@
                 "contents": [
                   {
                     "type": "text",
-                    "size": "sm",
+                    "size": "xs",
                     "text": "11:10 ~ 12:00",
                     "align": "start",
                     "color": "#FFFFFFAF"
@@ -240,14 +248,16 @@
                         "text": "%(curriculum_5)s",
                         "flex": 1,
                         "align": "start",
-                        "color": "#FFFFFF"
+                        "color": "#FFFFFF",
+                        "size": "sm"
                       },
                       {
                         "type": "text",
                         "text": "%(place_5)s",
                         "flex": 1,
                         "align": "center",
-                        "color": "#FFFFFF"
+                        "color": "#FFFFFF",
+                        "size": "sm"
                       }
                     ]
                   }
@@ -271,7 +281,7 @@
                 "contents": [
                   {
                     "type": "text",
-                    "size": "sm",
+                    "size": "xs",
                     "text": "12:10 ~ 13:00",
                     "align": "start",
                     "color": "#FFFFFFAF"
@@ -286,14 +296,16 @@
                         "text": "%(curriculum_6)s",
                         "flex": 1,
                         "align": "start",
-                        "color": "#FFFFFF"
+                        "color": "#FFFFFF",
+                        "size": "sm"
                       },
                       {
                         "type": "text",
                         "text": "%(place_6)s",
                         "flex": 1,
                         "align": "center",
-                        "color": "#FFFFFF"
+                        "color": "#FFFFFF",
+                        "size": "sm"
                       }
                     ]
                   }
@@ -316,7 +328,7 @@
                 "contents": [
                   {
                     "type": "text",
-                    "size": "sm",
+                    "size": "xs",
                     "text": "13:10 ~ 14:00",
                     "align": "start",
                     "color": "#FFFFFFAF"
@@ -331,14 +343,16 @@
                         "text": "%(curriculum_7)s",
                         "flex": 1,
                         "align": "start",
-                        "color": "#FFFFFF"
+                        "color": "#FFFFFF",
+                        "size": "sm"
                       },
                       {
                         "type": "text",
                         "text": "%(place_7)s",
                         "flex": 1,
                         "align": "center",
-                        "color": "#FFFFFF"
+                        "color": "#FFFFFF",
+                        "size": "sm"
                       }
                     ]
                   }
@@ -362,7 +376,7 @@
                 "contents": [
                   {
                     "type": "text",
-                    "size": "sm",
+                    "size": "xs",
                     "text": "14:10 ~ 15:00",
                     "align": "start",
                     "color": "#FFFFFFAF"
@@ -377,14 +391,16 @@
                         "text": "%(curriculum_8)s",
                         "flex": 1,
                         "align": "start",
-                        "color": "#FFFFFF"
+                        "color": "#FFFFFF",
+                        "size": "sm"
                       },
                       {
                         "type": "text",
                         "text": "%(place_8)s",
                         "flex": 1,
                         "align": "center",
-                        "color": "#FFFFFF"
+                        "color": "#FFFFFF",
+                        "size": "sm"
                       }
                     ]
                   }
@@ -407,7 +423,7 @@
                 "contents": [
                   {
                     "type": "text",
-                    "size": "sm",
+                    "size": "xs",
                     "text": "15:10 ~16:00",
                     "align": "start",
                     "color": "#FFFFFFAF"
@@ -422,14 +438,16 @@
                         "text": "%(curriculum_9)s",
                         "flex": 1,
                         "align": "start",
-                        "color": "#FFFFFF"
+                        "color": "#FFFFFF",
+                        "size": "sm"
                       },
                       {
                         "type": "text",
                         "text": "%(place_9)s",
                         "flex": 1,
                         "align": "center",
-                        "color": "#FFFFFF"
+                        "color": "#FFFFFF",
+                        "size": "sm"
                       }
                     ]
                   }
@@ -453,7 +471,7 @@
                 "contents": [
                   {
                     "type": "text",
-                    "size": "sm",
+                    "size": "xs",
                     "text": "16:10 ~ 17:00",
                     "align": "start",
                     "color": "#FFFFFFAF"
@@ -468,14 +486,16 @@
                         "text": "%(curriculum_10)s",
                         "flex": 1,
                         "align": "start",
-                        "color": "#FFFFFF"
+                        "color": "#FFFFFF",
+                        "size": "sm"
                       },
                       {
                         "type": "text",
                         "text": "%(place_10)s",
                         "flex": 1,
                         "align": "center",
-                        "color": "#FFFFFF"
+                        "color": "#FFFFFF",
+                        "size": "sm"
                       }
                     ]
                   }
@@ -498,7 +518,7 @@
                 "contents": [
                   {
                     "type": "text",
-                    "size": "sm",
+                    "size": "xs",
                     "text": "17:05 ~ 17:55",
                     "align": "start",
                     "color": "#FFFFFFAF"
@@ -513,14 +533,16 @@
                         "text": "%(curriculum_11)s",
                         "flex": 1,
                         "align": "start",
-                        "color": "#FFFFFF"
+                        "color": "#FFFFFF",
+                        "size": "sm"
                       },
                       {
                         "type": "text",
                         "text": "%(place_11)s",
                         "flex": 1,
                         "align": "center",
-                        "color": "#FFFFFF"
+                        "color": "#FFFFFF",
+                        "size": "sm"
                       }
                     ]
                   }
@@ -544,7 +566,7 @@
                 "contents": [
                   {
                     "type": "text",
-                    "size": "sm",
+                    "size": "xs",
                     "text": "18:00 ~ 18:50",
                     "align": "start",
                     "color": "#FFFFFFAF"
@@ -559,14 +581,16 @@
                         "text": "%(curriculum_12)s",
                         "flex": 1,
                         "align": "start",
-                        "color": "#FFFFFF"
+                        "color": "#FFFFFF",
+                        "size": "sm"
                       },
                       {
                         "type": "text",
                         "text": "%(place_12)s",
                         "flex": 1,
                         "align": "center",
-                        "color": "#FFFFFF"
+                        "color": "#FFFFFF",
+                        "size": "sm"
                       }
                     ]
                   }
@@ -589,7 +613,7 @@
                 "contents": [
                   {
                     "type": "text",
-                    "size": "sm",
+                    "size": "xs",
                     "text": "18:55 ~ 19:45",
                     "align": "start",
                     "color": "#FFFFFFAF"
@@ -604,14 +628,16 @@
                         "text": "%(curriculum_13)s",
                         "flex": 1,
                         "align": "start",
-                        "color": "#FFFFFF"
+                        "color": "#FFFFFF",
+                        "size": "sm"
                       },
                       {
                         "type": "text",
                         "text": "%(place_13)s",
                         "flex": 1,
                         "align": "center",
-                        "color": "#FFFFFF"
+                        "color": "#FFFFFF",
+                        "size": "sm"
                       }
                     ]
                   }
@@ -635,7 +661,7 @@
                 "contents": [
                   {
                     "type": "text",
-                    "size": "sm",
+                    "size": "xs",
                     "text": "19:50 ~ 20:40",
                     "align": "start",
                     "color": "#FFFFFFAF"
@@ -650,14 +676,16 @@
                         "text": "%(curriculum_14)s",
                         "flex": 1,
                         "align": "start",
-                        "color": "#FFFFFF"
+                        "color": "#FFFFFF",
+                        "size": "sm"
                       },
                       {
                         "type": "text",
                         "text": "%(place_14)s",
                         "flex": 1,
                         "align": "center",
-                        "color": "#FFFFFF"
+                        "color": "#FFFFFF",
+                        "size": "sm"
                       }
                     ]
                   }
@@ -680,7 +708,7 @@
                 "contents": [
                   {
                     "type": "text",
-                    "size": "sm",
+                    "size": "xs",
                     "text": "20:45 ~ 21:35",
                     "align": "start",
                     "color": "#FFFFFFAF"
@@ -695,14 +723,16 @@
                         "text": "%(curriculum_15)s",
                         "flex": 1,
                         "align": "start",
-                        "color": "#FFFFFF"
+                        "color": "#FFFFFF",
+                        "size": "sm"
                       },
                       {
                         "type": "text",
                         "text": "%(place_15)s",
                         "flex": 1,
                         "align": "center",
-                        "color": "#FFFFFF"
+                        "color": "#FFFFFF",
+                        "size": "sm"
                       }
                     ]
                   }
