@@ -4,6 +4,7 @@ from linebot.exceptions import InvalidSignatureError
 from linebot.models import *
 from lxml import etree #find with xpath
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 from bs4 import BeautifulSoup
@@ -20,7 +21,7 @@ import discord
 import json
 import ast #str to mapping
 
-mode = "stable"
+mode = "test"
 GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
 CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
 
@@ -33,7 +34,7 @@ else:
     LINE_CHANNEL_SECRET = os.environ['LINE_CHANNEL_SECRET']
 DISCORD_WEBHOOK = os.environ['DISCORD_WEBHOOK']
 OPUUID = os.environ['LINE_OP_UUID']
-changelog = "flexmsg、quick reply、加速、課表"
+changelog = "flexmsg、quick reply、點名加速、課表抓取"#還有成績指令沒寫完、簽到未開放的對列quene
 client = discord.Client()
 app = Flask(__name__)
 chrome_options = webdriver.ChromeOptions()
@@ -41,6 +42,7 @@ chrome_options.add_argument('--headless')
 chrome_options.add_argument('--no-sandbox')
 chrome_options.add_argument('--disable-dev-shm-usage')
 chrome_options.add_argument('user-agent=Mozilla/5.0')
+chrome_options.add_argument('ignore-certificate-errors')
 wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
 
 EAT = (["全家","7-11","中原夜市","鍋燒意麵","肉羹","拉麵","炒飯","賣麵庄","雞腿便當","摩斯漢堡","麥當勞","烤肉飯","肯德基","石二鍋",
@@ -56,7 +58,9 @@ handler = WebhookHandler(LINE_CHANNEL_SECRET)# Channel Secret
 discord_webhook = DISCORD_WEBHOOK
 grouptoken = ["4C0ZkJflAfexSpelBcoEYVobqbbSD0aGFNvpGAVcdUX","vUQ1xrf4cIp7kFlWifowMJf4XHdtUSHeXi1QeUKARa9","WCIuPhhETZysoA6qjdx59kblgzbc6gQuVscBKS91Fi5"]
 groupId = ['Cc97a91380e09611261010e4c5c682711','C0041b628a8712ace35095f505520c0bd','Cdebd7e16f5b52db01c3efd20b12ddd35']
-
+recived = '已收到網址，正在點名中，請靜待約20~30秒，若看見此訊息後請盡量不要重複傳送相同的訊息，以免造成系統塞車'
+done = '點名結束\n每次過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n仍在測試中，不建議將此系統作為正式使用，在系統回覆點名狀態前建議不要離開本對話框，以免失效時來不及通知其他人手動點名\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' 
+announce = '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n'
 msgbuffer = ""
 public_msgbuffer = ""
 success_login_status = 0
@@ -97,6 +101,16 @@ def get_all_user():#turn raw data into 4 argument lists
     conn.close()
 
 
+@app.route("/time_quene")#post
+def time_quene():
+    print("加入對列")
+    return 
+
+
+def quene(url,time):
+    print("已成功加入")
+
+
 def url_login(msg,event,force):
     global not_send_msg
     not_send_msg = False
@@ -107,58 +121,79 @@ def url_login(msg,event,force):
     success_login_status = 0
     global fail_login_status
     fail_login_status = 0
-    for i in range(0,len(userlist),1):
-       usr =  userlist[i]
-       pwd = pwlist[i]
-       name = namelist[i]
-       wd.get(url)
-       time.sleep(1)
-       soup_1 = BeautifulSoup(wd.page_source, 'html.parser')
-       dom = etree.HTML(str(soup_1))
-       not_open = "未開放 QRCODE簽到功能" in wd.page_source
-       time_and_class = dom.xpath('/html/body/div/div[2]/p/text()[3]')[0]
-       curriculum_name = dom.xpath('/html/body/div/div[2]/p/text()[4]')[0]
-       if not_open:
-           fail_login_status = len(userlist)
-           messageout = "🟥警告❌，點名並沒有開放，請稍後再試或自行手點，全數點名失敗\n"
-           break
-       else:
-           if (("英文" in curriculum_name or "化學實驗" in curriculum_name) and force != True):
-               with open("json/limited_class.json") as path:
-                   FlexMessage = json.loads(path.read() % {"force_url_login" : url})
-                   flex_message = FlexSendMessage(
-                                  alt_text = '(請點擊聊天室已取得更多消息)' ,
-                                  contents = FlexMessage)
-                   line_bot_api.reply_message(event.reply_token, flex_message)
-                   not_send_msg = True
-               break
-           else:
-               wd.execute_script('document.getElementById("UserNm").value ="' + usr + '"')
-               wd.execute_script('document.getElementById("UserPasswd").value ="' + pwd + '"')
-               wd.execute_script('document.getElementsByClassName("w3-button w3-block w3-green w3-section w3-padding")[0].click();')
-               password_wrong = EC.alert_is_present()(wd)#如果有錯誤訊息
-               if password_wrong:
-                 failmsg = password_wrong.text
-                 password_wrong.accept()
-                 messageout = (messageout + "學號:" + usr + "\n🟥點名失敗❌\n錯誤訊息:密碼錯誤" + failmsg +'\n\n')#error login
-                 print("密碼錯誤\n------------------\n" + messageout)
-                 fail_login_status = fail_login_status +1
-               else:
-                 soup_2 = BeautifulSoup(wd.page_source, 'html.parser')
-                 #print(soup_2.prettify()) #html details
-                 if (soup_2.find_all(stroke="#D06079") != []):#fail
-                     messageout = (messageout + "\n🟥點名失敗❌，"+ name +"好可憐喔😱\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text +'\n\n')
-                     print("點名失敗\n------------------\n" + messageout)
-                     fail_login_status = fail_login_status +1
-                 elif (soup_2.find_all(stroke="#73AF55") != []):#success
-                     detailmsg = wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text
-                     messageout = (messageout + "\n🟩點名成功✅，"+ name +"會非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':').replace('<br>','\n')+'\n\n')
-                     print("點名成功\n------------------\n" + messageout)
-                     success_login_status = success_login_status +1
-                 else:
-                     messageout = (messageout + name + "\n🟥發生未知的錯誤❌，" + "學號:" + usr + " " + name + "點名失敗😱，趕快聯繫布萊恩，並自行手點" + '\n\n')#unknown failure
-                     print("點名失敗\n------------------\n" + messageout)
-                     fail_login_status = fail_login_status +1
+    wd.get(url)
+    #time.sleep(1)
+    soup_1 = BeautifulSoup(wd.page_source, 'html.parser')
+    dom = etree.HTML(str(soup_1))
+    not_open = "未開放 QRCODE簽到功能" in wd.page_source
+    time_and_class = dom.xpath('/html/body/div/div[2]/p/text()[3]')[0]
+    curriculum_name = dom.xpath('/html/body/div/div[2]/p/text()[4]')[0]
+    if not_open:
+        fail_login_status = len(userlist)
+        messageout = "🟥警告❌，點名並沒有開放，請稍後再試或自行手點，全數點名失敗\n"
+        not_send_msg = True
+        with open("json/limited_class.json") as path:
+               FlexMessage = json.loads(path.read() % {"msg_1" : "偵測到課程點名失敗，是否需要重新點名?" , "force_url_login" : "/force_url_login "+url })
+               flex_message = FlexSendMessage(
+                              alt_text = '(請點擊聊天室已取得更多消息)' ,
+                              contents = FlexMessage)
+               print("傳出flexmsg")
+               line_bot_api.reply_message(event.reply_token, flex_message)
+               not_send_msg = True
+       #break
+    else:
+        if (("英文" in curriculum_name or "化學實驗" in curriculum_name) and force != True):
+            with open("json/limited_class.json") as path:
+                FlexMessage = json.loads(path.read() % {"msg_1" : "此課程不建議全體點名，確定要點名?" , "force_url_login" : "/force_url_login "+url })
+                flex_message = FlexSendMessage(
+                              alt_text = '(請點擊聊天室已取得更多消息)' ,
+                              contents = FlexMessage)
+                print("傳出flexmsg")
+                line_bot_api.reply_message(event.reply_token, flex_message)
+                not_send_msg = True
+        else:#確認所有條件都適合點名
+            for i in range(0,len(userlist),1):
+                wd.execute_script("window.open('');")
+                wd.switch_to.window(wd.window_handles[i+1])
+                wd.get(url)#打開所有對應數量的分頁並到網址
+                print("已打開第"+ str(i) + "個分頁")
+            for i in range(0,len(userlist),1):
+                wd.switch_to.window(wd.window_handles[i+1])#先跑到對應的視窗
+                usr =  userlist[i]
+                pwd = pwlist[i]
+                name = namelist[i]
+                wd.execute_script('document.getElementById("UserNm").value ="' + usr + '"')
+                wd.execute_script('document.getElementById("UserPasswd").value ="' + pwd + '"')
+                wd.execute_script('document.getElementsByClassName("w3-button w3-block w3-green w3-section w3-padding")[0].click();')
+                print("已登入第"+ str(i) + "個分頁")
+            for i in range(0,len(userlist),1):
+                usr =  userlist[i]#之後的訊息要顯示
+                pwd = pwlist[i]
+                name = namelist[i]
+                wd.switch_to.window(wd.window_handles[i+1])#先跑到對應的視窗
+                password_wrong = EC.alert_is_present()(wd)#如果有錯誤訊息#不太確定要先切換視窗再按確認還是反過來
+                if password_wrong:
+                    failmsg = password_wrong.text
+                    password_wrong.accept()
+                    messageout = (messageout + "學號:" + usr + "\n🟥點名失敗❌\n錯誤訊息:密碼錯誤" + failmsg +'\n\n')#error login
+                    print("密碼錯誤\n------------------\n" + messageout)
+                    fail_login_status = fail_login_status +1
+                else:
+                    soup_2 = BeautifulSoup(wd.page_source, 'html.parser')
+                    #print(soup_2.prettify()) #html details
+                    if (soup_2.find_all(stroke="#D06079") != []):#fail
+                        messageout = (messageout + "\n🟥點名失敗❌，"+ name +"好可憐喔😱\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text +'\n\n')
+                        print("點名失敗\n------------------\n" + messageout)
+                        fail_login_status = fail_login_status +1
+                    elif (soup_2.find_all(stroke="#73AF55") != []):#success
+                        detailmsg = wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text
+                        messageout = (messageout + "\n🟩點名成功✅，"+ name +"會非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':').replace('<br>','\n')+'\n\n')
+                        print("點名成功\n------------------\n" + messageout)
+                        success_login_status = success_login_status +1
+                    else:
+                        messageout = (messageout + name + "\n🟥發生未知的錯誤❌，" + "學號:" + usr + " " + name + "點名失敗😱，趕快聯繫布萊恩，並自行手點" + '\n\n')#unknown failure
+                        print("點名失敗\n------------------\n" + messageout)
+                        fail_login_status = fail_login_status +1
     messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人\n" + str(time_and_class) + "\n" + str(curriculum_name))
     messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ['HEROKU_RELEASE_CREATED_AT'] + "GMT+0\n" + "版本:" + os.environ['HEROKU_RELEASE_VERSION']+ "\n此次點名耗費時間:" + str(round(time.time() - start_time)) +"秒" +"\n更新日誌:" + changelog)
     wd.close()
@@ -177,6 +212,7 @@ def handle_postback(event):
             flex_message = FlexSendMessage(
                                alt_text = '(請點擊聊天室已取得更多消息)' ,
                                contents = FlexMessage)
+            print("傳出flexmsg")
             line_bot_api.reply_message(event.reply_token, flex_message)
     elif("/deleteall" in postback_msg):
         get_now_name = namelist[useridlist.index(get_now_user_id)]
@@ -190,9 +226,35 @@ def handle_postback(event):
         get_now_name = namelist[useridlist.index(get_now_user_id)]
         get_now_user = userlist[useridlist.index(get_now_user_id)]
         url = postback_msg.replace("/force_url_login","").replace(" ","")
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(url_login(url,event,force=True)))
+        if (event.source.type == "group") :
+            if(event.source.group_id == groupId[0]):
+                headers= {
+                "Authorization": "Bearer " + grouptoken[0], 
+                }
+                requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + recived })#翹課大魔王
+                msgbuffer = url_login(url,event,force=False)
+                public_msgbuffer = done + msgbuffer
+                payload = {'message': distinguish(public_msgbuffer) }
+                group_not_send_msg_func(not_send_msg,headers,payload)
+            elif(event.source.group_id == groupId[1]):
+                headers= {
+                "Authorization": "Bearer " + grouptoken[1], 
+                }
+                requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + recived })#秘密基地
+                msgbuffer = url_login(url,event,force=False)
+                payload = {'message': distinguish(public_msgbuffer) }
+                group_not_send_msg_func(not_send_msg,headers,payload)
+            else:
+                print("有不知名的群組")
+        elif(event.source.type == "user") :
+            person_not_send_msg_func(not_send_msg,event.source.user_id,TextSendMessage(recived))
+            msgbuffer = url_login(url,event,force=True)
+            public_msgbuffer = (done + msgbuffer)
+            line_bot_api.push_message(event.source.user_id, TextSendMessage(distinguish(public_msgbuffer)))
+        else:
+            print("ERROR:invalid source type during force login")
     else:
-        print("invalid postback event")
+        print("ERROR:invalid postback event")
 
 
 # 監聽所有來自 /callback 的 Post Request
@@ -288,6 +350,7 @@ def curriculum(event):
             flex_message = FlexSendMessage(
                 alt_text = '(請點擊聊天室已取得更多消息)' ,
                 contents = FlexMessage)
+            print("傳出flexmsg")
             line_bot_api.reply_message(event.reply_token, flex_message)
     else:
         line_bot_api.reply_message(event.reply_token, TextSendMessage("你尚未綁定帳號"))
@@ -308,16 +371,17 @@ def today_curriculum(event):
         for k in range(day_list_num , day_list_num+15 , 1):
             substitute = (substitute + ',' + '"curriculum_' + str(k - day_list_num + 1) + '" : "' + curriculum_list[k] + ' ",' + '"place_' + str(k - day_list_num + 1) + '" : "' +classroom_list[k] + ' "') 
         substitute = "{" + substitute + "}"
-        print(substitute)
-        print(type(substitute))
+        #print(substitute)
+        #print(type(substitute))
         substitute = ast.literal_eval(substitute)
-        print(substitute)
-        print(type(substitute))
+        #print(substitute)
+        #print(type(substitute))
         with open("json/today_curriculum.json") as path:
             FlexMessage = json.loads(path.read() % substitute)
             flex_message = FlexSendMessage(
                 alt_text = '(請點擊聊天室已取得更多消息)' ,
                 contents = FlexMessage)
+            print("傳出flexmsg")
             line_bot_api.reply_message(event.reply_token, flex_message)
     else:
         line_bot_api.reply_message(event.reply_token, TextSendMessage("你尚未綁定帳號"))
@@ -329,6 +393,14 @@ def group_not_send_msg_func(not_send_msg,headers,payload):
     else:
         requests.post("https://notify-api.line.me/api/notify", headers = headers, params = payload)
     return
+
+def person_not_send_msg_func(not_send_msg,user_id,payload):
+    if not_send_msg == True:
+        print()
+    else:
+        line_bot_api.push_message(user_id, payload)
+    return
+
  #warning! reply token would expired after send msg about 30seconds. use push msg! 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event) :
@@ -337,9 +409,6 @@ def handle_message(event) :
     msg_type = event.message.type
     print(msg_type)
     event_temp = event
-    recived = '已收到網址，正在點名中，請靜待約20~30秒，若看見此訊息後請盡量不要重複傳送相同的訊息，以免造成系統塞車'
-    done = '點名結束\n每次過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n仍在測試中，不建議將此系統作為正式使用，在系統回覆點名狀態前建議不要離開本對話框，以免失效時來不及通知其他人手動點名\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' 
-    announce = '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n'
     if 'itouch.cycu.edu.tw' in msg :
          if 'learning_activity' in msg :
              if (event.source.type == "group") :
@@ -372,7 +441,7 @@ def handle_message(event) :
                   line_bot_api.push_message(event_temp.source.user_id, TextSendMessage(recived))
                   msgbuffer = url_login(msg,event,force=False)
                   public_msgbuffer = (done + msgbuffer)
-                  line_bot_api.push_message(event_temp.source.user_id, TextSendMessage(distinguish(public_msgbuffer)))
+                  person_not_send_msg_func(not_send_msg,event_temp.source.user_id,TextSendMessage(distinguish(public_msgbuffer)))
              else:
                  print("錯誤:偵測不到itouch網址訊息類型")
                  line_bot_api.reply_message(event.reply_token, TextSendMessage("偵測不到itouch網址類型，請再試一次"))
@@ -484,7 +553,7 @@ def command(msg,event):
         get_all_user()
         respond = "已重新抓取"
         print(respond)
-        line_bot_api.push_message(event.source.user_id, TextSendMessage(respond))
+        person_not_send_msg_func(not_send_msg,event.source.user_id,TextSendMessage(respond))
 
     elif '/我的uuid' == msg:
         line_bot_api.reply_message(event.reply_token, TextSendMessage(event.source.user_id))
@@ -508,6 +577,7 @@ def command(msg,event):
             flex_message = FlexSendMessage(
                            alt_text = '(請點擊聊天室已取得更多消息)' ,
                            contents = FlexMessage)
+            print("傳出flexmsg")
             line_bot_api.reply_message(event.reply_token, flex_message)
         else:#帳號不存在
             with open("json/account_not_exist.json") as path:
@@ -515,6 +585,7 @@ def command(msg,event):
             flex_message = FlexSendMessage(
                            alt_text = '(請點擊聊天室已取得更多消息)' ,
                            contents = FlexMessage)
+            print("傳出flexmsg")
             line_bot_api.reply_message(event.reply_token, flex_message)
 
     elif '/help' == msg or '/幫助' == msg:
@@ -523,6 +594,7 @@ def command(msg,event):
         flex_message = FlexSendMessage(
                        alt_text = '(請點擊聊天室已取得更多消息)' ,
                        contents = FlexMessage)
+        print("傳出flexmsg")
         line_bot_api.reply_message(event.reply_token, flex_message)
     
 
@@ -553,7 +625,13 @@ def quick_reply(id):
                 action=MessageAction(label="我的uuid",text="/我的uuid")
                 ),
             QuickReplyButton(
-                action=MessageAction(label="重新整理",text="/重新整理")
+                action=MessageAction(label="今日課表",text="/今日課表")
+                ),
+            QuickReplyButton(
+                action=MessageAction(label="請假紀錄",text="/請假紀錄")
+                ),
+            QuickReplyButton(
+                action=MessageAction(label="你今天被實驗助教搞了嗎",text="/你今天被實驗助教搞了嗎")
                 )
         ]
     )
@@ -583,7 +661,16 @@ def user_quick_reply(id):
                 ),
             QuickReplyButton(
                 action=MessageAction(label="清除綁定",text="/清除綁定")
-                )
+                ),
+            QuickReplyButton(
+                action=MessageAction(label="今日課表",text="/今日課表")
+                ),
+            QuickReplyButton(
+                action=MessageAction(label="請假紀錄",text="/請假紀錄")
+                ),
+            QuickReplyButton(
+                action=MessageAction(label="你今天被實驗助教搞了嗎",text="/你今天被實驗助教搞了嗎")
+                )#還有成績指令沒寫完
         ]
     )
     )
@@ -603,6 +690,7 @@ def limited_command(msg,event):
                 flex_message = FlexSendMessage(
                             alt_text = '(請點擊聊天室已取得更多消息)' ,
                             contents = FlexMessage)
+                print("傳出flexmsg")
                 line_bot_api.reply_message(event.reply_token, flex_message)
         else:#帳號不存在
             with open("json/account_not_exist.json") as path:
@@ -610,6 +698,7 @@ def limited_command(msg,event):
             flex_message = FlexSendMessage(
                            alt_text = '(請點擊聊天室已取得更多消息)' ,
                            contents = FlexMessage)
+            print("傳出flexmsg")
             line_bot_api.reply_message(event.reply_token, flex_message)
 
     elif '/整日課表' == msg or '/我的課表' == msg :
@@ -627,8 +716,12 @@ def limited_command(msg,event):
         flex_message = FlexSendMessage(
                         alt_text = '(請點擊聊天室已取得更多消息)' ,
                         contents = FlexMessage)
+        print("傳出flexmsg")
         line_bot_api.reply_message(event.reply_token, flex_message)
-
+    elif '/請假紀錄' == msg or '/請假' == msg:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(day_off(event)))
+    elif '/你今天被實驗助教搞了嗎' == msg or '/實驗課成績' == msg:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(experiment_course_score(event)))
     elif '/開始綁定' in msg :
         get_now_user_id = event.source.user_id
         if (get_now_user_id in useridlist):
@@ -647,6 +740,7 @@ def limited_command(msg,event):
                 flex_message = FlexSendMessage(
                                 alt_text = '(請點擊聊天室已取得更多消息)' ,
                                 contents = FlexMessage)
+                print("傳出flexmsg")
                 line_bot_api.reply_message(event.reply_token, flex_message)
             except ValueError:
                 line_bot_api.reply_message(event.reply_token, TextSendMessage("帳號請輸入學號(純數字)"))
@@ -724,6 +818,77 @@ def register(name,uuid,account,password):
     get_all_user()
     return
 
+def day_off(event):
+    get_now_user_id = event.source.user_id
+    if get_now_user_id in useridlist:#帳號存在#密碼暫時被視為正確
+        get_now_user = userlist[useridlist.index(get_now_user_id)]
+        get_now_pwd = pwlist[useridlist.index(get_now_user_id)]
+        wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
+        wd.get("https://itouch.cycu.edu.tw/active_project/cycu2100h_18/case_09/login.jsp")
+        wd.execute_script('document.getElementById("UserNm").value ="' + get_now_user + '"')
+        wd.execute_script('document.getElementById("UserPasswd").value ="' + get_now_pwd + '"')
+        wd.execute_script('document.getElementsByClassName("button12")[0].click();')
+        wd.get("https://itouch.cycu.edu.tw/active_project/cycu2100h_18/case_09/inquiry.jsp")
+        name = wd.find_element(By.XPATH,"/html/body/div[1]/div[2]/table[1]/tbody/tr/td[2]/span").text
+        i = 1
+        msg = ""
+        while True:
+            try:#find element有放進cache嗎?還是浪費效能抓取?
+                #需要改成etree嗎
+                start_date = wd.find_element(By.XPATH,"/html/body/div[1]/div[2]/table[2]/tbody/tr["+str(1+i)+"]/td[3]").text
+                end_date = wd.find_element(By.XPATH,"/html/body/div[1]/div[2]/table[2]/tbody/tr["+str(1+i)+"]/td[4]").text
+                reason = wd.find_element(By.XPATH,"/html/body/div[1]/div[2]/table[2]/tbody/tr["+str(1+i)+"]/td[7]").text
+                msg = "\n\n" + start_date + "~" + end_date + " : " + reason + msg
+                i+=1
+            except NoSuchElementException:
+                if msg == "":
+                    msg = name + "的請假紀錄:\n無"
+                else:
+                    msg = name + "的請假紀錄:" + msg
+                break
+    else:
+        print("有人想要查詢但是帳號不存在")
+    wd.close()
+    return msg
+
+def experiment_course_score(event):
+    get_now_user_id = event.source.user_id
+    if get_now_user_id in useridlist:#帳號存在#密碼暫時被視為正確
+        get_now_user = userlist[useridlist.index(get_now_user_id)]
+        get_now_pwd = pwlist[useridlist.index(get_now_user_id)]
+        get_now_name = namelist[useridlist.index(get_now_user_id)]
+        wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
+        wd.get("https://i-learning.cycu.edu.tw/index.php")
+        wd.execute_script('document.getElementById("username").value ="' + get_now_user + '"')
+        wd.execute_script('document.getElementById("password").value ="' + get_now_pwd + '"')
+        wd.execute_script('document.getElementsByClassName("submitBtn")[0].click()')
+        #已登入完畢 跳轉進入我的課程
+        wd.execute_script('parent.chgCourse("10127138", 1, 1)')#決定課程，實驗課課程代碼10127138
+        wd.get("https://i-learning.cycu.edu.tw/learn/grade/grade_list.php")
+        i = 1
+        msg = ""
+        while True:
+            try:
+                score_name = wd.find_element(By.XPATH,"/html/body/div/div[2]/div/div[3]/div/table/tbody/tr["+str(i)+"]/td[1]/div").text
+                score_value = wd.find_element(By.XPATH,"/html/body/div/div[2]/div/div[3]/div/table/tbody/tr["+str(i)+"]/td[4]/div").text
+                msg = "\n\n" + score_name + " : " + score_value + msg
+                i+=1
+            except NoSuchElementException:
+                if msg == "":
+                    msg = get_now_name + "的實驗課成績:\n無"
+                else:
+                    msg = get_now_name + "的實驗課成績:" + msg.replace("  :  \n\n","")#把最後一排空白的表格取代掉
+                break
+    else:
+        print("有人想要查詢但是帳號不存在")
+    wd.close()
+    return msg
+        
+        
+
+
+
+        
 @handler.add(MemberJoinedEvent)
 def welcome(event):
     uid = event.joined.members[0].user_id
