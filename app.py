@@ -496,7 +496,7 @@ def handle_message(event) :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("你好兇喔"))
     elif '約' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("又要約又要約"))
-    elif {'三小',"幹你娘","幹妳娘","幹您娘","耖機掰"} in msg :
+    elif '三小' in msg or "幹你娘"in msg or "幹妳娘"in msg or "幹您娘"in msg or "耖機掰"in msg:
         line_bot_api.reply_message(event.reply_token, TextSendMessage("好兇"))
     elif '王顥' in msg and '單身' in msg:
         days = datetime.datetime.today()-datetime.datetime(2019,4,30,16)
