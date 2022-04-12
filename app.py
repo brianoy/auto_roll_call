@@ -34,7 +34,7 @@ else:
     LINE_CHANNEL_SECRET = os.environ['LINE_CHANNEL_SECRET']
 DISCORD_WEBHOOK = os.environ['DISCORD_WEBHOOK']
 OPUUID = os.environ['LINE_OP_UUID']
-changelog = "flexmsg、quick reply、點名加速、課表抓取"#還有成績指令沒寫完、簽到未開放的對列quene
+changelog = "flexmsg、quick reply、點名加速、課表抓取、修復指令的bug"#還有成績指令沒寫完、簽到未開放的對列quene
 client = discord.Client()
 app = Flask(__name__)
 chrome_options = webdriver.ChromeOptions()
@@ -47,7 +47,8 @@ wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=c
 
 EAT = (["全家","7-11","中原夜市","鍋燒意麵","肉羹","拉麵","炒飯","賣麵庄","雞腿便當","摩斯漢堡","麥當勞","烤肉飯","肯德基","石二鍋",
 "五花馬","燒肉","咖哩飯","牛排","肉燥飯","SUKIYA","霸味薑母鴨","高雄黑輪","丼飯","薩利亞","mint","火雞肉飯","品田牧場","滷味","Mr.三明治",
-"雞柳飯","肉骨茶麵","泡麵","水餃","煎餃","包子","炒麵","鐵板燒","披薩","悟饕","河粉","肉圓","黑宅拉麵","壽司","牛肉麵","鹹酥雞"])
+"雞柳飯","肉骨茶麵","泡麵","水餃","煎餃","包子","炒麵","鐵板燒","披薩","悟饕","河粉","肉圓","黑宅拉麵","壽司","牛肉麵","鹹酥雞","控肉便當",
+"赤麵廠","早到晚到","大時鐘天香麵","豚骨麻辣燙","後暫無名麵店","阿倫炒羊肉","炸螃蟹"])
 
 STICKER_LIST = {'465400171':'ㄌㄩㄝ','465400158':'才不美','465400159':'Woooooooow','465400160':'不可以','465400161':'怎樣啦 輸贏啦','465400163':'假K孝濂給',
 '465400165':'累屁','465400166':'聽話 讓我看看','465400169':'到底??????','465400172':'他在已讀你','465400173':'大概24小時後才會回你','13744852':'哼',
@@ -479,6 +480,8 @@ def handle_message(event) :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("再啦幹"))
     elif '我失戀了' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("反正你小王那麼多"))
+    elif '暈了' in msg :
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("寶"))
     elif 'ok' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("ok"))
     elif '怪咖' in msg :
@@ -493,7 +496,7 @@ def handle_message(event) :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("你好兇喔"))
     elif '約' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("又要約又要約"))
-    elif '三小' in msg :
+    elif ('三小',"幹你娘","幹妳娘","幹您娘","耖機掰") in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("好兇"))
     elif '王顥' in msg and '單身' in msg:
         days = datetime.datetime.today()-datetime.datetime(2019,4,30,16)
@@ -508,7 +511,7 @@ def handle_message(event) :
             if (event.source.type == "user") :
                 user_quick_reply(event.source.user_id)
 
-    elif '/' in msg:#all command
+    elif '/' in msg and msg[0] == "/":#all command
             command(msg,event)
 
     else:
