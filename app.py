@@ -21,7 +21,7 @@ import discord
 import json
 import ast #str to mapping
 
-mode = "test"
+mode = "stable"
 GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
 CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
 
