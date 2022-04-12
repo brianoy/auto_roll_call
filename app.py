@@ -566,7 +566,13 @@ def command(msg,event):
                 respond = respond + str(all_user_buffer_list[x][y])
                 respond = respond + str("\n")
         my_msg(str(respond))
-    
+
+    elif '/請假紀錄' == msg or '/請假' == msg:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(day_off(event)))
+
+    elif '/你今天被實驗助教搞了嗎' == msg or '/實驗課成績' == msg:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(experiment_course_score(event)))
+
     elif '/我的帳號' == msg:
         get_now_user_id = event.source.user_id
         if get_now_user_id in useridlist:#帳號存在
@@ -718,10 +724,6 @@ def limited_command(msg,event):
                         contents = FlexMessage)
         print("傳出flexmsg")
         line_bot_api.reply_message(event.reply_token, flex_message)
-    elif '/請假紀錄' == msg or '/請假' == msg:
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(day_off(event)))
-    elif '/你今天被實驗助教搞了嗎' == msg or '/實驗課成績' == msg:
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(experiment_course_score(event)))
     elif '/開始綁定' in msg :
         get_now_user_id = event.source.user_id
         if (get_now_user_id in useridlist):
