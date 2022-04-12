@@ -843,7 +843,8 @@ def day_off(event):
                 start_date = wd.find_element(By.XPATH,"/html/body/div[1]/div[2]/table[2]/tbody/tr["+str(1+i)+"]/td[3]").text
                 end_date = wd.find_element(By.XPATH,"/html/body/div[1]/div[2]/table[2]/tbody/tr["+str(1+i)+"]/td[4]").text
                 reason = wd.find_element(By.XPATH,"/html/body/div[1]/div[2]/table[2]/tbody/tr["+str(1+i)+"]/td[7]").text
-                msg = "\n\n" + start_date + "~" + end_date + " : " + reason + msg
+                permit = wd.find_element(By.XPATH,"/html/body/div[1]/div[2]/table[2]/tbody/tr["+str(1+i)+"]/td[8]").text
+                msg = "\n\n" + start_date + "~" + end_date + " : " + reason + "(已審核 " + permit + ")" + msg
                 i+=1
             except NoSuchElementException:
                 if msg == "":
