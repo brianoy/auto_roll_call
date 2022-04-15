@@ -145,7 +145,7 @@ def url_login(msg,event,force):
     else:
         if (("英文" in curriculum_name or "化學實驗" in curriculum_name) and force != True):
             with open("json/limited_class.json") as path:
-                FlexMessage = json.loads(path.read() % {"msg_1" : "此課程不建議全體點名，確定要點名?" , "force_url_login" : +url })
+                FlexMessage = json.loads(path.read() % {"msg_1" : "此課程不建議全體點名，確定要點名?" , "force_url_login" : + url })
                 flex_message = FlexSendMessage(
                               alt_text = '(請點擊聊天室已取得更多消息)' ,
                               contents = FlexMessage)
@@ -234,7 +234,7 @@ def handle_postback(event):
                 "Authorization": "Bearer " + grouptoken[0], 
                 }
                 requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + recived })#翹課大魔王
-                msgbuffer = url_login(url,event,force=True)
+                msgbuffer = url_login(url,event,force = True)
                 public_msgbuffer = done + msgbuffer
                 payload = {'message': distinguish(public_msgbuffer) }
                 group_not_send_msg_func(not_send_msg,headers,payload)
@@ -243,7 +243,7 @@ def handle_postback(event):
                 "Authorization": "Bearer " + grouptoken[1], 
                 }
                 requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + recived })#秘密基地
-                msgbuffer = url_login(url,event,force=True)
+                msgbuffer = url_login(url,event,force = True)
                 public_msgbuffer = done + msgbuffer
                 payload = {'message': distinguish(public_msgbuffer) }
                 group_not_send_msg_func(not_send_msg,headers,payload)
