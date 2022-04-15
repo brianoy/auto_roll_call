@@ -202,6 +202,7 @@ def url_login(msg,event,force):
 
 @handler.add(PostbackEvent)
 def handle_postback(event):
+    global public_msgbuffer
     postback_msg = event.postback.data
     get_now_user_id = event.source.user_id
     if '/changepassword' in postback_msg :
