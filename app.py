@@ -140,7 +140,7 @@ def url_login(msg,event,force):
                               contents = FlexMessage)
                print("傳出flexmsg")
                line_bot_api.reply_message(event.reply_token, flex_message)
-               not_send_msg = True
+               not_send_msg = False
        #break
     else:
         if (("英文" in curriculum_name or "化學實驗" in curriculum_name) and force != True):
