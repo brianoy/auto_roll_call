@@ -42,7 +42,7 @@
           "contents": [
             {
               "type": "text",
-              "text": "此課程不建議全體點名，確定要點名?",
+              "text": "%(msg_1)s",
               "weight": "bold",
               "size": "lg",
               "color": "#EFEFEF",

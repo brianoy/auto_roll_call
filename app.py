@@ -131,7 +131,7 @@ def url_login(msg,event,force):
     curriculum_name = dom.xpath('/html/body/div/div[2]/p/text()[4]')[0]
     if not_open:
         fail_login_status = len(userlist)
-        messageout = "🟥警告❌，點名並沒有開放，請稍後再試或自行手點，全數點名失敗\n"
+        messageout = "🟥警告❌，點名並沒有開放，請稍後再試或自行手點，全數點名失敗\n"#反正也傳不出去
         not_send_msg = True
         with open("json/limited_class.json") as path:
                FlexMessage = json.loads(path.read() % {"msg_1" : "偵測到課程點名失敗，是否需要重新點名?" , "force_url_login" : url })
