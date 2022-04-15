@@ -243,6 +243,7 @@ def handle_postback(event):
                 }
                 requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + recived })#秘密基地
                 msgbuffer = url_login(url,event,force=True)
+                public_msgbuffer = done + msgbuffer
                 payload = {'message': distinguish(public_msgbuffer) }
                 group_not_send_msg_func(not_send_msg,headers,payload)
             else:
