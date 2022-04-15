@@ -34,7 +34,7 @@ else:
     LINE_CHANNEL_SECRET = os.environ['LINE_CHANNEL_SECRET']
 DISCORD_WEBHOOK = os.environ['DISCORD_WEBHOOK']
 OPUUID = os.environ['LINE_OP_UUID']
-changelog = "flexmsg、quick reply、點名加速、課表抓取、修復指令的bug"#還有成績指令沒寫完、簽到未開放的對列quene
+changelog = "flexmsg、quick reply、點名加速、課表抓取、修復指令的bug"#還有成績指令沒寫完、簽到未開放的對列quene、未點名的紀錄
 client = discord.Client()
 app = Flask(__name__)
 chrome_options = webdriver.ChromeOptions()
@@ -233,7 +233,7 @@ def handle_postback(event):
                 "Authorization": "Bearer " + grouptoken[0], 
                 }
                 requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + recived })#翹課大魔王
-                msgbuffer = url_login(url,event,force=False)
+                msgbuffer = url_login(url,event,force=True)
                 public_msgbuffer = done + msgbuffer
                 payload = {'message': distinguish(public_msgbuffer) }
                 group_not_send_msg_func(not_send_msg,headers,payload)
@@ -242,7 +242,7 @@ def handle_postback(event):
                 "Authorization": "Bearer " + grouptoken[1], 
                 }
                 requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + recived })#秘密基地
-                msgbuffer = url_login(url,event,force=False)
+                msgbuffer = url_login(url,event,force=True)
                 payload = {'message': distinguish(public_msgbuffer) }
                 group_not_send_msg_func(not_send_msg,headers,payload)
             else:
