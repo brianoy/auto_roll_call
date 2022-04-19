@@ -1,0 +1,695 @@
+/**
+ * 藍色系的佈景配色
+ *
+ * @since   2004/02/12
+ * @author  ShenTing Lin
+ * @version $Id: wm.css,v 1.1 2010-02-24 02:40:43 saly Exp $
+ * @copyright Wisdom Master 3(C)  Copyright(R)   SunNet Co. Taiwan, R.O.C
+ **/
+
+/* ------ 新的佈景 ------ */
+
+/* ------ Scroll Bar 的配色 ------ */
+body {
+	scrollbar-arrow-color: #9C98BB;
+	scrollbar-3dlight-color: #9C98BB;
+	scrollbar-highlight-color: #FFFFFF;
+	scrollbar-face-color: #EBEBEB;
+	scrollbar-shadow-color: #9C98BB;
+	scrollbar-track-color: #F0F0F0 ;
+	scrollbar-darkshadow-color: #FFFFFF;
+}
+
+/* ------ Tabs 的標籤 ------ */
+.cssTabs {
+	line-height: 16px;
+	font-size: 12px;
+	font-weight: bold;
+	padding-bottom: 4px;
+	text-decoration: none;
+	letter-spacing: 1px;
+	cursor: default;
+	color: #000000;
+	background-position: bottom;
+	background-repeat: repeat-x;
+	font-family: "Tahoma", "PMingliu", "MingLiU", "Times New Roman", "Times", "serif";
+}
+/* ------ 左邊的工具列 ------ */
+	/* ------ Frame 的背景色 ------ */
+.cssTbBodyBg {
+	color: #000000;
+	background-color: #8CAAE6;
+}
+	/* ------ 用來修正在 IE5 上面呈現會出現有問題的畫面 ------ */
+.cssTbBugIE5 {
+	position: absolute;
+	right: -1px;
+	top: 30px;
+	width: 7px;
+	height: 100%;
+	background-color: #8CAAE6;
+	clip: auto;
+	overflow: auto;
+	z-index: 40;
+}
+	/* ------ 工具列最上面的按鈕 ------ */
+.cssTbBtn {
+	padding: 6px 5px 0px 0px;
+}
+	/* ------ 工具列位置與背景色 ------ */
+.cssToolbar {
+	width: 188px;
+	position: absolute;
+	left: 6px;
+	top: 30px;
+	background-color: #8CAAE6;
+	clip: auto;
+	overflow: auto;
+	z-index: 30;
+}
+	/* ------ 工具列最上面的那一層 ------ */
+.cssTbHead {
+	font-size: 12px;
+	line-height: 20px;
+	height: 20px;
+	text-decoration: none;
+	letter-spacing: 1px;
+	color: #000000;
+	background-color: #FFFFFF;
+	font-family: "Tahoma", "PMingliu", "MingLiU", "Times New Roman", "Times", "serif";
+	font-weight: bold;
+}
+	/* ------ 工具列的表格 ------ */
+.cssTbTable {
+	border: 1px solid #FFFFFF;
+	background-color: #C7D8FA;
+}
+
+.cssTbTr {
+	border-style: none solid none solid;
+	border-width: 0px 0px 0px 0px;
+	border-color: #CCCCE6 #CCCCE6 #CCCCE6 #CCCCE6;
+	padding: 3px 2px 2px 8px;
+	color: #000000;
+	background-color: #FFFFFF;
+	cursor: default;
+}
+	/* ------ 工具列的預設樣式 ------ */
+.cssTbTd {
+	border-style: none solid none solid;
+	border-width: 0px 0px 0px 0px;
+	border-color: #CCCCE6 #CCCCE6 #CCCCE6 #CCCCE6;
+	padding: 1px 1px 1px 1px;
+	font-size: 12px;
+	line-height: 16px;
+	text-decoration: none;
+	letter-spacing: 1px;
+	color: #000000;
+	background-color: #C7D8FA;
+	font-family: "Tahoma", "PMingliu", "MingLiU", "Times New Roman", "Times", "serif";
+}
+	/* ------ 滑鼠在工具列上 ------ */
+.cssTbFocus {
+	cursor: default;
+	font-size: 12px;
+	line-height: 16px;
+	height: 16px;
+	text-decoration: none;
+	letter-spacing: 1px;
+	color: #000000;
+	background-color: #ECF1F7;
+	border: 1px solid #FFFFFF;
+	padding: 0px 3px 1px 3px;
+	margin: 0px 2px 0px 2px;
+	font-family: "Tahoma", "PMingliu", "MingLiU", "Times New Roman", "Times", "serif";
+}
+	/* ------ 滑鼠離開工具列 ------ */
+.cssTbBlur {
+	cursor: default;
+	font-size: 12px;
+	line-height: 16px;
+	height: 16px;
+	text-decoration: none;
+	letter-spacing: 1px;
+	color: #000000;
+	background-color: #C7D8FA;
+	border: 1px solid #C7D8FA;
+	padding: 0px 3px 1px 3px;
+	margin: 0px 2px 0px 2px;
+	font-family: "Tahoma", "PMingliu", "MingLiU", "Times New Roman", "Times", "serif";
+}
+/* ------ 表格 ------ */
+.cssTable {
+	background-color: #E3E9F2;
+	border: 1px solid #5176D2;
+}
+
+.cssTr {
+}
+
+.cssTrHelp {
+	font-size: 12px;
+	line-height: 16px;
+	text-decoration: none;
+	letter-spacing: 2px;
+	color: #000000;
+	background-color: #C7D8FA;
+	font-family: "Tahoma", "PMingliu", "MingLiU", "Times New Roman", "Times", "serif";
+}
+
+.cssTrHead {
+	font-size: 12px;
+	line-height: 16px;
+	text-decoration: none;
+	letter-spacing: 2px;
+	color: #000000;
+	background-color: #C7D8FA;
+	font-family: "Tahoma", "PMingliu", "MingLiU", "Times New Roman", "Times", "serif";
+}
+
+.cssTrEvn {
+	font-size: 12px;
+	line-height: 16px;
+	text-decoration: none;
+	letter-spacing: 2px;
+	color: #000000;
+	background-color: #FFFFFF;
+	font-family: "Tahoma", "PMingliu", "MingLiU", "Times New Roman", "Times", "serif";
+}
+
+.cssTrOdd {
+	font-size: 12px;
+	line-height: 16px;
+	text-decoration: none;
+	letter-spacing: 2px;
+	color: #000000;
+	background-color: #ECF1F7;
+	font-family: "Tahoma", "PMingliu", "MingLiU", "Times New Roman", "Times", "serif";
+}
+
+.cssTd {
+}
+/* ------ 表單元件 ------ */
+.cssInput {
+	font-size: 12px;
+	color: #000000;
+	background-color: #FFFFFF;
+	border: 1px solid #A0B5D3;
+	font-family: "Tahoma", "PMingliu", "MingLiU", "Times New Roman", "Times", "serif";
+}
+
+.cssBtn {
+	font-size: 12px;
+	height: 20px;
+	color: #484884;
+	background-color: #E6EEF3;
+	border: 1px solid #A0B5D3;
+	padding-top: 2px;
+}
+
+.cssBtn[disabled] {
+	font-size: 12px;
+	height: 20px;
+	color: #C0C0C0;
+	background-color: #E6EEF3;
+	border: 1px solid #A0B5D3;
+	padding-top: 2px;
+	font-family: "Tahoma", "PMingliu", "MingLiU", "Times New Roman", "Times", "serif";
+}
+/* ------ 連結 ------ */
+.cssAnchor {
+	font-size: 12px;
+	line-height: 16px;
+	text-decoration: none;
+	letter-spacing: 2px;
+	color: #006699;
+	font-family: "Tahoma", "PMingliu", "MingLiU", "Times New Roman", "Times", "serif";
+}
+
+.cssAnchor:hover {
+	font-size: 12px;
+	line-height: 16px;
+	text-decoration: underline;
+	letter-spacing: 2px;
+	color: #0000FF;
+	font-family: "Tahoma", "PMingliu", "MingLiU", "Times New Roman", "Times", "serif";
+}
+
+.cssAnchor:visited{
+	font-size: 12px;
+	line-height: 16px;
+	letter-spacing: 2px;
+	color: #000080;
+	font-family: "Tahoma", "PMingliu", "MingLiU", "Times New Roman", "Times", "serif";
+}
+/* ------ 課程群組的 Tree 需要使用 ------ */
+.cssUL {
+	list-style-type: none;
+	padding-left: 0px;
+	margin-left: 0px;
+	padding-bottom: 0px;
+	margin-bottom: 0px;
+}
+
+.cssOL {
+	list-style-type: none;
+	padding-left: 10px;
+	margin-left: 10px;
+	padding-bottom: 0px;
+	margin-bottom: 0px;
+}
+/* ------ 其它字型設定 ------ */
+	/* ------ 行事曆 (今天) ------ */
+.cssCaleBg01 {
+	background-color: #C7D8FA;
+}
+	/* ------ 行事曆 (事件提醒) ------ */
+.cssCaleBg02 {
+	background-color: #F5CCF6;
+}
+	/* ------ 行事曆 (星期天) ------ */
+.cssCaleFont01 {
+	font-size: 12px;
+	line-height: 16px;
+	text-decoration: none;
+	letter-spacing: 1px;
+	color: #FF0000;
+	font-family: "Tahoma", "PMingliu", "MingLiU", "Times New Roman", "Times", "serif";
+}
+	/* ------ 行事曆 (星期六) ------ */
+.cssCaleFont02 {
+	font-size: 12px;
+	line-height: 16px;
+	text-decoration: none;
+	letter-spacing: 1px;
+	color: #008F29;
+	font-family: "Tahoma", "PMingliu", "MingLiU", "Times New Roman", "Times", "serif";
+}
+	/* ------ 行事曆 (其它星期) ------ */
+.cssCaleFont03 {
+	font-size: 12px;
+	line-height: 16px;
+	text-decoration: none;
+	letter-spacing: 1px;
+	color: #8CAAE6;
+	font-family: "Tahoma", "PMingliu", "MingLiU", "Times New Roman", "Times", "serif";
+}
+	/* ------ 行事曆 (今天有事件) ------ */
+.cssCaleFont04 {
+	font-size: 12px;
+	line-height: 16px;
+	text-decoration: none;
+	letter-spacing: 1px;
+	color: #BC8AD7;
+	background-color: #C7D8FA;
+	font-family: "Tahoma", "PMingliu", "MingLiU", "Times New Roman", "Times", "serif";
+}
+	/* ------ 我的課程 (登入的數字) ------ */
+.cssFont01 {
+	font-size: 12px;
+	line-height: 16px;
+	text-decoration: none;
+	letter-spacing: 1px;
+	color: #008F29;
+	font-family: "Tahoma", "PMingliu", "MingLiU", "Times New Roman", "Times", "serif";
+}
+	/* ------ 我的課程 (標頭部份) ------ */
+.cssMyHead {
+	font-size: 12px;
+	line-height: 16px;
+	font-weight: bold;
+	text-decoration: none;
+	letter-spacing: 1px;
+	color: #000000;
+	background-color: #C7D8FA;
+	font-family: "Tahoma", "PMingliu", "MingLiU", "Times New Roman", "Times", "serif";
+}
+	/* ------ 討論室 ------ */
+.tabsOn {
+	width: 98px;
+	height: 25px;
+	background-color: #5176D2;
+	color: #000000;
+	font-size: 12px;
+	cursor: pointer;
+}
+
+.tabsOff {
+	width: 98px;
+	height: 25px;
+	background-color: #A7BEED;
+	color: #FFFFFF;
+	font-size: 12px;
+	cursor: pointer;
+}
+
+.lstUserRoom {
+	width: 195px;
+	height: 213px;
+	overflow: -moz-scrollbars-vertical;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.cssLstUserRoom {
+	background-color : #E6EEFD;
+	width: 197px;
+}
+
+.cssChatUser {
+	width: 197px;
+	border: 1px solid #5176D2;
+}
+
+.cssChatRoom {
+	width: 197px;
+	border : 1px solid #5176D2;
+}
+
+.cssChatUserHead {
+	background-color : #BCD0F3;
+}
+
+.cssChatRoomHead {
+	background-color : #BCD0F3;
+}
+
+.cssDefContent {
+	background-color: #FFFFFF;
+	color: #000000;
+	font-size: 12px;
+	text-decoration: none;
+	letter-spacing: 2px;
+}
+
+.cssChatBG {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	background-color: #8CAAE6;
+	color: #000000;
+}
+
+.cssChatInOut {
+	position: absolute;
+	top: 6px;
+	left: 10px;
+	background-color: #FFFFFF;
+	z-index: 5;
+}
+
+.cssChatCont {
+	position: absolute;
+	top: 66px;
+	left: 10px;
+	background-color: #FFFFFF;
+	z-index: 10;
+}
+
+.cssChatLine {
+	padding-top: 1px;
+	padding-left: 24px;
+	text-indent: -20px;
+}
+
+.cssChatFile {
+	text-indent: 0px;
+	padding-left: 3px;
+	padding-right: 3px;
+	margin-right: 3px;
+	/* background-color: #E3E9F2; */
+	border: 0px solid #5176D2;
+}
+
+.cssChatTools {
+        position : absolute; 
+        top : 456px; 
+        left : 0px; 
+        background-color: #5176D2;
+}
+
+/* ------ 舊的佈景 ------ */
+.box01 {
+	border: 1px solid #5176D2;
+}
+
+.box02 {
+	font-size: 12px;
+	color: #000000;
+	background-color: #FFFFFF;
+	border: 1px solid #A0B5D3;
+}
+
+.box03 {
+	font-size: 12px;
+	color: #000000;
+	background-color: #D0D0D0;
+	border: 1px solid #A0B5D3;
+}
+
+.box04 {
+	background-color: #E4E2F3;
+	border-top: 1px solid #7070B8;
+	border-left: 1px solid #7070B8;
+	border-right: 1px solid #7070B8;
+	border-bottom: 0px none #000000;
+}
+
+.box05 {
+	background-color: #E4E2F3;
+	border-top: 0px none #000000;
+	border-left: 1px solid #7070B8;
+	border-right: 1px solid #7070B8;
+	border-bottom: 1px solid #7070B8;
+}
+
+.box06 {
+	background-color: #E4E2F3;
+	border-top: 0px none #000000;
+	border-left: 1px solid #7070B8;
+	border-right: 1px solid #7070B8;
+	border-bottom: 0px none #000000;
+}
+
+.bg01 {
+	/*background-color: #E3E9F2;*/
+}
+
+.bg02 {
+	background-color: #C7D8FA;
+}
+
+.bg03 {
+	background-color: #FFFFFF;
+}
+
+.bg04 {
+	background-color: #ECF1F7;
+}
+
+.bg05 {
+	background-color: #8CAAE6;
+	color: #000000;
+}
+
+.bg06 {
+	background-color: #E6E6FA;
+	color: #000000;
+}
+
+.bg07 {
+	background-color: #FFA07A;
+	color: #000000;
+}
+
+.bg08 {
+	background-color: #E6EEFD;
+}
+
+.font01 {
+	 font-size: 12px;
+	 line-height: 16px;
+	 color: #000000;
+	 text-decoration: none ;
+	 letter-spacing: 2px;
+}
+
+.font02 {
+	 font-size: 12px;
+	 font-weight: bold;
+	 line-height: 16px;
+	 color: #000000;
+	 text-decoration: none;
+	 letter-spacing: 2px;
+}
+
+.font03 {
+	font-size: 15px;
+	line-height: 18px;
+	color: #000000;
+	text-decoration: none;
+	letter-spacing: 1px;
+	font-family: "Tahoma", "PMingliu", "MingLiU", "Times New Roman", "Times", "serif";
+	font-weight: bold;
+}
+
+.font04 {
+	 font-size: 12px;
+	 line-height: 16px;
+	 color: #FF0000;
+	 text-decoration: none;
+	 letter-spacing: 2px;
+}
+
+.font05 {
+	font-size: 15px;
+	line-height: 18px;
+	color: #003366;
+	text-decoration: none;
+	letter-spacing: 1px;
+	font-family: "Tahoma", "PMingliu", "MingLiU", "Times New Roman", "Times", "serif";
+}
+
+.font06 {
+	font-size: 12px;
+	color: #7878AA;
+	text-decoration: none;
+	letter-spacing: 1px;
+}
+
+.link_fnt01 {
+	font-size: 12px;
+	line-height: 17px;
+	color: #006699;
+	text-decoration: none;
+	font-family: "Tahoma", "PMingliu", "MingLiU", "Times New Roman", "Times", "serif";
+	letter-spacing: 1px;
+}
+
+.link_fnt01:hover {
+	font-size: 12px;
+	line-height: 17px;
+	color: #0000FF;
+	text-decoration: underline;
+	font-family: "Tahoma", "PMingliu", "MingLiU", "Times New Roman", "Times", "serif";
+	letter-spacing: 1px;
+}
+
+.link_fnt01:visited{
+	font-size: 12px;
+	line-height: 17px;
+	color: #000080;
+	font-family: "Tahoma", "PMingliu", "MingLiU", "Times New Roman", "Times", "serif";
+	letter-spacing: 1px;
+}
+
+/*#47316 Chrome 沒有超連結功能時，顯示黑色*/
+.link_fnt01[disabled] {
+	font-size: 12px;
+	line-height: 17px;
+	color: #000000;
+	text-decoration: none;
+	font-family: "Tahoma", "PMingliu", "MingLiU", "Times New Roman", "Times", "serif";
+	letter-spacing: 1px;
+}
+
+.color01 {
+	 color: #FF0000;
+}
+
+.color02 {
+	 color: #008000;
+}
+
+.color03 {
+	 color: #0000FF;
+}
+
+.color04 {
+	 color: #000000;
+}
+
+.button01 {
+	font-size: 12px;
+	height: 20px;
+	color: #484884;
+	background-color: #E6EEF3;
+	border: 1px solid #A0B5D3;
+	padding-top: 2px;
+}
+
+.button01[disabled] {
+	font-size: 12px;
+	height: 20px;
+	color: #C0C0C0;
+	background-color: #E6EEF3;
+	border: 1px solid #A0B5D3;
+	padding-top: 2px;
+}
+
+
+	/* ------ scorm 的圖片 ------ */
+
+.divNote {
+	margin:0 0 1px; 
+	height: 19px;
+	width:19px;
+	background: url(/theme/default/learn/scorm_images/7.gif) no-repeat;
+}
+.divNote:hover {
+	background: url(/theme/default/learn/scorm_images/7-1.gif) no-repeat;
+}		
+
+.divExpand {
+	margin:0 0 1px; 
+	height: 19px;
+	width:19px;
+	background: url(/theme/default/learn/scorm_images/2.gif) no-repeat;
+}
+.divExpand:hover {
+	background: url(/theme/default/learn/scorm_images/2-1.gif) no-repeat;
+}
+
+.divPrev {
+	margin:0 0 1px; 
+	height: 19px;
+	width:19px;
+	background: url(/theme/default/learn/scorm_images/4.gif) no-repeat;
+}
+.divPrev:hover {
+	background: url(/theme/default/learn/scorm_images/4-1.gif) no-repeat;
+}
+
+.divNext {
+	margin:0 0 1px; 
+	height: 19px;
+	width:19px;
+	background: url(/theme/default/learn/scorm_images/3.gif) no-repeat;
+}
+.divNext:hover {
+	background: url(/theme/default/learn/scorm_images/3-1.gif) no-repeat;
+}
+
+.divMin {
+	margin:0 0 1px; 
+	height: 19px;
+	width:19px;
+	background: url(/theme/default/learn/scorm_images/5.gif) no-repeat;
+}
+.divMin:hover {
+	background: url(/theme/default/learn/scorm_images/5-1.gif) no-repeat;
+}
+
+.divMax {
+	margin:0 0 1px; 
+	height: 19px;
+	width:19px;
+	background: url(/theme/default/learn/scorm_images/6.gif) no-repeat;
+}
+.divMax:hover {
+	background: url(/theme/default/learn/scorm_images/6-1.gif) no-repeat;
+}
+
+.cke_inner .cke_top,.cke_inner .cke_contents,.cke_inner .cke_bottom{width:auto}

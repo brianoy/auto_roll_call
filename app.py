@@ -1,4 +1,4 @@
-from flask import Flask, request, abort
+from flask import Flask, request, abort, render_template
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import *
@@ -48,7 +48,7 @@ wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=c
 EAT = (["全家","7-11","中原夜市","鍋燒意麵","肉羹","拉麵","炒飯","賣麵庄","雞腿便當","摩斯漢堡","麥當勞","烤肉飯","肯德基","石二鍋",
 "五花馬","燒肉","咖哩飯","牛排","肉燥飯","SUKIYA","霸味薑母鴨","高雄黑輪","丼飯","薩利亞","mint","火雞肉飯","品田牧場","滷味","Mr.三明治",
 "雞柳飯","肉骨茶麵","泡麵","水餃","煎餃","包子","炒麵","鐵板燒","披薩","悟饕","河粉","肉圓","黑宅拉麵","壽司","牛肉麵","鹹酥雞","控肉便當",
-"赤麵廠","早到晚到","大時鐘天香麵","豚骨麻辣燙","後暫無名麵店","阿倫炒羊肉","炸螃蟹"])
+"赤麵廠","早到晚到","大時鐘天香麵","豚骨麻辣燙","後暫無名麵店","阿倫炒羊肉","炸螃蟹","烤肉","雞蛋糕"])
 
 STICKER_LIST = {'465400171':'ㄌㄩㄝ','465400158':'才不美','465400159':'Woooooooow','465400160':'不可以','465400161':'怎樣啦 輸贏啦','465400163':'假K孝濂給',
 '465400165':'累屁','465400166':'聽話 讓我看看','465400169':'到底??????','465400172':'他在已讀你','465400173':'大概24小時後才會回你','13744852':'哼',
@@ -106,6 +106,12 @@ def get_all_user():#turn raw data into 4 argument lists
 def time_quene():
     print("加入對列")
     return 
+
+
+@app.route("/chinese_ans")#post
+def chinese_ans():
+    return render_template('static/chinese_test.html')
+
 
 
 def quene(url,time):
