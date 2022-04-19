@@ -110,7 +110,7 @@ def time_quene():
 
 @app.route("/chinese_ans")#post
 def chinese_ans():
-    return render_template('static/chinese_test.html')
+    return render_template('chinese_ans.html')
 
 
 
