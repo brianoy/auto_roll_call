@@ -102,17 +102,17 @@ def get_all_user():#turn raw data into 4 argument lists
     conn.close()
 
 
-@app.route("/time_quene")#post
+@app.route("/time_quene")#post#未完成
 def time_quene():
     print("加入對列")
     return 
 
 
-@app.route("/chinese_ans")
+@app.route("/chinese_ans")#國文的主網頁
 def chinese_ans():
     return render_template('chinese_ans.html')
 
-@app.route('/chinese_test_files/title_on_01.gif')
+@app.route('/chinese_test_files/title_on_01.gif')#國文的圖案
 def title_on_01():
     return send_file("chinese_test_files/title_on_01.gif", mimetype='image/gif')
 
@@ -126,7 +126,7 @@ def icon_wrong():
 
 
 
-def quene(url,time):
+def quene(url,time):#未完成
     print("已成功加入")
 
 
