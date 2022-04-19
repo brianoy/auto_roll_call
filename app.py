@@ -108,9 +108,9 @@ def time_quene():
     return 
 
 
-@app.route("/chinese_ans")#post
+@app.route("/chinese_ans")
 def chinese_ans():
-    return render_template('chinese_ans.html')
+    return render_template('static/chinese_ans.html')
 
 
 
