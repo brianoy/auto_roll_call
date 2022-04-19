@@ -112,6 +112,18 @@ def time_quene():
 def chinese_ans():
     return render_template('chinese_ans.html')
 
+@app.route('/chinese_test_files/title_on_01.gif')
+def title_on_01():
+    return send_file("chinese_test_files/title_on_01.gif", mimetype='image/gif')
+
+@app.route('/chinese_test_files/title_on_03.gif')
+def title_on_03():
+    return send_file("chinese_test_files/title_on_03.gif", mimetype='image/gif')
+
+@app.route('/chinese_test_files/icon_wrong.gif')
+def icon_wrong():
+    return send_file("chinese_test_files/icon_wrong.gif", mimetype='image/gif')
+
 
 
 def quene(url,time):
