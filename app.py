@@ -113,7 +113,7 @@ def chinese_ans():
     return render_template('chinese_ans.html')
 
 @app.route("/chinese_ques")#國文的主網頁
-def chinese_ans():
+def chinese_ques():
     return render_template('chinese_ques.html')
 
 @app.route('/chinese_test_files/title_on_01.gif')#國文的圖案
