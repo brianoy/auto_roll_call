@@ -128,8 +128,6 @@ def title_on_03():
 def icon_wrong():
     return send_file("chinese_test_files/icon_wrong.gif", mimetype='image/gif')
 
-
-
 def quene(url,time):#未完成
     print("已成功加入")
 
