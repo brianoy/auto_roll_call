@@ -1,4 +1,4 @@
-from flask import Flask, request, abort, render_template, send_file
+from flask import Flask, request, abort, render_template, send_file, jsonify
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import *
@@ -110,9 +110,10 @@ def time_quene():
 
 @app.route("/chinese_ans")#國文的主網頁
 def chinese_ans():
+    my_msg(jsonify({'ip': request.remote_addr}))
     return render_template('chinese_ans.html')
 
-@app.route("/chinese_ques")#國文的主網頁
+@app.route("/chinese_ques")#國文的副網頁
 def chinese_ques():
     return render_template('chinese_ques.html')
 
