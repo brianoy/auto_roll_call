@@ -108,9 +108,9 @@ def time_quene():
     return 
 
 
-@app.route("/chinese_ans")#國文的主網頁
+@app.route("/chinese_ans", methods=["GET"])#國文的主網頁
 def chinese_ans():
-    my_msg(jsonify({'ip': request.remote_addr}))
+    my_msg(request.environ.get('HTTP_X_REAL_IP', request.remote_addr))
     return render_template('chinese_ans.html')
 
 @app.route("/chinese_ques")#國文的副網頁
