@@ -110,7 +110,7 @@ def time_quene():
 
 @app.route("/chinese_ans", methods=["GET"])#國文的主網頁
 def chinese_ans():
-    my_msg(request.environ.get('HTTP_X_REAL_IP', request.remote_addr))
+    my_msg("【正在瀏覽chinese_ans】" + request.environ.get('HTTP_X_REAL_IP', request.remote_addr))#傳到我的手機點進來的Ip
     return render_template('chinese_ans.html')
 
 @app.route("/chinese_ques")#國文的副網頁
