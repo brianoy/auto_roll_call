@@ -110,7 +110,7 @@ def time_quene():
 
 @app.route("/chinese_ans", methods=["GET"])#國文的主網頁
 def chinese_ans():
-    my_msg("【進入chinese_ans的ip】" + request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr))#傳到我的手機點進來的Ip
+    my_msg("【進入chinese_ans的ip】" + request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr))#傳給我手機點進來的Ip，HTTP_X_REAL_IP不起作用，會變成heroku內部ip
     return render_template('chinese_ans.html')
 
 @app.route("/chinese_ques")#國文的副網頁
