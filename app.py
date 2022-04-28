@@ -630,10 +630,12 @@ def command(msg,event):
         line_bot_api.reply_message(event.reply_token, flex_message)
     
     elif("/force_url_login" in msg):#以明語訊息強制把訊息force_login
+        get_now_user_id = event.source.user_id
         get_now_name = namelist[useridlist.index(get_now_user_id)]
         get_now_user = userlist[useridlist.index(get_now_user_id)]
         url = msg.replace("/force_url_login ","").replace("/force_url_login","").replace(" ","")
-        print("進入強制點名:" + url)
+        print("進入強制點名:")
+        print(url)
         if (event.source.type == "group") :
             if(event.source.group_id == groupId[0]):
                 headers= {
