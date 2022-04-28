@@ -633,10 +633,8 @@ def command(msg,event):
         get_now_user_id = event.source.user_id
         get_now_name = namelist[useridlist.index(get_now_user_id)]
         get_now_user = userlist[useridlist.index(get_now_user_id)]
-        print("第一層")
         url = msg.replace("/force_url_login ","").replace("/force_url_login","").replace(" ","")
-        print("第二層")
-        print("進入強制點名:")
+        print("明文訊息強制點名:")
         print(url)
         if (event.source.type == "group") :
             if(event.source.group_id == groupId[0]):
