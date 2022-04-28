@@ -433,7 +433,7 @@ def handle_message(event) :
     msg_type = event.message.type
     print(msg_type)
     event_temp = event
-    if 'itouch.cycu.edu.tw' in msg :
+    if 'itouch.cycu.edu.tw' in msg and '/force_url_login' not in msg:
          if 'learning_activity' in msg :
              if (event.source.type == "group") :
                  if(event.source.group_id == groupId[0]):
