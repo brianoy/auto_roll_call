@@ -472,6 +472,10 @@ def handle_message(event) :
          else:
              public_msgbuffer = ('請輸入正確的點名網址')
              line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
+             
+    elif '/' in msg and msg[0] == "/":#all command
+        command(msg,event)
+
     elif 'https://' in msg or '.com' in msg :
         public_msgbuffer = (announce + '此非itouch網域')
         if (event.source.type == "group") :
@@ -534,8 +538,6 @@ def handle_message(event) :
             if (event.source.type == "user") :
                 user_quick_reply(event.source.user_id)
 
-    elif '/' in msg and msg[0] == "/":#all command
-            command(msg,event)
 
     else:
         public_msgbuffer = (announce + '無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀')
