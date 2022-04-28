@@ -73,6 +73,7 @@ msgbuffer = ""
 public_msgbuffer = ""
 success_login_status = 0
 fail_login_status = 0
+global not_send_msg
 not_send_msg = False
 
 
@@ -596,6 +597,7 @@ def command(msg,event):
         get_all_user()
         respond = "已重新抓取"
         print(respond)
+        not_send_msg = False
         person_not_send_msg_func(not_send_msg,event.source.user_id,TextSendMessage(respond))
 
     elif '/我的uuid' == msg:
