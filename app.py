@@ -472,7 +472,7 @@ def handle_message(event) :
          else:
              public_msgbuffer = ('請輸入正確的點名網址')
              line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
-             
+
     elif '/' in msg and msg[0] == "/":#all command
         command(msg,event)
 
@@ -511,6 +511,8 @@ def handle_message(event) :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("寶"))
     elif 'ok' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("ok"))
+    elif '大鯨魚' in msg :
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("\n\n\n\n\n·_______________·"))
     elif '怪咖' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("對阿你很怪"))
     elif '都已讀' in msg :
@@ -632,6 +634,7 @@ def command(msg,event):
         line_bot_api.reply_message(event.reply_token, flex_message)
     
     elif("/force_url_login" in msg):#以明語訊息強制把訊息force_login
+        not_send_msg = False
         get_now_user_id = event.source.user_id
         get_now_name = namelist[useridlist.index(get_now_user_id)]
         get_now_user = userlist[useridlist.index(get_now_user_id)]
