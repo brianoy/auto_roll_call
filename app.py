@@ -34,7 +34,7 @@ else:
     LINE_CHANNEL_SECRET = os.environ['LINE_CHANNEL_SECRET']
 DISCORD_WEBHOOK = os.environ['DISCORD_WEBHOOK']
 OPUUID = os.environ['LINE_OP_UUID']
-changelog = "flexmsg、quick reply、點名加速、課表抓取、修復指令的bug"#還有成績指令沒寫完、簽到未開放的對列quene、未點名的紀錄
+changelog = "flexmsg、quick reply、點名加速、課表抓取、修復指令的bug、可愛大鯨魚"#還有成績指令沒寫完、簽到未開放的對列quene、未點名的紀錄
 client = discord.Client()
 app = Flask(__name__)
 chrome_options = webdriver.ChromeOptions()
@@ -50,9 +50,16 @@ EAT = (["全家","7-11","中原夜市","鍋燒意麵","肉羹","拉麵","炒飯"
 "雞柳飯","肉骨茶麵","泡麵","水餃","煎餃","包子","炒麵","鐵板燒","披薩","悟饕","河粉","肉圓","黑宅拉麵","壽司","牛肉麵","鹹酥雞","控肉便當",
 "赤麵廠","早到晚到","大時鐘天香麵","豚骨麻辣燙","後站無名麵店","阿倫炒羊肉","炸螃蟹","烤肉","雞蛋糕"])
 
+WHALE =(["\n\n\n\n\n·_______________·","\n\n\n\n\n@_______________@","\n\n\n\n\nX_______________X","\n\n\n\n\nO_______________O","\n\n\n\n\n^_______________^",
+"\n\n\n\n\n*_______________*","\n\n\n⠀⠀⠀⠀⠀∞\n\n·_______________·","\n\n\n\n\n·_______________·"])
+
+CHICKEN =(["➖➖➖➖\uD83D\uDFE5\n➖➖➖⬜️⬜️\n➖➖➖⬜️\uD83D\uDD33\uD83D\uDFE7\n⬜️➖➖⬜️⬜️\uD83D\uDFE5\n⬜️⬜️⬜️⬜️⬜️\n⬜️⬛️⬛️⬜️⬜️\n➖⬜️⬜️⬜️\n➖➖\uD83D\uDFE8",
+"➖➖➖➖\uD83D\uDFE5\n➖➖➖\uD83D\uDFE7\uD83D\uDFE7\n➖➖➖\uD83D\uDFE7\uD83D\uDD33\uD83D\uDFE8\n\uD83D\uDFE6➖➖\uD83D\uDFE7\uD83D\uDFE7\uD83D\uDFE5\n\uD83D\uDFEB⬜️\uD83D\uDFEB\uD83D\uDFEB\uD83D\uDFEB\n\uD83D\uDFEB\uD83D\uDFE5\uD83D\uDFE5\uD83D\uDFEB\uD83D\uDFEB\n➖\uD83D\uDFEB\uD83D\uDFEB\uD83D\uDFEB\n➖➖\uD83D\uDFE8"])
+
 STICKER_LIST = {'465400171':'ㄌㄩㄝ','465400158':'才不美','465400159':'Woooooooow','465400160':'不可以','465400161':'怎樣啦 輸贏啦','465400163':'假K孝濂給',
 '465400165':'累屁','465400166':'聽話 讓我看看','465400169':'到底??????','465400172':'他在已讀你','465400173':'大概24小時後才會回你','13744852':'哼',
 '349572675':'可憐哪','352138078':'吃屎阿','464946842':'對咩對咩','464946834':'ㄏㄏ','464946841':'亂講','435674449':'嘿嘿','435674452':'兇屁'}
+
 
 line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)# Channel Access Token
 handler = WebhookHandler(LINE_CHANNEL_SECRET)# Channel Secret
@@ -66,6 +73,8 @@ msgbuffer = ""
 public_msgbuffer = ""
 success_login_status = 0
 fail_login_status = 0
+not_send_msg = False
+
 
 def get_all_user():#turn raw data into 4 argument lists 
     conn   = psycopg2.connect(DATABASE_URL, sslmode='require')
@@ -512,9 +521,13 @@ def handle_message(event) :
     elif 'ok' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("ok"))
     elif '大鯨魚' in msg :
-        line_bot_api.reply_message(event.reply_token, TextSendMessage("\n\n\n\n\n·_______________·"))
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(WHALE[random.randint(0,len(WHALE)-1)]))
+    elif '雞' in msg :
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(CHICKEN[random.randint(0,len(CHICKEN)-1)]))
     elif '怪咖' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("對阿你很怪"))
+    elif '笑死' in msg :
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("哈哈很好笑\n⣿⣿⣿⣿⠟⠋⠄⠄⠄⠄⠄⠄⠄⢁⠈⢻⢿⣿⣿⣿⣿⣿⣿\n⣿⣿⣿⣿⠃⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠈⡀⠭⢿⣿⣿⣿\n⣿⣿⣿⡟⠄⢀⣾⣿⣿⣿⣷⣶⣿⣷⣶⣶⡆⠄⠄⠄⣿⣿⣿\n⣿⣿⣿⡇⢀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠄⠄⢸⣿⣿⣿\n⣿⣿⣿⣇⣼⣿⣿⠿⠶⠙⣿⡟⠡⣴⣿⣽⣿⣧⠄⢸⣿⣿⣿\n⣿⣿⣿⣿⣾⣿⣿⣟⣭⣾⣿⣷⣶⣶⣴⣶⣿⣿⢄⣿⣿⣿⣿\n⣿⣿⣿⣿⣿⣿⣿⡟⣩⣿⣿⣿⡏⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿\n⣿⣿⣿⣿⣿⣹⡋⠘⠷⣦⣀⣠⡶⠁⠈⠁⠄⣿⣿⣿⣿⣿⣿\n⣿⣿⣿⣿⣿⣍⠃⣴⣶⡔⠒⠄⣠⢀⠄⠄⠄⡨⣿⣿⣿⣿⣿\n⣿⣿⣿⣿⣿⣿⣦⡘⠿⣷⣿⠿⠟⠃⠄⠄⣠⡇⠈⠻⣿⣿⣿\n⣿⣿⣿⡿⠟⠋⢁⣷⣠⠄⠄⠄⠄⣀⣠⣾⡟⠄⠄⠄⠄⠉⠙\n⠟⠋⠁⠄⠄⠄⢸⣿⣿⡯⢓⣴⣾⣿⣿⡟⠄⠄⠄⠄⠄⠄⠄\n⠄⠄⠄⠄⠄⠄⣿⡟⣷⠄⠹⣿⣿⣿⡿⠁⠄⠄⠄⠄⠄⠄⠄\n⠄⠄⠄⠄⠄⣿⣿⠃⣦⣄⣿⣿⣿⠇⠄⠄⠄⠄⠄⠄⠄⠄⠄\n⠄⠄⠄⠄⢸⣿⠗⢈⡶⣷⣿⣿⡏⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄\n去新疆"))
     elif '都已讀' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("沒有 是你太邊緣"))
     elif 'peko' in msg :
