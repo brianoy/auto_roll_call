@@ -118,7 +118,7 @@ def get_now_all_user_status():#turn raw data into 4 argument lists
     all_list = cursor.fetchall()#fetch 
     cursor.close()
     conn.close()
-    return all_list
+    return str(all_list)
 
 @app.route("/time_quene")#post#未完成
 def time_quene():
@@ -246,7 +246,7 @@ def handle_postback(event):
     get_now_user_id = event.source.user_id
     now_unix_time = event.timestamp
     print("現在時間:" + str(now_unix_time))
-    
+
     if '/changepassword' in postback_msg :
         if get_now_user_id in useridlist:#帳號存在
             change_password = postback_msg.replace("/changepassword","").replace(" ","")
@@ -269,7 +269,7 @@ def handle_postback(event):
     elif("/force_url_login " in postback_msg):
         get_now_name = namelist[useridlist.index(get_now_user_id)]
         get_now_user = userlist[useridlist.index(get_now_user_id)]
-        print(datetime.fromisoformat('1970-01-01T01:00:00+00:00').timestamp())
+        print(datetime.datetime.fromisoformat('1970-01-01T01:00:00+00:00').timestamp())
         url = postback_msg.replace("/force_url_login","").replace(" ","")
         if (event.source.type == "group") :
             if(event.source.group_id == groupId[0]):
@@ -846,7 +846,7 @@ def limited_command(msg,event):
         if (event.source.user_id == OPUUID):
             op_command(msg,event)
         else:
-            line_bot_api.reply_message(event.reply_token, TextSendMessage("沒有這個指令"))
+            line_bot_api.reply_message(event.reply_token, TextSendMessage("沒有這個指令或是你沒有這個權限"))
 
 def op_command(msg,event):
 
