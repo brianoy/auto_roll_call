@@ -10,7 +10,7 @@ from selenium.webdriver.chrome.service import Service
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from datetime import datetime
+from datetime import datetime, timezone
 import requests
 import time
 import os
@@ -111,6 +111,14 @@ def get_all_user():#turn raw data into 4 argument lists
     cursor.close()
     conn.close()
 
+def get_now_all_user_status():#turn raw data into 4 argument lists 
+    conn   = psycopg2.connect(DATABASE_URL, sslmode='require')
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM all_info")#choose all the data of target 
+    all_list = cursor.fetchall()#fetch 
+    cursor.close()
+    conn.close()
+    return all_list
 
 @app.route("/time_quene")#post#未完成
 def time_quene():
@@ -236,6 +244,9 @@ def handle_postback(event):
     global public_msgbuffer
     postback_msg = event.postback.data
     get_now_user_id = event.source.user_id
+    now_unix_time = event.timestamp
+    print("現在時間:" + str(now_unix_time))
+    
     if '/changepassword' in postback_msg :
         if get_now_user_id in useridlist:#帳號存在
             change_password = postback_msg.replace("/changepassword","").replace(" ","")
@@ -255,9 +266,10 @@ def handle_postback(event):
         respond = "已成功清除" + get_now_user + get_now_name + "的資料" + "，如需重新綁定，請輸入「/開始綁定」"
         print(respond)
         line_bot_api.push_message(event.source.user_id, TextSendMessage(respond))
-    elif("/force_url_login" in postback_msg):
+    elif("/force_url_login " in postback_msg):
         get_now_name = namelist[useridlist.index(get_now_user_id)]
         get_now_user = userlist[useridlist.index(get_now_user_id)]
+        print(datetime.fromisoformat('1970-01-01T01:00:00+00:00').timestamp())
         url = postback_msg.replace("/force_url_login","").replace(" ","")
         if (event.source.type == "group") :
             if(event.source.group_id == groupId[0]):
@@ -268,7 +280,9 @@ def handle_postback(event):
                 msgbuffer = url_login(url,event,force = True)
                 public_msgbuffer = done + msgbuffer
                 payload = {'message': distinguish(public_msgbuffer) }
+                my_msg("")
                 group_not_send_msg_func(not_send_msg,headers,payload)
+                
             elif(event.source.group_id == groupId[1]):
                 headers= {
                 "Authorization": "Bearer " + grouptoken[1], 
@@ -829,8 +843,17 @@ def limited_command(msg,event):
             except ValueError:
                 line_bot_api.reply_message(event.reply_token, TextSendMessage("帳號請輸入學號(純數字)"))
     else:
-        line_bot_api.reply_message(event.reply_token, TextSendMessage("沒有這個指令"))
+        if (event.source.user_id == OPUUID):
+            op_command(msg,event)
+        else:
+            line_bot_api.reply_message(event.reply_token, TextSendMessage("沒有這個指令"))
 
+def op_command(msg,event):
+
+    if ("/名單" in msg):
+       my_msg(get_now_all_user_status())
+
+    return
 @handler.add(MessageEvent, message=StickerMessage)
 def handle_sticker_message(event):
     msg_type = event.message.type
