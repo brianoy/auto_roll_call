@@ -366,10 +366,13 @@ def deliver_data(public_msgbuffer, event_temp, text=None) -> dict:
 
 
 def distinguish(msgbuffer):
-    if (fail_login_status > 0):
-        msgbuffer = "🟥\n" + msgbuffer
+    if "ERROR" in msgbuffer:
+        msgbuffer = msgbuffer.replace(done,"")
     else:
-        msgbuffer = "🟩\n" + msgbuffer
+        if (fail_login_status > 0):
+            msgbuffer = "🟥\n" + msgbuffer
+        else:
+            msgbuffer = "🟩\n" + msgbuffer
     return msgbuffer
 
 
