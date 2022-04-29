@@ -1,3 +1,4 @@
+from selectors import EpollSelector
 from flask import Flask, request, abort, render_template, send_file, jsonify
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
@@ -154,6 +155,7 @@ def quene(url,time):#未完成
 def url_login(msg,event,force):
     global not_send_msg
     not_send_msg = False
+    now_unix_time = int(event.timestamp/1000)#強制將unix時間取整
     wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
     start_time = time.time()
     url = str(msg).replace("&afterLogin=true","")
@@ -173,7 +175,7 @@ def url_login(msg,event,force):
         messageout = "🟥警告❌，點名並沒有開放，請稍後再試或自行手點，全數點名失敗\n"#反正也傳不出去
         not_send_msg = True
         with open("json/limited_class.json") as path:
-               FlexMessage = json.loads(path.read() % {"msg_1" : "偵測到課程點名失敗，是否需要重新點名?" , "force_url_login" : url })
+               FlexMessage = json.loads(path.read() % {"msg_1" : "偵測到課程點名失敗，是否需要重新點名?" , "unix_time" : now_unix_time , "force_url_login" : url })
                flex_message = FlexSendMessage(
                               alt_text = '(請點擊聊天室已取得更多消息)' ,
                               contents = FlexMessage)
@@ -184,7 +186,7 @@ def url_login(msg,event,force):
     else:
         if (("英文" in curriculum_name or "化學實驗" in curriculum_name) and force != True):
             with open("json/limited_class.json") as path:
-                FlexMessage = json.loads(path.read() % {"msg_1" : "此課程不建議全體點名，確定要點名?" , "force_url_login" :  url })
+                FlexMessage = json.loads(path.read() % {"msg_1" : "此課程不建議全體點名，確定要點名?" , "unix_time" : now_unix_time , "force_url_login" :  url })
                 flex_message = FlexSendMessage(
                               alt_text = '(請點擊聊天室已取得更多消息)' ,
                               contents = FlexMessage)
@@ -244,7 +246,8 @@ def handle_postback(event):
     global public_msgbuffer
     postback_msg = event.postback.data
     get_now_user_id = event.source.user_id
-    now_unix_time = event.timestamp
+    now_unix_time = int(event.timestamp/1000)#強制將unix時間取整
+    time_end = now_unix_time
     print("現在時間:" + str(now_unix_time))
 
     if '/changepassword' in postback_msg :
@@ -269,36 +272,48 @@ def handle_postback(event):
     elif("/force_url_login " in postback_msg):
         get_now_name = namelist[useridlist.index(get_now_user_id)]
         get_now_user = userlist[useridlist.index(get_now_user_id)]
-        print(datetime.datetime(1970,1,1,1,0,tzinfo=timezone.utc).timestamp())
-        url = postback_msg.replace("/force_url_login","").replace(" ","")
+        time_start = (postback_msg.replace("/force_url_login ","").replace(" ",""))[0,10]
+        url = postback_msg.replace("/force_url_login ","").replace(" ","").replace(time_start,"")
+        print(time_start)
+        print(time_end)
+        print(time_end-time_start)
+        print(url)
         if (event.source.type == "group") :
             if(event.source.group_id == groupId[0]):
                 headers= {
                 "Authorization": "Bearer " + grouptoken[0], 
                 }
-                requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + recived })#翹課大魔王
-                msgbuffer = url_login(url,event,force = True)
-                public_msgbuffer = done + msgbuffer
-                payload = {'message': distinguish(public_msgbuffer) }
-                my_msg("")
-                group_not_send_msg_func(not_send_msg,headers,payload)
+                if(time_end-time_start<=1800):
+                    requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n觸發者:" + get_now_name + "\n" +recived })#翹課大魔王
+                    msgbuffer = url_login(url,event,force = True)
+                    public_msgbuffer = done + msgbuffer
+                    payload = {'message': distinguish(public_msgbuffer) }
+                    group_not_send_msg_func(not_send_msg,headers,payload)
+                else:
+                    requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n觸發者:" + get_now_name + "\n" + "按鈕時效已過期" })#翹課大魔王
                 
             elif(event.source.group_id == groupId[1]):
                 headers= {
                 "Authorization": "Bearer " + grouptoken[1], 
                 }
-                requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + recived })#秘密基地
-                msgbuffer = url_login(url,event,force = True)
-                public_msgbuffer = done + msgbuffer
-                payload = {'message': distinguish(public_msgbuffer) }
-                group_not_send_msg_func(not_send_msg,headers,payload)
+                if(time_end-time_start<=1800):
+                    requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + recived })#秘密基地
+                    msgbuffer = url_login(url,event,force = True)
+                    public_msgbuffer = done + msgbuffer
+                    payload = {'message': distinguish(public_msgbuffer) }
+                    group_not_send_msg_func(not_send_msg,headers,payload)
+                else:
+                    requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n觸發者:" + get_now_name + "\n" + "按鈕時效已過期" })#秘密基地
             else:
                 print("有不知名的群組")
         elif(event.source.type == "user") :
-            person_not_send_msg_func(not_send_msg,event.source.user_id,TextSendMessage(recived))
-            msgbuffer = url_login(url,event,force=True)
-            public_msgbuffer = (done + msgbuffer)
-            line_bot_api.push_message(event.source.user_id, TextSendMessage(distinguish(public_msgbuffer)))
+            if(time_end-time_start<=1800):
+                person_not_send_msg_func(not_send_msg,event.source.user_id,TextSendMessage(recived))
+                msgbuffer = url_login(url,event,force=True)
+                public_msgbuffer = (done + msgbuffer)
+                line_bot_api.push_message(event.source.user_id, TextSendMessage(distinguish(public_msgbuffer)))
+            else:
+                line_bot_api.push_message(event.source.user_id, TextSendMessage("按鈕時效已過期"))
         else:
             print("ERROR:invalid source type during force login")
     else:
@@ -455,6 +470,7 @@ def handle_message(event) :
     public_msgbuffer = ""
     msg = event.message.text
     msg_type = event.message.type
+    #now_unix_time = int(event.timestamp/1000)#強制將unix時間取整
     print(msg_type)
     event_temp = event
     if 'itouch.cycu.edu.tw' in msg and '/force_url_login' not in msg:
@@ -850,8 +866,8 @@ def limited_command(msg,event):
 
 def op_command(msg,event):
 
-    if ("/名單" in msg):
-       my_msg(get_now_all_user_status().replace("),","),\n"))
+    if ("/名單" in msg):#名單au/620 
+       my_msg(get_now_all_user_status().replace("),","),\n\n"))
 
     return
 @handler.add(MessageEvent, message=StickerMessage)

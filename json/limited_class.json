@@ -68,7 +68,7 @@
           "action": {
             "type": "postback",
             "label": "確定",
-            "data": "/force_url_login %(force_url_login)s"
+            "data": "/force_url_login %(unix_time)s %(force_url_login)s"
           },
           "color": "#FFFFFF66",
           "style": "primary"
