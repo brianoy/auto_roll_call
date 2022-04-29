@@ -274,9 +274,9 @@ def handle_postback(event):
         get_now_user = userlist[useridlist.index(get_now_user_id)]
         time_start = int((postback_msg.replace("/force_url_login ","").replace(" ",""))[0:10])
         url = postback_msg.replace("/force_url_login ","").replace(" ","").replace(str(time_start),"")
-        print(time_start)
-        print(time_end)
-        print(time_end-time_start)
+        print("標記時間:" + str(time_start))
+        print("相扣時間:" + str(time_end-time_start))
+        print("Raw data:" + postback_msg)
         print(url)
         if (event.source.type == "group") :
             if(event.source.group_id == groupId[0]):
