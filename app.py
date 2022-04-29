@@ -1,5 +1,5 @@
-from selectors import EpollSelector
-from flask import Flask, request, abort, render_template, send_file, jsonify
+#from selectors import EpollSelector
+from flask import Flask, request, abort, render_template, send_file
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import *
