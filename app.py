@@ -269,7 +269,7 @@ def handle_postback(event):
     elif("/force_url_login " in postback_msg):
         get_now_name = namelist[useridlist.index(get_now_user_id)]
         get_now_user = userlist[useridlist.index(get_now_user_id)]
-        print(datetime.datetime.fromisoformat('1970-01-01T01:00:00+00:00').timestamp())
+        print(datetime.datetime(1970,1,1,1,0,tzinfo=timezone.utc).timestamp())
         url = postback_msg.replace("/force_url_login","").replace(" ","")
         if (event.source.type == "group") :
             if(event.source.group_id == groupId[0]):
@@ -851,7 +851,7 @@ def limited_command(msg,event):
 def op_command(msg,event):
 
     if ("/名單" in msg):
-       my_msg(get_now_all_user_status())
+       my_msg(get_now_all_user_status().replace("),","),\n"))
 
     return
 @handler.add(MessageEvent, message=StickerMessage)
