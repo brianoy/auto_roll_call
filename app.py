@@ -272,7 +272,7 @@ def handle_postback(event):
     elif("/force_url_login " in postback_msg):
         get_now_name = namelist[useridlist.index(get_now_user_id)]
         get_now_user = userlist[useridlist.index(get_now_user_id)]
-        time_start = (postback_msg.replace("/force_url_login ","").replace(" ",""))[0,10]
+        time_start = int((postback_msg.replace("/force_url_login ","").replace(" ",""))[0:10])
         url = postback_msg.replace("/force_url_login ","").replace(" ","").replace(time_start,"")
         print(time_start)
         print(time_end)
