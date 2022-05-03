@@ -195,26 +195,27 @@ def url_login(msg,event,force):
                 line_bot_api.reply_message(event.reply_token, flex_message)
                 not_send_msg = True
             else:#確認所有條件都符合點名資格 #第九個人有500MB mem leak的問題導致fatal error待修復 #5個5個人來?
-                quotient = len(userlist)//5  #商數
-                remainder = len(userlist)%5 #餘數
+                divisor = 7
+                quotient = len(userlist)//divisor  #商數
+                remainder = len(userlist)%divisor #餘數
                 print("進入區塊一")
                 wd.close()
                 print("關閉瀏覽器")
                 wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
                 print("開啟瀏覽器")
-                for i in range(0,5,1):
+                for i in range(0,divisor,1):
                     print("進入區塊二")
                     wd.execute_script("window.open('');")
                     print("已打開第"+ str(i+1) + "個分頁")
 
                 for j in range(0,quotient+1,1):
                     if remainder != 0 and j == quotient:#確認現在j已經到尾端且有餘數(非5倍數)
-                        start_order = quotient*5
+                        start_order = quotient*divisor
                         end_order = start_order + remainder 
                         print("有餘數")
                     else:
-                        start_order = 5*j
-                        end_order = start_order+5
+                        start_order = divisor*j
+                        end_order = start_order+divisor
                         print("沒有餘數")
 
                     for i in range(start_order,end_order,1):
@@ -228,7 +229,7 @@ def url_login(msg,event,force):
                         usr =  userlist[i]
                         pwd = pwlist[i]
                         name = namelist[i]
-                        wd.switch_to.window(wd.window_handles[i%5])#先跑到對應的視窗 i%5表示忽略5的倍數
+                        wd.switch_to.window(wd.window_handles[i%divisor])#先跑到對應的視窗 i%5表示忽略5的倍數
                         wd.execute_script('document.getElementById("UserNm").value ="' + usr + '"')
                         wd.execute_script('document.getElementById("UserPasswd").value ="' + pwd + '"')
                         wd.execute_script('document.getElementsByClassName("w3-button w3-block w3-green w3-section w3-padding")[0].click();')#再登入
@@ -238,7 +239,7 @@ def url_login(msg,event,force):
                         usr =  userlist[i]#之後的訊息要顯示
                         pwd = pwlist[i]
                         name = namelist[i]
-                        wd.switch_to.window(wd.window_handles[i%5])#先跑到對應的視窗
+                        wd.switch_to.window(wd.window_handles[i%divisor])#先跑到對應的視窗
                         password_wrong = EC.alert_is_present()(wd)#如果有錯誤訊息#不太確定要先切換視窗再按確認還是反過來
                         if password_wrong:
                             failmsg = password_wrong.text
