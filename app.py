@@ -274,6 +274,7 @@ def handle_postback(event):
         delete_on_database_via_uuid(get_now_user_id)
         respond = "已成功清除" + get_now_user + get_now_name + "的資料" + "，如需重新綁定，請輸入「/開始綁定」"
         print(respond)
+        my_msg(respond)
         line_bot_api.push_message(event.source.user_id, TextSendMessage(respond))
     elif("/force_url_login " in postback_msg):
         get_now_name = namelist[useridlist.index(get_now_user_id)]
@@ -367,7 +368,7 @@ def deliver_data(public_msgbuffer, event_temp, text=None) -> dict:
 
 def distinguish(msgbuffer):
     if "ERROR" in msgbuffer:
-        msgbuffer = msgbuffer.replace(done,"")
+        msgbuffer = msgbuffer.replace(done,"")#將多產生的點名訊息再刪掉
     else:
         if (fail_login_status > 0):
             msgbuffer = "🟥\n" + msgbuffer
@@ -560,6 +561,8 @@ def handle_message(event) :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("寶"))
     elif 'ok' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("ok"))
+    elif '有沒有人' in msg :
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("沒有"))
     elif '大鯨魚' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage(WHALE[random.randint(0,len(WHALE)-1)]))
     elif '雞' in msg :
@@ -678,7 +681,7 @@ def command(msg,event):
             print("傳出flexmsg")
             line_bot_api.reply_message(event.reply_token, flex_message)
 
-    elif '/help' == msg or '/幫助' == msg:
+    elif '/help' == msg or '/幫助' == msg or '/開始綁定帳號' == msg or '/我要綁定帳號' == msg or '/我想要綁定帳號' == msg: 
         with open("json/help.json") as path:
                 FlexMessage = json.loads(path.read())
         flex_message = FlexSendMessage(
@@ -851,22 +854,31 @@ def limited_command(msg,event):
             print("使用者重複綁定")
             line_bot_api.push_message(event.source.user_id, TextSendMessage("已有帳號密碼綁定於此line帳戶上，無法使用同一個Line帳戶綁定多支ilearning帳號\n若需要清除綁定，請輸入「/清除綁定」"))
         else:
-            split_msg = []
-            split_msg = msg.split(' ')
-            set_now_name = split_msg[1]
-            set_now_password = split_msg[3]
             try:
-                set_now_account = int(split_msg[2])
-                register(set_now_name, get_now_user_id, set_now_account, set_now_password)
-                with open("json/create_account.json") as path:
-                    FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id,"get_now_name" : set_now_name,"get_now_user" : set_now_account,"get_now_password" : set_now_password})
-                flex_message = FlexSendMessage(
-                                alt_text = '(請點擊聊天室已取得更多消息)' ,
-                                contents = FlexMessage)
-                print("傳出flexmsg")
-                line_bot_api.reply_message(event.reply_token, flex_message)
-            except ValueError:
-                line_bot_api.reply_message(event.reply_token, TextSendMessage("帳號請輸入學號(純數字)"))
+                split_msg = []
+                split_msg = msg.split(' ')
+                set_now_name = split_msg[1]
+                set_now_password = split_msg[3]
+                try:
+                    set_now_account = int(split_msg[2])
+                    register(set_now_name, get_now_user_id, set_now_account, set_now_password)
+                    with open("json/create_account.json") as path:
+                        FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id,"get_now_name" : set_now_name,"get_now_user" : set_now_account,"get_now_password" : set_now_password})
+                    flex_message = FlexSendMessage(
+                                    alt_text = '(請點擊聊天室已取得更多消息)' ,
+                                    contents = FlexMessage)
+                    print("傳出flexmsg")
+                    line_bot_api.reply_message(event.reply_token, flex_message)
+                except ValueError:
+                    line_bot_api.reply_message(event.reply_token, TextSendMessage("帳號請輸入學號(純數字)"))
+                except IndexError:
+                    line_bot_api.reply_message(event.reply_token, TextSendMessage("格式輸入錯誤，請輸入「/開始綁定 [你的名字] [你的學號] [你的密碼]」(請注意空格)\n如果還是不會使用，就連絡我吧"))
+                except Exception:
+                    line_bot_api.reply_message(event.reply_token, TextSendMessage("未知的錯誤，請連絡我吧"))
+            except IndexError:
+                line_bot_api.reply_message(event.reply_token, TextSendMessage("你應該是輸入了錯誤的指令或是用錯了指令\n請輸入/help取得更詳細的使用說明或是聯絡我"))
+            except Exception:
+                line_bot_api.reply_message(event.reply_token, TextSendMessage("未知的錯誤，請連絡我吧"))
     else:
         if (event.source.user_id == OPUUID):
             op_command(msg,event)
@@ -1024,10 +1036,10 @@ def experiment_course_score(event):
         
 @handler.add(MemberJoinedEvent)
 def welcome(event):
-    uid = event.joined.members[0].user_id
-    gid = event.source.group_id
-    profile = line_bot_api.get_group_member_profile(gid, uid)
-    name = profile.display_name
+    #uid = event.joined.members[0].user_id
+    #gid = event.source.group_id
+    #profile = line_bot_api.get_group_member_profile(gid, uid)
+    #name = profile.display_name
     quick_reply = TextSendMessage(
     text ="歡淫加入\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n如要完成點名，請傳送該網址即可\n歡迎邀請其他人\n如需綁定請參考快速回覆的指令按鈕或是直接輸入「/help」",
     quick_reply=QuickReply(
