@@ -236,7 +236,7 @@ def url_login(msg,event,force):
                         usr =  userlist[i]#之後的訊息要顯示
                         pwd = pwlist[i]
                         name = namelist[i]
-                        wd.switch_to.window(wd.window_handles[0])#直接卡在第一個視窗
+                        wd.switch_to.window(wd.window_handles[i%divisor+1])#直接卡在第二個視窗(第一個是空白頁)
                         password_wrong = EC.alert_is_present()(wd)#如果有錯誤訊息#不太確定要先切換視窗再按確認還是反過來
                         if password_wrong:
                             failmsg = password_wrong.text
@@ -260,8 +260,8 @@ def url_login(msg,event,force):
                                 messageout = (messageout + name + "\n🟥發生未知的錯誤❌，" + "學號:" + usr + " " + name + "點名失敗😱，趕快聯繫布萊恩，並自行手點" + '\n\n')#unknown failure
                                 print("點名失敗\n------------------\n" + messageout)
                                 fail_login_status = fail_login_status +1
-                        wd.close()
-                    #wd.quit()
+                        #wd.close()
+                    wd.quit()
                     #wd.close()僅關閉該視窗 如為最後一個視窗即關閉瀏覽器
         messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人\n" + str(time_and_class) + "\n" + str(curriculum_name))
         messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ['HEROKU_RELEASE_CREATED_AT'] + "GMT+0\n" + "版本:" + os.environ['HEROKU_RELEASE_VERSION']+ "\n此次點名耗費時間:" + str(round(time.time() - start_time)+2) +"秒" +"\n更新日誌:" + changelog)
