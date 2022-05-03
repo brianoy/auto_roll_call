@@ -195,19 +195,27 @@ def url_login(msg,event,force):
                 line_bot_api.reply_message(event.reply_token, flex_message)
                 not_send_msg = True
             else:#確認所有條件都符合點名資格 #第九個人有500MB mem leak的問題導致fatal error待修復 #5個5個人來?
-                quotient = (len(userlist)//5)+1  #商數
+                quotient = len(userlist)//5  #商數
                 remainder = len(userlist)%5 #餘數
                 print("進入區塊一")
                 wd.close()
                 print("關閉瀏覽器")
-                for j in range(0,quotient,1):
+                for j in range(0,quotient+1,1):
                     wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
+
+                    if remainder != 0 and j == quotient:#確認現在j已經到尾端且有餘數(非5倍數)
+                        start_order = quotient*5
+                        end_order = start_order + remainder + 1#把end_order的1補回來
+                    else:
+                        start_order = 5*j
+                        end_order = start_order+5
+
                     for i in range(0,5,1):#這裡就是5個一數
                         wd.execute_script("window.open('');")
                         wd.switch_to.window(wd.window_handles[i])
                         wd.get(url)#打開所有對應數量的分頁並到網址
-                        print("已打開第"+ str(j) + "個分頁")
-                    for i in range(5*j,5*j+5,1):
+                        print("已打開第"+ str(start_order+i) + "個分頁")
+                    for i in range(start_order,end_order,1):
                         usr =  userlist[i]
                         pwd = pwlist[i]
                         name = namelist[i]
@@ -216,7 +224,7 @@ def url_login(msg,event,force):
                         wd.execute_script('document.getElementById("UserPasswd").value ="' + pwd + '"')
                         wd.execute_script('document.getElementsByClassName("w3-button w3-block w3-green w3-section w3-padding")[0].click();')#再登入
                         print("已登入第"+ str(i) + "個分頁")
-                    for i in range(5*j,5*j+5,1):
+                    for i in range(start_order,end_order,1):
                         usr =  userlist[i]#之後的訊息要顯示
                         pwd = pwlist[i]
                         name = namelist[i]
@@ -248,9 +256,9 @@ def url_login(msg,event,force):
         messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人\n" + str(time_and_class) + "\n" + str(curriculum_name))
         messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ['HEROKU_RELEASE_CREATED_AT'] + "GMT+0\n" + "版本:" + os.environ['HEROKU_RELEASE_VERSION']+ "\n此次點名耗費時間:" + str(round(time.time() - start_time)+2) +"秒" +"\n更新日誌:" + changelog)
     except IndexError:
-        messageout = "🟥🟥FATAL ERROR🟥🟥\n可能是由ilearning網頁故障或是輸入錯誤的網址所引起\n請盡快手點或連繫我"
+        messageout = "🟥🟥FATAL ERROR IndexError🟥🟥\n可能是由ilearning網頁故障或是輸入錯誤的網址所引起\n請盡快手點或連繫我"
     except Exception:
-        messageout = "🟥🟥UNKNOWN ERROR🟥🟥"
+        messageout = "🟥🟥UNKNOWN ERROR Exception🟥🟥"
         print('不知道怎麼了，反正發生錯誤惹')
     return messageout
 
