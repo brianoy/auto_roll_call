@@ -35,7 +35,7 @@ else:
     LINE_CHANNEL_SECRET = os.environ['LINE_CHANNEL_SECRET']
 DISCORD_WEBHOOK = os.environ['DISCORD_WEBHOOK']
 OPUUID = os.environ['LINE_OP_UUID']
-changelog = "flexmsg、quick reply、點名加速、課表抓取、修復指令的bug、可愛大鯨魚"#還有成績指令沒寫完、簽到未開放的對列quene、未點名的紀錄
+changelog = "flexmsg、quick reply、點名加速、課表抓取、修復指令的bug、可愛大鯨魚、mem leak"#還有成績指令沒寫完、簽到未開放的對列quene、未點名的紀錄
 client = discord.Client()
 app = Flask(__name__)
 chrome_options = webdriver.ChromeOptions()
@@ -194,52 +194,57 @@ def url_login(msg,event,force):
                 print("傳出flexmsg不建議全體點名")
                 line_bot_api.reply_message(event.reply_token, flex_message)
                 not_send_msg = True
-            else:#確認所有條件都適合點名
-                for i in range(0,len(userlist),1):
-                    wd.execute_script("window.open('');")
-                    wd.switch_to.window(wd.window_handles[i+1])
-                    wd.get(url)#打開所有對應數量的分頁並到網址
-                    print("已打開第"+ str(i) + "個分頁")
-                for i in range(0,len(userlist),1):
-                    wd.switch_to.window(wd.window_handles[i+1])#先跑到對應的視窗
-                    usr =  userlist[i]
-                    pwd = pwlist[i]
-                    name = namelist[i]
-                    wd.execute_script('document.getElementById("UserNm").value ="' + usr + '"')
-                    wd.execute_script('document.getElementById("UserPasswd").value ="' + pwd + '"')
-                    wd.execute_script('document.getElementsByClassName("w3-button w3-block w3-green w3-section w3-padding")[0].click();')
-                    print("已登入第"+ str(i) + "個分頁")
-                for i in range(0,len(userlist),1):
-                    usr =  userlist[i]#之後的訊息要顯示
-                    pwd = pwlist[i]
-                    name = namelist[i]
-                    wd.switch_to.window(wd.window_handles[i+1])#先跑到對應的視窗
-                    password_wrong = EC.alert_is_present()(wd)#如果有錯誤訊息#不太確定要先切換視窗再按確認還是反過來
-                    if password_wrong:
-                        failmsg = password_wrong.text
-                        password_wrong.accept()
-                        messageout = (messageout + "學號:" + usr + "\n🟥點名失敗❌\n錯誤訊息:密碼錯誤" + failmsg +'\n\n')#error login
-                        print("密碼錯誤\n------------------\n" + messageout)
-                        fail_login_status = fail_login_status +1
-                    else:
-                        soup_2 = BeautifulSoup(wd.page_source, 'html.parser')
-                        #print(soup_2.prettify()) #html details
-                        if (soup_2.find_all(stroke="#D06079") != []):#fail
-                            messageout = (messageout + "\n🟥點名失敗❌，"+ name +"好可憐喔😱\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text +'\n\n')
-                            print("點名失敗\n------------------\n" + messageout)
+            else:#確認所有條件都符合點名資格 #第九個人有500MB mem leak的問題導致fatal error待修復 #5個5個人來?
+                quotient = (len(userlist)//5)+1  #商數
+                remainder = len(userlist)%5 #餘數
+                wd.close()
+                for j in range(0,quotient,1):
+                    wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
+                    for i in range(5*j,5*j+5,1):
+                        wd.execute_script("window.open('');")
+                        wd.switch_to.window(wd.window_handles[i+1])
+                        wd.get(url)#打開所有對應數量的分頁並到網址
+                        print("已打開第"+ str(i) + "個分頁")
+                    for i in range(5*j,5*j+5,1):
+                        wd.switch_to.window(wd.window_handles[i+1])#先跑到對應的視窗
+                        usr =  userlist[i]
+                        pwd = pwlist[i]
+                        name = namelist[i]
+                        wd.execute_script('document.getElementById("UserNm").value ="' + usr + '"')
+                        wd.execute_script('document.getElementById("UserPasswd").value ="' + pwd + '"')
+                        wd.execute_script('document.getElementsByClassName("w3-button w3-block w3-green w3-section w3-padding")[0].click();')
+                        print("已登入第"+ str(i) + "個分頁")
+                    for i in range(5*j,5*j+5,1):
+                        usr =  userlist[i]#之後的訊息要顯示
+                        pwd = pwlist[i]
+                        name = namelist[i]
+                        wd.switch_to.window(wd.window_handles[i+1])#先跑到對應的視窗
+                        password_wrong = EC.alert_is_present()(wd)#如果有錯誤訊息#不太確定要先切換視窗再按確認還是反過來
+                        if password_wrong:
+                            failmsg = password_wrong.text
+                            password_wrong.accept()
+                            messageout = (messageout + "學號:" + usr + "\n🟥點名失敗❌\n錯誤訊息:密碼錯誤" + failmsg +'\n\n')#error login
+                            print("密碼錯誤\n------------------\n" + messageout)
                             fail_login_status = fail_login_status +1
-                        elif (soup_2.find_all(stroke="#73AF55") != []):#success
-                            detailmsg = wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text
-                            messageout = (messageout + "\n🟩點名成功✅，"+ name +"會非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':').replace('<br>','\n')+'\n\n')
-                            print("點名成功\n------------------\n" + messageout)
-                            success_login_status = success_login_status +1
                         else:
-                            messageout = (messageout + name + "\n🟥發生未知的錯誤❌，" + "學號:" + usr + " " + name + "點名失敗😱，趕快聯繫布萊恩，並自行手點" + '\n\n')#unknown failure
-                            print("點名失敗\n------------------\n" + messageout)
-                            fail_login_status = fail_login_status +1
+                            soup_2 = BeautifulSoup(wd.page_source, 'html.parser')
+                            #print(soup_2.prettify()) #html details
+                            if (soup_2.find_all(stroke="#D06079") != []):#fail
+                                messageout = (messageout + "\n🟥點名失敗❌，"+ name +"好可憐喔😱\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text +'\n\n')
+                                print("點名失敗\n------------------\n" + messageout)
+                                fail_login_status = fail_login_status +1
+                            elif (soup_2.find_all(stroke="#73AF55") != []):#success
+                                detailmsg = wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text
+                                messageout = (messageout + "\n🟩點名成功✅，"+ name +"會非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':').replace('<br>','\n')+'\n\n')
+                                print("點名成功\n------------------\n" + messageout)
+                                success_login_status = success_login_status +1
+                            else:
+                                messageout = (messageout + name + "\n🟥發生未知的錯誤❌，" + "學號:" + usr + " " + name + "點名失敗😱，趕快聯繫布萊恩，並自行手點" + '\n\n')#unknown failure
+                                print("點名失敗\n------------------\n" + messageout)
+                                fail_login_status = fail_login_status +1
+                    wd.close()
         messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人\n" + str(time_and_class) + "\n" + str(curriculum_name))
         messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ['HEROKU_RELEASE_CREATED_AT'] + "GMT+0\n" + "版本:" + os.environ['HEROKU_RELEASE_VERSION']+ "\n此次點名耗費時間:" + str(round(time.time() - start_time)+2) +"秒" +"\n更新日誌:" + changelog)
-        wd.close()
     except IndexError:
         messageout = "🟥🟥FATAL ERROR🟥🟥\n可能是由ilearning網頁故障或是輸入錯誤的網址所引起\n請盡快手點或連繫我"
     except Exception:
