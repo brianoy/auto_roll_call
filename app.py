@@ -207,7 +207,7 @@ def url_login(msg,event,force):
                     if remainder != 0 and j == quotient:#確認現在j已經到尾端且有餘數(非5倍數)
                         start_order = quotient*divisor
                         end_order = start_order + remainder 
-                        print("有餘數")
+                        print("有餘數" + start_order + "," + end_order)
                     else:
                         start_order = divisor*j
                         end_order = start_order+divisor
@@ -215,12 +215,13 @@ def url_login(msg,event,force):
 
                     for i in range(start_order,end_order,1):
                         wd.execute_script("window.open('');")
-                        wd.switch_to.window(wd.window_handles[i])
+                        wd.switch_to.window(wd.window_handles[i%divisor])
                         wd.get(url)#打開所有對應數量的分頁並到網址
                         print("已打開第"+ str(i+1) + "個分頁")
+                    print("進入區塊三")
 
                     for i in range(start_order,end_order,1):
-                        print("進入區塊三")
+                        
                         usr =  userlist[i]
                         pwd = pwlist[i]
                         name = namelist[i]
@@ -229,9 +230,9 @@ def url_login(msg,event,force):
                         wd.execute_script('document.getElementById("UserPasswd").value ="' + pwd + '"')
                         wd.execute_script('document.getElementsByClassName("w3-button w3-block w3-green w3-section w3-padding")[0].click();')#再登入
                         print("已登入第"+ str(i+1) + "個分頁")
+                    print("進入區塊四")
 
                     for i in range(start_order,end_order,1):
-                        print("進入區塊四")
                         usr =  userlist[i]#之後的訊息要顯示
                         pwd = pwlist[i]
                         name = namelist[i]
@@ -260,14 +261,15 @@ def url_login(msg,event,force):
                                 print("點名失敗\n------------------\n" + messageout)
                                 fail_login_status = fail_login_status +1
                     wd.quit()
+                    #wd.close()僅關閉該視窗 如為最後一個視窗即關閉瀏覽器
         messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人\n" + str(time_and_class) + "\n" + str(curriculum_name))
         messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ['HEROKU_RELEASE_CREATED_AT'] + "GMT+0\n" + "版本:" + os.environ['HEROKU_RELEASE_VERSION']+ "\n此次點名耗費時間:" + str(round(time.time() - start_time)+2) +"秒" +"\n更新日誌:" + changelog)
     except IndexError:
         messageout = "🟥🟥FATAL ERROR IndexError🟥🟥\n可能是由ilearning網頁故障或是輸入錯誤的網址所引起\n請盡快手點或連繫我"
         wd.close()
-    #except Exception:
-        #messageout = "🟥🟥UNKNOWN ERROR Exception🟥🟥"
-        #print('不知道怎麼了，反正發生錯誤了')
+    except Exception:
+        messageout = "🟥🟥UNKNOWN ERROR Exception🟥🟥"
+        print('不知道怎麼了，反正發生錯誤了')
     return messageout
 
 @handler.add(PostbackEvent)
