@@ -195,7 +195,7 @@ def url_login(msg,event,force):
                 line_bot_api.reply_message(event.reply_token, flex_message)
                 not_send_msg = True
             else:#確認所有條件都符合點名資格 #第九個人有500MB mem leak的問題導致fatal error待修復 #5個5個人來?
-                divisor = 7 #除數
+                divisor = 5 #除數
                 quotient = len(userlist)//divisor  #商數
                 remainder = len(userlist)%divisor #餘數
                 print("進入區塊一")
@@ -268,7 +268,7 @@ def url_login(msg,event,force):
     except IndexError:
         messageout = "🟥🟥FATAL ERROR IndexError🟥🟥\n可能是由ilearning網頁故障或是輸入錯誤的網址所引起\n請盡快手點或連繫我"
         wd.close()
-    except Exception:
+    except Exception:#觘你媽爛東西
         messageout = "🟥🟥UNKNOWN ERROR Exception🟥🟥"
         print('不知道怎麼了，反正發生錯誤了')
     return messageout
