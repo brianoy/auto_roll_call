@@ -276,9 +276,9 @@ def url_login(msg,event,force):
     except IndexError:
         messageout = "🟥🟥FATAL ERROR IndexError🟥🟥\n可能是由ilearning網頁故障或是輸入錯誤的網址所引起\n請盡快手點或連繫我"
         wd.close()
-    except Exception:#觘你媽爛東西
-        messageout = "🟥🟥UNKNOWN ERROR Exception🟥🟥"
-        print('不知道怎麼了，反正發生錯誤了')
+    #except Exception:#觘你媽爛東西
+        #messageout = "🟥🟥UNKNOWN ERROR Exception🟥🟥"
+        #print('不知道怎麼了，反正發生錯誤了')
     return messageout
 
 @handler.add(PostbackEvent)
