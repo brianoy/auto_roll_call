@@ -200,7 +200,7 @@ def url_login(msg,event,force):
                 wd.close()
                 for j in range(0,quotient,1):
                     wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
-                    for i in range(5*j,5*j+5,1):
+                    for i in range(0,5,1):
                         wd.execute_script("window.open('');")
                         wd.switch_to.window(wd.window_handles[i+1])
                         wd.get(url)#打開所有對應數量的分頁並到網址
