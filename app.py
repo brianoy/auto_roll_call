@@ -197,28 +197,30 @@ def url_login(msg,event,force):
             else:#確認所有條件都符合點名資格 #第九個人有500MB mem leak的問題導致fatal error待修復 #5個5個人來?
                 quotient = (len(userlist)//5)+1  #商數
                 remainder = len(userlist)%5 #餘數
+                print("進入區塊一")
                 wd.close()
+                print("關閉瀏覽器")
                 for j in range(0,quotient,1):
                     wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
-                    for i in range(0,5,1):
+                    for i in range(0,5,1):#這裡就是5個一數
                         wd.execute_script("window.open('');")
-                        wd.switch_to.window(wd.window_handles[i+1])
+                        wd.switch_to.window(wd.window_handles[i])
                         wd.get(url)#打開所有對應數量的分頁並到網址
-                        print("已打開第"+ str(i) + "個分頁")
+                        print("已打開第"+ str(j) + "個分頁")
                     for i in range(5*j,5*j+5,1):
-                        wd.switch_to.window(wd.window_handles[i+1])#先跑到對應的視窗
                         usr =  userlist[i]
                         pwd = pwlist[i]
                         name = namelist[i]
+                        wd.switch_to.window(wd.window_handles[i%5])#原本有加1 先跑到對應的視窗 i%5表示忽略5的倍數
                         wd.execute_script('document.getElementById("UserNm").value ="' + usr + '"')
                         wd.execute_script('document.getElementById("UserPasswd").value ="' + pwd + '"')
-                        wd.execute_script('document.getElementsByClassName("w3-button w3-block w3-green w3-section w3-padding")[0].click();')
+                        wd.execute_script('document.getElementsByClassName("w3-button w3-block w3-green w3-section w3-padding")[0].click();')#再登入
                         print("已登入第"+ str(i) + "個分頁")
                     for i in range(5*j,5*j+5,1):
                         usr =  userlist[i]#之後的訊息要顯示
                         pwd = pwlist[i]
                         name = namelist[i]
-                        wd.switch_to.window(wd.window_handles[i+1])#先跑到對應的視窗
+                        wd.switch_to.window(wd.window_handles[i%5])#先跑到對應的視窗
                         password_wrong = EC.alert_is_present()(wd)#如果有錯誤訊息#不太確定要先切換視窗再按確認還是反過來
                         if password_wrong:
                             failmsg = password_wrong.text
