@@ -200,15 +200,15 @@ def url_login(msg,event,force):
                 remainder = len(userlist)%divisor #餘數
                 print("進入區塊一")
                 wd.quit()
-                #wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
+                wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
                 
                 for j in range(0,quotient+1,1):
-                    wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
+                    #wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
                     print("已重新打開瀏覽器")
                     if remainder != 0 and j == quotient:#確認現在j已經到尾端且有餘數(非5倍數)
                         start_order = quotient*divisor
                         end_order = start_order + remainder 
-                        print("目前有餘數" + str(start_order) + "," + str(end_order))
+                        print("目前有餘數" + str(start_order+1) + "~" + str(end_order))
                     else:
                         start_order = divisor*j
                         end_order = start_order+divisor
@@ -247,6 +247,7 @@ def url_login(msg,event,force):
                             print("密碼錯誤\n------------------\n" + messageout)
                             fail_login_status = fail_login_status +1
                         else:
+                            print("密碼沒有錯誤")
                             soup_2 = BeautifulSoup(wd.page_source, 'html.parser')
                             #print(soup_2.prettify()) #html details
                             if (soup_2.find_all(stroke="#D06079") != []):#fail
@@ -263,7 +264,12 @@ def url_login(msg,event,force):
                                 print("點名失敗\n------------------\n" + messageout)
                                 fail_login_status = fail_login_status +1
                         #wd.close()
-                    wd.quit()
+                    
+                    print("進入到區塊五")
+                    for i in range(start_order,end_order,1):
+                        wd.switch_to.window(wd.window_handles[1])
+                        wd.close()
+                wd.quit()
                     #wd.close()僅關閉該視窗 如為最後一個視窗即關閉瀏覽器
         messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人\n" + str(time_and_class) + "\n" + str(curriculum_name))
         messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ['HEROKU_RELEASE_CREATED_AT'] + "GMT+0\n" + "版本:" + os.environ['HEROKU_RELEASE_VERSION']+ "\n此次點名耗費時間:" + str(round(time.time() - start_time)+2) +"秒" +"\n更新日誌:" + changelog)
