@@ -1050,7 +1050,7 @@ def welcome(event):
         ]
     )
     )
-    line_bot_api.push_message(event.reply_token, quick_reply)
+    line_bot_api.reply_message(event.reply_token, quick_reply)
 
 if __name__ == "__main__":
     get_all_user()
