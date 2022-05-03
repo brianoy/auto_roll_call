@@ -195,7 +195,7 @@ def url_login(msg,event,force):
                 line_bot_api.reply_message(event.reply_token, flex_message)
                 not_send_msg = True
             else:#確認所有條件都符合點名資格 #第九個人有500MB mem leak的問題導致fatal error待修復 #5個5個人來?
-                divisor = 7 #除數
+                divisor = 9 #除數
                 quotient = len(userlist)//divisor  #商數
                 remainder = len(userlist)%divisor #餘數
                 print("進入區塊一")
