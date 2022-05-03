@@ -200,28 +200,28 @@ def url_login(msg,event,force):
                 remainder = len(userlist)%divisor #餘數
                 print("進入區塊一")
                 wd.quit()
-                wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
-                print("已重新打開瀏覽器")
+                #wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
+                
                 for j in range(0,quotient+1,1):
-                    #wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
+                    wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
+                    print("已重新打開瀏覽器")
                     if remainder != 0 and j == quotient:#確認現在j已經到尾端且有餘數(非5倍數)
                         start_order = quotient*divisor
                         end_order = start_order + remainder 
-                        print("有餘數" + start_order + "," + end_order)
+                        print("目前有餘數" + start_order + "," + end_order)
                     else:
                         start_order = divisor*j
                         end_order = start_order+divisor
-                        print("沒有餘數")
+                        print("目前沒有餘數")
 
                     for i in range(start_order,end_order,1):
-                        wd.execute_script("window.open('');")
-                        wd.switch_to.window(wd.window_handles[i%divisor])
-                        wd.get(url)#打開所有對應數量的分頁並到網址
+                        wd.execute_script("window.open('"+ url +"');")
+                        #wd.switch_to.window(wd.window_handles[i%divisor])
+                        #wd.get(url)#打開所有對應數量的分頁並到網址
                         print("已打開第"+ str(i+1) + "個分頁")
                     print("進入區塊三")
 
-                    for i in range(start_order,end_order,1):
-                        
+                    for i in range(start_order,end_order,1):  
                         usr =  userlist[i]
                         pwd = pwlist[i]
                         name = namelist[i]
@@ -236,7 +236,7 @@ def url_login(msg,event,force):
                         usr =  userlist[i]#之後的訊息要顯示
                         pwd = pwlist[i]
                         name = namelist[i]
-                        wd.switch_to.window(wd.window_handles[i%divisor])#先跑到對應的視窗
+                        wd.switch_to.window(wd.window_handles[0])#直接卡在第一個視窗
                         password_wrong = EC.alert_is_present()(wd)#如果有錯誤訊息#不太確定要先切換視窗再按確認還是反過來
                         if password_wrong:
                             failmsg = password_wrong.text
