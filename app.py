@@ -236,7 +236,9 @@ def url_login(msg,event,force):
                         usr =  userlist[i]#之後的訊息要顯示
                         pwd = pwlist[i]
                         name = namelist[i]
-                        wd.switch_to.window(wd.window_handles[i%divisor+1])#直接卡在第二個視窗(第一個是空白頁)
+                        print("正在切換視窗")
+                        wd.switch_to.window(wd.window_handles[i%divisor+1])
+                        print("切換視窗完畢")
                         password_wrong = EC.alert_is_present()(wd)#如果有錯誤訊息#不太確定要先切換視窗再按確認還是反過來
                         if password_wrong:
                             failmsg = password_wrong.text
