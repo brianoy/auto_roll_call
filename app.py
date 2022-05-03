@@ -681,7 +681,7 @@ def command(msg,event):
             print("傳出flexmsg")
             line_bot_api.reply_message(event.reply_token, flex_message)
 
-    elif '/help' == msg or '/幫助' == msg or '/開始綁定帳號' == msg or '/我要綁定帳號' == msg or '/我想要綁定帳號' == msg: 
+    elif '/help' == msg or '/幫助' == msg or '/開始綁定帳號' == msg or '/我要綁定帳號' == msg or '/我想要綁定帳號' == msg or '指令列表' == msg or '/指令' == msg or '/指令列表' == msg: 
         with open("json/help.json") as path:
                 FlexMessage = json.loads(path.read())
         flex_message = FlexSendMessage(
