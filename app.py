@@ -266,7 +266,7 @@ def url_login(msg,event,force):
                         #wd.close()
                     
                     print("進入到區塊五")
-                    for i in range(start_order,end_order,1):
+                    for i in range(start_order,end_order-1,1):
                         wd.switch_to.window(wd.window_handles[1])
                         wd.close()
                 wd.quit()
