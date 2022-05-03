@@ -200,9 +200,14 @@ def url_login(msg,event,force):
                 print("進入區塊一")
                 wd.close()
                 print("關閉瀏覽器")
-                for j in range(0,quotient+1,1):
-                    wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
+                wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
+                print("開啟瀏覽器")
+                for i in range(0,5,1):
+                    print("進入區塊二")
+                    wd.execute_script("window.open('');")
+                    print("已打開第"+ str(i+1) + "個分頁")
 
+                for j in range(0,quotient+1,1):
                     if remainder != 0 and j == quotient:#確認現在j已經到尾端且有餘數(非5倍數)
                         start_order = quotient*5
                         end_order = start_order + remainder 
@@ -213,11 +218,10 @@ def url_login(msg,event,force):
                         print("沒有餘數")
 
                     for i in range(start_order,end_order,1):
-                        print("進入區塊二")
-                        wd.execute_script("window.open('');")
+                        print("進入區塊三")
                         wd.switch_to.window(wd.window_handles[i%5])
                         wd.get(url)#打開所有對應數量的分頁並到網址
-                        print("已打開第"+ str(i) + "個分頁")
+                        print("切換至第"+ str(i+1) + "個分頁")
 
                     for i in range(start_order,end_order,1):
                         print("進入區塊三")
@@ -258,14 +262,14 @@ def url_login(msg,event,force):
                                 messageout = (messageout + name + "\n🟥發生未知的錯誤❌，" + "學號:" + usr + " " + name + "點名失敗😱，趕快聯繫布萊恩，並自行手點" + '\n\n')#unknown failure
                                 print("點名失敗\n------------------\n" + messageout)
                                 fail_login_status = fail_login_status +1
-                    wd.close()
+                wd.close()
         messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人\n" + str(time_and_class) + "\n" + str(curriculum_name))
         messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ['HEROKU_RELEASE_CREATED_AT'] + "GMT+0\n" + "版本:" + os.environ['HEROKU_RELEASE_VERSION']+ "\n此次點名耗費時間:" + str(round(time.time() - start_time)+2) +"秒" +"\n更新日誌:" + changelog)
     except IndexError:
         messageout = "🟥🟥FATAL ERROR IndexError🟥🟥\n可能是由ilearning網頁故障或是輸入錯誤的網址所引起\n請盡快手點或連繫我"
-    except Exception:
-        messageout = "🟥🟥UNKNOWN ERROR Exception🟥🟥"
-        print('不知道怎麼了，反正發生錯誤惹')
+    #except Exception:
+        #messageout = "🟥🟥UNKNOWN ERROR Exception🟥🟥"
+        #print('不知道怎麼了，反正發生錯誤了')
     return messageout
 
 @handler.add(PostbackEvent)
