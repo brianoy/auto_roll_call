@@ -205,26 +205,32 @@ def url_login(msg,event,force):
 
                     if remainder != 0 and j == quotient:#確認現在j已經到尾端且有餘數(非5倍數)
                         start_order = quotient*5
-                        end_order = start_order + remainder + 1#把end_order的1補回來
+                        end_order = start_order + remainder 
+                        print("有餘數")
                     else:
                         start_order = 5*j
                         end_order = start_order+5
+                        print("沒有餘數")
 
-                    for i in range(0,5,1):#這裡就是5個一數
-                        wd.execute_script("window.open('');")
-                        wd.switch_to.window(wd.window_handles[i])
-                        wd.get(url)#打開所有對應數量的分頁並到網址
-                        print("已打開第"+ str(start_order+i) + "個分頁")
                     for i in range(start_order,end_order,1):
+                        print("進入區塊二")
+                        wd.execute_script("window.open('');")
+                        wd.switch_to.window(wd.window_handles[i%5])
+                        wd.get(url)#打開所有對應數量的分頁並到網址
+                        print("已打開第"+ str(i) + "個分頁")
+
+                    for i in range(start_order,end_order,1):
+                        print("進入區塊三")
                         usr =  userlist[i]
                         pwd = pwlist[i]
                         name = namelist[i]
-                        wd.switch_to.window(wd.window_handles[i%5])#原本有加1 先跑到對應的視窗 i%5表示忽略5的倍數
+                        wd.switch_to.window(wd.window_handles[i%5])#先跑到對應的視窗 i%5表示忽略5的倍數
                         wd.execute_script('document.getElementById("UserNm").value ="' + usr + '"')
                         wd.execute_script('document.getElementById("UserPasswd").value ="' + pwd + '"')
                         wd.execute_script('document.getElementsByClassName("w3-button w3-block w3-green w3-section w3-padding")[0].click();')#再登入
                         print("已登入第"+ str(i) + "個分頁")
                     for i in range(start_order,end_order,1):
+                        print("進入區塊四")
                         usr =  userlist[i]#之後的訊息要顯示
                         pwd = pwlist[i]
                         name = namelist[i]
