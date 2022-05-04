@@ -204,7 +204,7 @@ def url_login(msg,event,force):
                 
                 for j in range(0,quotient+1,1):
                     #wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
-                    print("已重新打開瀏覽器")
+                    #print("已重新打開瀏覽器")
                     if remainder != 0 and j == quotient:#確認現在j已經到尾端且有餘數(非5倍數)
                         start_order = quotient*divisor
                         end_order = start_order + remainder 
@@ -220,7 +220,8 @@ def url_login(msg,event,force):
                         #wd.get(url)#打開所有對應數量的分頁並到網址
                         print("已打開第"+ str(i+1) + "個分頁")
                     print("進入區塊三")
-
+                    print(len(wd.window_handles))
+                    print(wd.window_handles)
                     for i in range(start_order,end_order,1):  
                         usr =  userlist[i]
                         pwd = pwlist[i]
@@ -266,7 +267,7 @@ def url_login(msg,event,force):
                         #wd.close()
                     
                     print("進入到區塊五")
-                    for i in range(start_order,end_order-1,1):
+                    for i in range(start_order,end_order,1):
                         wd.switch_to.window(wd.window_handles[1])
                         wd.close()
                 wd.quit()
