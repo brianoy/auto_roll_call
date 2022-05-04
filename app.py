@@ -39,7 +39,7 @@ changelog = "flexmsg、quick reply、點名加速、課表抓取、修復指令�
 client = discord.Client()
 app = Flask(__name__)
 chrome_options = webdriver.ChromeOptions()
-#chrome_options.add_argument('--headless')
+chrome_options.add_argument('--headless')
 chrome_options.add_argument('--no-sandbox')
 chrome_options.add_argument('--disable-dev-shm-usage')
 chrome_options.add_argument('user-agent=Mozilla/5.0')
@@ -237,6 +237,7 @@ def url_login(msg,event,force):
                         usr =  userlist[i]#之後的訊息要顯示
                         pwd = pwlist[i]
                         name = namelist[i]
+                        time.sleep(0.5)
                         print("正在切換視窗")
                         wd.switch_to.window(wd.window_handles[i%divisor+1])
                         print("切換視窗完畢")
