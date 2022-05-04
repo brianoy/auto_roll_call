@@ -224,9 +224,9 @@ def url_login(msg,event,force):
                         print("密碼錯誤\n------------------\n" + messageout)
                         fail_login_status = fail_login_status +1
                     else:
-                        #soup_2 = BeautifulSoup(wd.page_source, 'html.parser')
+                        soup_2 = BeautifulSoup(wd.page_source, 'html.parser')
                         #print(soup_2.prettify()) #html details
-                        if (wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/svg/circle").stroke  == "#D06079"):#fail
+                        if (soup_2.find_all(stroke="#D06079") != []):#fail
                             messageout = (messageout + "\n🟥點名失敗❌，"+ name +"好可憐喔😱\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text +'\n\n')
                             print("點名失敗\n------------------\n" + messageout)
                             fail_login_status = fail_login_status +1
