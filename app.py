@@ -213,7 +213,7 @@ def url_login(msg,event,force):
                         start_order = divisor*j
                         end_order = start_order+divisor
                         print("目前沒有餘數")
-
+                    wd.switch_to.window(wd.window_handles[-1])
                     for i in range(start_order,end_order,1):
                         wd.execute_script("window.open('"+ url +"');")
                         #wd.switch_to.window(wd.window_handles[i%divisor])
