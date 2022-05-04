@@ -35,7 +35,7 @@ else:
     LINE_CHANNEL_SECRET = os.environ['LINE_CHANNEL_SECRET']
 DISCORD_WEBHOOK = os.environ['DISCORD_WEBHOOK']
 OPUUID = os.environ['LINE_OP_UUID']
-changelog = "flexmsg、quick reply、點名加速、課表抓取、修復指令的bug、可愛大鯨魚"#還有成績指令沒寫完、簽到未開放的對列quene、未點名的紀錄
+changelog = "flexmsg、quick reply、點名加速、課表抓取、修復指令的bug、可愛大鯨魚、mem leak"#還有成績指令沒寫完、簽到未開放的對列quene、未點名的紀錄
 client = discord.Client()
 app = Flask(__name__)
 chrome_options = webdriver.ChromeOptions()
@@ -199,7 +199,7 @@ def url_login(msg,event,force):
             else:#確認所有條件都適合點名
                 my_msg(url)
                 for i in range(0,len(userlist),1):
-                    wd.execute_script("window.open('');")
+                    wd.execute_script("window.open('');")#取一 我也不知道差在哪
                     #wd.switch_to.new_window('tab')
                     wd.switch_to.window(wd.window_handles[i+1])
                     wd.get(url)#打開所有對應數量的分頁並到網址
@@ -226,7 +226,7 @@ def url_login(msg,event,force):
                         print("密碼錯誤\n------------------\n" + messageout)
                         fail_login_status = fail_login_status +1
                     else:
-                        soup_2 = BeautifulSoup(wd.page_source, 'html.parser')
+                        soup_2 = BeautifulSoup(wd.page_source, 'html.parser')#疑似要把他強制轉為str並在尾巴decompose#疑似mem leak 不會吐error msg
                         #print(soup_2.prettify()) #html details
                         if str(soup_2.find_all(stroke="#D06079") != []):#fail
                             messageout = (messageout + "\n🟥點名失敗❌，"+ name +"好可憐喔😱\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text +'\n\n')
@@ -246,10 +246,10 @@ def url_login(msg,event,force):
         messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ['HEROKU_RELEASE_CREATED_AT'] + "GMT+0\n" + "版本:" + os.environ['HEROKU_RELEASE_VERSION']+ "\n此次點名耗費時間:" + str(round(time.time() - start_time)+2) +"秒" +"\n更新日誌:" + changelog)
         wd.close()
     except IndexError:
-        messageout = "🟥🟥FATAL ERROR🟥🟥\n可能是由ilearning網頁故障或是輸入錯誤的網址所引起\n請盡快手點或連繫我"
-    #except Exception:
-        #messageout = "🟥🟥UNKNOWN ERROR🟥🟥"
-        #print('不知道怎麼了，反正發生錯誤惹')
+        messageout = "🟥🟥FATAL ERROR🟥🟥\n可能是由ilearning網頁故障或是輸入錯誤的網址所引起\n請盡快手點和連繫我"
+    except Exception:#記得有Bug的時候一定要把它撤下來 不然會吐不出錯誤訊息
+        messageout = "🟥🟥UNKNOWN ERROR🟥🟥\n可能是由輸入錯誤的網址所引起，或是整體系統出錯，請聯絡我"
+        print('不知道怎麼了，反正發生錯誤')
     return messageout
 
 @handler.add(PostbackEvent)
