@@ -39,6 +39,10 @@ changelog = "flexmsg、quick reply、點名加速、課表抓取、修復指令�
 client = discord.Client()
 app = Flask(__name__)
 chrome_options = webdriver.ChromeOptions()
+chrome_options.add_argument("start-maximized"); 
+chrome_options.add_argument("enable-automation")
+chrome_options.add_argument("--disable-browser-side-navigation")
+chrome_options.add_argument("--disable-gpu")
 chrome_options.add_argument('--headless')
 chrome_options.add_argument('--no-sandbox')
 chrome_options.add_argument('--disable-dev-shm-usage')
