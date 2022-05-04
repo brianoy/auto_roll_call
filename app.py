@@ -195,6 +195,7 @@ def url_login(msg,event,force):
                 line_bot_api.reply_message(event.reply_token, flex_message)
                 not_send_msg = True
             else:#確認所有條件都適合點名
+                my_msg(url)
                 for i in range(0,len(userlist),1):
                     wd.execute_script("window.open('');")
                     wd.switch_to.window(wd.window_handles[i+1])
