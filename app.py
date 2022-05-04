@@ -44,6 +44,7 @@ chrome_options.add_argument('--no-sandbox')
 chrome_options.add_argument('--disable-dev-shm-usage')
 chrome_options.add_argument('user-agent=Mozilla/5.0')
 chrome_options.add_argument('ignore-certificate-errors')
+chrome_options.add_argument("--disable-gpu")
 wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
 
 EAT = (["全家","7-11","中原夜市","鍋燒意麵","肉羹","拉麵","炒飯","賣麵庄","雞腿便當","摩斯漢堡","麥當勞","烤肉飯","肯德基","石二鍋",
@@ -169,8 +170,9 @@ def url_login(msg,event,force):
         soup_1 = BeautifulSoup(wd.page_source, 'html.parser')
         dom = etree.HTML(str(soup_1))
         not_open = "未開放 QRCODE簽到功能" in wd.page_source
-        time_and_class = dom.xpath('/html/body/div/div[2]/p/text()[3]')[0]
-        curriculum_name = dom.xpath('/html/body/div/div[2]/p/text()[4]')[0]
+        time_and_class = str(dom.xpath('/html/body/div/div[2]/p/text()[3]')[0])
+        curriculum_name = str(dom.xpath('/html/body/div/div[2]/p/text()[4]')[0])
+        soup_1.decompose()
         if not_open:
             fail_login_status = len(userlist)
             messageout = "🟥警告❌，點名並沒有開放，請稍後再試或自行手點，全數點名失敗\n"#反正也傳不出去
@@ -226,11 +228,11 @@ def url_login(msg,event,force):
                     else:
                         soup_2 = BeautifulSoup(wd.page_source, 'html.parser')
                         #print(soup_2.prettify()) #html details
-                        if (soup_2.find_all(stroke="#D06079") != []):#fail
+                        if str(soup_2.find_all(stroke="#D06079") != []):#fail
                             messageout = (messageout + "\n🟥點名失敗❌，"+ name +"好可憐喔😱\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text +'\n\n')
                             print("點名失敗\n------------------\n" + messageout)
                             fail_login_status = fail_login_status +1
-                        elif (soup_2.find_all(stroke="#73AF55") != []):#success
+                        elif str(soup_2.find_all(stroke="#73AF55") != []):#success
                             detailmsg = wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text
                             messageout = (messageout + "\n🟩點名成功✅，"+ name +"會非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':').replace('<br>','\n')+'\n\n')
                             print("點名成功\n------------------\n" + messageout)
@@ -239,6 +241,7 @@ def url_login(msg,event,force):
                             messageout = (messageout + name + "\n🟥發生未知的錯誤❌，" + "學號:" + usr + " " + name + "點名失敗😱，趕快聯繫布萊恩，並自行手點" + '\n\n')#unknown failure
                             print("點名失敗\n------------------\n" + messageout)
                             fail_login_status = fail_login_status +1
+                        soup_2.decompose()
         messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人\n" + str(time_and_class) + "\n" + str(curriculum_name))
         messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ['HEROKU_RELEASE_CREATED_AT'] + "GMT+0\n" + "版本:" + os.environ['HEROKU_RELEASE_VERSION']+ "\n此次點名耗費時間:" + str(round(time.time() - start_time)+2) +"秒" +"\n更新日誌:" + changelog)
         wd.close()
