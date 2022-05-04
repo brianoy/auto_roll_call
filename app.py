@@ -197,7 +197,8 @@ def url_login(msg,event,force):
             else:#確認所有條件都適合點名
                 my_msg(url)
                 for i in range(0,len(userlist),1):
-                    wd.execute_script("window.open('');")
+                    #wd.execute_script("window.open('');")
+                    wd.switch_to.new_window('tab')
                     wd.switch_to.window(wd.window_handles[i+1])
                     wd.get(url)#打開所有對應數量的分頁並到網址
                     print("已打開第"+ str(i) + "個分頁")
