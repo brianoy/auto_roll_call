@@ -39,7 +39,7 @@ changelog = "flexmsg、quick reply、點名加速、課表抓取、修復指令�
 client = discord.Client()
 app = Flask(__name__)
 chrome_options = webdriver.ChromeOptions()
-chrome_options.add_argument('--headless')
+#chrome_options.add_argument('--headless')
 chrome_options.add_argument('--no-sandbox')
 chrome_options.add_argument('--disable-dev-shm-usage')
 chrome_options.add_argument('user-agent=Mozilla/5.0')
