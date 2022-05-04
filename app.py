@@ -199,8 +199,8 @@ def url_login(msg,event,force):
                 quotient = len(userlist)//divisor  #商數
                 remainder = len(userlist)%divisor #餘數
                 print("進入區塊一")
-                wd.quit()
-                wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
+                #wd.quit()
+                #wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
                 
                 for j in range(0,quotient+1,1):
                     #wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
