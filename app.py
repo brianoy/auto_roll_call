@@ -1003,10 +1003,10 @@ def to_do_list_show(msg,event):
     to_do_list = cursor.fetchall()
     content = ""
     for i in range(0,len(to_do_list),1):
-        name = '"' + str(to_do_list[i][1]) + '"'
-        date = '"' + str(to_do_list[i][2]) + '"'
-        delete = '"' + "/delete_to_do_list " + name + '"'
-        order = '"' + str(i+1) + "." + '"'
+        name = str(to_do_list[i][1])
+        date = str(to_do_list[i][2])
+        delete = "/delete_to_do_list " + name
+        order = str(i+1) + "."
         print(name)
         print(date)
         block = variable_block().replace("name",name).replace("date",date).replace("order",order).replace("delete_data",delete)
