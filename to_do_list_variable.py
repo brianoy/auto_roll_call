@@ -13,7 +13,7 @@ def variable_block():
             "contents": [
               {
                 "type": "text",
-                "text": %(order)%,
+                "text": "order",
                 "color": "#aaaaaa",
                 "size": "md",
                 "flex": 0,
@@ -23,7 +23,7 @@ def variable_block():
               },
               {
                 "type": "text",
-                "text": %(name)%,
+                "text": "name",
                 "wrap": true,
                 "color": "#666666",
                 "size": "md",
@@ -31,7 +31,7 @@ def variable_block():
               },
               {
                 "type": "text",
-                "text": %(date)%,
+                "text": "date",
                 "wrap": true,
                 "color": "#666666",
                 "size": "xs",
@@ -47,7 +47,7 @@ def variable_block():
                     "action": {
                       "type": "postback",
                       "label": "刪除",
-                      "data": %(delete_data)%,
+                      "data": "delete_data",
                     },
                     "height": "sm",
                     "gravity": "center",

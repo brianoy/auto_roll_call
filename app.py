@@ -1008,7 +1008,7 @@ def to_do_list_show(msg,event):
         delete = "/delete_to_do_list " + name
         print(name)
         print(date)
-        block = variable_block().replace("%(name)%",name).replace("%(date)%",date).replace("%(order)%",str(i+1)).replace("%(delete_data)%",delete)
+        block = variable_block().replace("name",name).replace("date",date).replace("order",str(i+1)+".").replace("delete_data",delete)
         if content != "":
             content = content + "," + variable_separator() + "," + block
         else:
