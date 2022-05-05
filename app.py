@@ -38,7 +38,7 @@ else:
     LINE_CHANNEL_SECRET = os.environ['LINE_CHANNEL_SECRET']
 DISCORD_WEBHOOK = os.environ['DISCORD_WEBHOOK']
 OPUUID = os.environ['LINE_OP_UUID']
-changelog = "mem leak、點名減速"#還有成績指令沒寫完、簽到未開放的對列quene、未點名的紀錄
+changelog = "mem leak、點名減速、點名訊息錯誤顯示"#還有成績指令沒寫完、簽到未開放的對列quene、未點名的紀錄
 client = discord.Client()
 app = Flask(__name__)
 chrome_options = webdriver.ChromeOptions()
@@ -231,13 +231,13 @@ def url_login(msg,event,force):
                     else:
                         soup_2 = BeautifulSoup(wd.page_source, 'html.parser')#疑似要把他強制轉為str並在尾巴decompose#疑似mem leak 不會吐error msg
                         #print(soup_2.prettify()) #html details
-                        print(str(soup_2.find_all(stroke="#D06079")))
-                        print(str(soup_2.find_all(stroke="#73AF55")))
-                        if str(soup_2.find_all(stroke="#D06079") != ""):#fail
+                        #print(str(soup_2.find_all(stroke="#D06079")))
+                        #print(str(soup_2.find_all(stroke="#73AF55")))
+                        if str(soup_2.find_all(stroke="#D06079")) != "":#fail
                             messageout = (messageout + "\n🟥點名失敗❌，"+ name +"好可憐喔😱\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text +'\n\n')
                             print("點名失敗\n------------------\n" + messageout)
                             fail_login_status = fail_login_status +1
-                        elif str(soup_2.find_all(stroke="#73AF55") != ""):#success
+                        elif str(soup_2.find_all(stroke="#73AF55")) != "":#success
                             detailmsg = wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text
                             messageout = (messageout + "\n🟩點名成功✅，"+ name +"會非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':').replace('<br>','\n')+'\n\n')
                             print("點名成功\n------------------\n" + messageout)
