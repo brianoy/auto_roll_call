@@ -619,13 +619,13 @@ def handle_message(event) :
             if (event.source.type == "user") :
                 user_quick_reply(event.source.user_id)
 
+    elif '查看清單' in msg or '要買啥' in msg or '買啥' in msg:
+        if(event.source.type == "group" and event.source.group_id == groupId[1]):
+            to_do_list_show(event)
+
     elif '要買' in msg :
         if(event.source.type == "group" and event.source.group_id == groupId[1]):
             to_do_list_insert(msg,event)
-            to_do_list_show(event)
-
-    elif '查看清單' in msg :
-        if(event.source.type == "group" and event.source.group_id == groupId[1]):
             to_do_list_show(event)
 
     else:
