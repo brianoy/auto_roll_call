@@ -1016,7 +1016,7 @@ def to_do_list_show(msg,event):
             content = block
     print(content)
     with open("json/to_do_list.json") as path:
-                FlexMessage = json.loads(path.read() % {"content" : content}, strict=False)
+                FlexMessage = json.loads(path.read() % {"content" : content})#, strict=False
     flex_message = FlexSendMessage(
         alt_text = '(請點擊聊天室已取得更多消息)' ,
         contents = FlexMessage)
