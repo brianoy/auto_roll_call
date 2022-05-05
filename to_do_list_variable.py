@@ -6,8 +6,7 @@ def variable_separator():
     return separator
 
 def variable_block():
-    block = """
-          {
+    block = """{
             "type": "box",
             "layout": "horizontal",
             "spacing": "sm",
@@ -48,7 +47,7 @@ def variable_block():
                     "action": {
                       "type": "postback",
                       "label": "刪除",
-                      "data": "delete_data",
+                      "data": "delete_data"
                     },
                     "height": "sm",
                     "gravity": "center",
