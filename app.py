@@ -1,4 +1,7 @@
 #from selectors import EpollSelector
+#heroku labs:enable log-runtime-metrics #開啟log
+#heroku labs:disable log-runtime-metrics
+#heroku restart
 from flask import Flask, request, abort, render_template, send_file
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
@@ -35,7 +38,7 @@ else:
     LINE_CHANNEL_SECRET = os.environ['LINE_CHANNEL_SECRET']
 DISCORD_WEBHOOK = os.environ['DISCORD_WEBHOOK']
 OPUUID = os.environ['LINE_OP_UUID']
-changelog = "flexmsg、quick reply、點名加速、課表抓取、修復指令的bug、可愛大鯨魚、mem leak"#還有成績指令沒寫完、簽到未開放的對列quene、未點名的紀錄
+changelog = "mem leak、點名減速"#還有成績指令沒寫完、簽到未開放的對列quene、未點名的紀錄
 client = discord.Client()
 app = Flask(__name__)
 chrome_options = webdriver.ChromeOptions()
@@ -185,7 +188,7 @@ def url_login(msg,event,force):
                 print("傳出flexmsg")
                 line_bot_api.reply_message(event.reply_token, flex_message)
                 not_send_msg = False
-        #break
+            #break
         else:
             if (("英文" in curriculum_name or "化學實驗" in curriculum_name) and force != True):
                 with open("json/limited_class.json") as path:
@@ -197,7 +200,7 @@ def url_login(msg,event,force):
                 line_bot_api.reply_message(event.reply_token, flex_message)
                 not_send_msg = True
             else:#確認所有條件都適合點名
-                my_msg(url)
+                #my_msg(url)
                 for i in range(0,len(userlist),1):
                     wd.execute_script("window.open('');")#取一 我也不知道差在哪
                     #wd.switch_to.new_window('tab')
@@ -228,11 +231,11 @@ def url_login(msg,event,force):
                     else:
                         soup_2 = BeautifulSoup(wd.page_source, 'html.parser')#疑似要把他強制轉為str並在尾巴decompose#疑似mem leak 不會吐error msg
                         #print(soup_2.prettify()) #html details
-                        if str(soup_2.find_all(stroke="#D06079") != []):#fail
+                        if str(soup_2.find_all(stroke="#D06079") != ""):#fail
                             messageout = (messageout + "\n🟥點名失敗❌，"+ name +"好可憐喔😱\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text +'\n\n')
                             print("點名失敗\n------------------\n" + messageout)
                             fail_login_status = fail_login_status +1
-                        elif str(soup_2.find_all(stroke="#73AF55") != []):#success
+                        elif str(soup_2.find_all(stroke="#73AF55") != ""):#success
                             detailmsg = wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text
                             messageout = (messageout + "\n🟩點名成功✅，"+ name +"會非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':').replace('<br>','\n')+'\n\n')
                             print("點名成功\n------------------\n" + messageout)
@@ -927,7 +930,7 @@ def handle_sticker_message(event):
     return
 
 def my_msg(msg_info):#send msg to me
-    line_bot_api.push_message(OPUUID, TextSendMessage(msg_info))
+    line_bot_api.push_message(OPUUID, TextSendMessage("【admin】" + msg_info))
     print("進入管理員私訊:" + msg_info)
     return
 
