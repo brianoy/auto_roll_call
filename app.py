@@ -233,11 +233,11 @@ def url_login(msg,event,force):
                         #print(soup_2.prettify()) #html details
                         #print(str(soup_2.find_all(stroke="#D06079")))
                         #print(str(soup_2.find_all(stroke="#73AF55")))
-                        if str(soup_2.find_all(stroke="#D06079")) != "":#fail
+                        if str(soup_2.find_all(stroke="#D06079")) != "[]":#fail
                             messageout = (messageout + "\n🟥點名失敗❌，"+ name +"好可憐喔😱\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text +'\n\n')
                             print("點名失敗\n------------------\n" + messageout)
                             fail_login_status = fail_login_status +1
-                        elif str(soup_2.find_all(stroke="#73AF55")) != "":#success
+                        elif str(soup_2.find_all(stroke="#73AF55")) != "[]":#success
                             detailmsg = wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text
                             messageout = (messageout + "\n🟩點名成功✅，"+ name +"會非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':').replace('<br>','\n')+'\n\n')
                             print("點名成功\n------------------\n" + messageout)
