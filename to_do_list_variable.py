@@ -1,3 +1,6 @@
+from pip import main
+
+
 def variable_separator():
     separator = """
           {
@@ -60,3 +63,58 @@ def variable_block():
             ]
           }"""
     return block
+
+def variable_main_construct():
+  main_construct = """{
+    "type": "bubble",
+    "size": "giga",
+    "hero": {
+      "type": "box",
+      "layout": "vertical",
+      "contents": [
+        {
+          "type": "filler"
+        }
+      ]
+    },
+    "body": {
+      "type": "box",
+      "layout": "vertical",
+      "contents": [
+        {
+          "type": "text",
+          "text": "線上行事曆",
+          "weight": "bold",
+          "size": "xl"
+        },
+        {
+          "type": "box",
+          "layout": "vertical",
+          "margin": "lg",
+          "spacing": "sm",
+          "contents": [
+            main_construct
+          ]
+        }
+      ]
+    },
+    "footer": {
+      "type": "box",
+      "layout": "vertical",
+      "spacing": "sm",
+      "contents": [
+        {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [
+            {
+              "type": "filler"
+            }
+          ],
+          "margin": "sm"
+        }
+      ],
+      "flex": 0
+    }
+  }"""
+  return main_construct

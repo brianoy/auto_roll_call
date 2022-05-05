@@ -24,7 +24,7 @@ import psycopg2
 import discord
 import json
 import ast #str to mapping
-from to_do_list_variable import variable_separator, variable_block
+from to_do_list_variable import variable_separator, variable_block, variable_main_construct
 
 mode = "stable"
 GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
@@ -1015,12 +1015,11 @@ def to_do_list_show(msg,event):
         else:
             content = block
     print(content)
-    with open("json/to_do_list.json") as path:
-                FlexMessage = json.loads(path.read() % {"content" : content}, strict=False)
+    content = variable_main_construct().replace("main_construct", content)
+    FlexMessage = json.loads(content, strict=False)
     flex_message = FlexSendMessage(
         alt_text = '(請點擊聊天室已取得更多消息)',
         contents = FlexMessage)
-    
     print("傳出flexmsg")
     line_bot_api.reply_message(event.reply_token, flex_message)
     return
@@ -1092,10 +1091,6 @@ def experiment_course_score(event):
     wd.close()
     return msg
         
-        
-
-
-
         
 @handler.add(MemberJoinedEvent)
 def welcome(event):
