@@ -334,6 +334,18 @@ def handle_postback(event):
                 line_bot_api.push_message(event.source.user_id, TextSendMessage("按鈕時效已過期"))
         else:
             print("ERROR:invalid source type during force login")
+
+    elif("/delete_to_do_list " in postback_msg):
+        conn   = psycopg2.connect(DATABASE_URL, sslmode='require')
+        cursor = conn.cursor()
+        name = "'" + postback_msg.replace("/delete_to_do_list ","") + "'"
+        postgres_delete_query = "DELETE FROM shoplist WHERE name = " + name
+        cursor.execute(postgres_delete_query)
+        conn.commit()
+        cursor.close()
+        conn.close()
+        to_do_list_show(event)
+
     else:
         print("ERROR:invalid postback event")
 
@@ -610,11 +622,11 @@ def handle_message(event) :
     elif '要買' in msg :
         if(event.source.type == "group" and event.source.group_id == groupId[1]):
             to_do_list_insert(msg,event)
-            to_do_list_show(msg,event)
+            to_do_list_show(event)
 
     elif '查看清單' in msg :
         if(event.source.type == "group" and event.source.group_id == groupId[1]):
-            to_do_list_show(msg,event)
+            to_do_list_show(event)
 
     else:
         public_msgbuffer = (announce + '無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀')
@@ -995,7 +1007,7 @@ def to_do_list_insert(msg,event):
     conn.close()
     return
 
-def to_do_list_show(msg,event):
+def to_do_list_show(event):
     conn   = psycopg2.connect(DATABASE_URL, sslmode='require')
     cursor = conn.cursor()
     postgres_select_query = "SELECT * FROM shoplist"
