@@ -231,6 +231,8 @@ def url_login(msg,event,force):
                     else:
                         soup_2 = BeautifulSoup(wd.page_source, 'html.parser')#疑似要把他強制轉為str並在尾巴decompose#疑似mem leak 不會吐error msg
                         #print(soup_2.prettify()) #html details
+                        print(str(soup_2.find_all(stroke="#D06079")))
+                        print(str(soup_2.find_all(stroke="#73AF55")))
                         if str(soup_2.find_all(stroke="#D06079") != ""):#fail
                             messageout = (messageout + "\n🟥點名失敗❌，"+ name +"好可憐喔😱\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text +'\n\n')
                             print("點名失敗\n------------------\n" + messageout)
