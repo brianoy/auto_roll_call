@@ -998,7 +998,7 @@ def to_do_list_insert(msg,event):
     now_time = str(datetime.datetime.fromtimestamp(time.time()+28800).strftime('%Y-%m-%d %H:%M:%S'))#time.time是秒記數)
     conn   = psycopg2.connect(DATABASE_URL, sslmode='require')
     cursor = conn.cursor()
-    records = (msg.replace("要",""), now_time)
+    records = (msg.replace("要買",""), now_time)
     table_columns = '(name, date)'
     postgres_insert_query = f"""INSERT INTO shoplist {table_columns} VALUES (%s,%s)"""
     cursor.execute(postgres_insert_query, records)

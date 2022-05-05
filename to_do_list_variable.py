@@ -83,7 +83,7 @@ def variable_main_construct():
       "contents": [
         {
           "type": "text",
-          "text": "線上行事曆",
+          "text": "購物清單",
           "weight": "bold",
           "size": "xl"
         },
