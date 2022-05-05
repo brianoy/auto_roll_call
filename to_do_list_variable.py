@@ -1,12 +1,12 @@
 def variable_separator():
-    separator = """
+    separator = r"""
           {
             "type": "separator"
           }"""
     return separator
 
 def variable_block():
-    block = """{
+    block = r"""{
             "type": "box",
             "layout": "horizontal",
             "spacing": "sm",
