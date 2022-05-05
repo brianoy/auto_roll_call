@@ -14,7 +14,7 @@ from selenium.webdriver.chrome.service import Service
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from datetime import datetime, timezone
+from datetime import datetime
 import requests
 import time
 import os
@@ -24,6 +24,7 @@ import psycopg2
 import discord
 import json
 import ast #str to mapping
+from to_do_list_variable import variable_separator, variable_block
 
 mode = "stable"
 GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
@@ -233,11 +234,11 @@ def url_login(msg,event,force):
                         #print(soup_2.prettify()) #html details
                         #print(str(soup_2.find_all(stroke="#D06079")))
                         #print(str(soup_2.find_all(stroke="#73AF55")))
-                        if str(soup_2.find_all(stroke="#D06079")) != "[]":#fail
+                        if str(soup_2.find_all(stroke="#D06079")) != "[]":#fail #將清單強制轉為字串，若清單為空，輸出的字串為"[]"
                             messageout = (messageout + "\n🟥點名失敗❌，"+ name +"好可憐喔😱\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text +'\n\n')
                             print("點名失敗\n------------------\n" + messageout)
                             fail_login_status = fail_login_status +1
-                        elif str(soup_2.find_all(stroke="#73AF55")) != "[]":#success
+                        elif str(soup_2.find_all(stroke="#73AF55")) != "[]":#success #將清單強制轉為字串，若清單為空，輸出的字串為"[]"
                             detailmsg = wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text
                             messageout = (messageout + "\n🟩點名成功✅，"+ name +"會非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':').replace('<br>','\n')+'\n\n')
                             print("點名成功\n------------------\n" + messageout)
@@ -248,7 +249,7 @@ def url_login(msg,event,force):
                             fail_login_status = fail_login_status +1
                         soup_2.decompose()
         messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人\n" + str(time_and_class) + "\n" + str(curriculum_name))
-        messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ['HEROKU_RELEASE_CREATED_AT'] + "GMT+0\n" + "版本:" + os.environ['HEROKU_RELEASE_VERSION']+ "\n此次點名耗費時間:" + str(round(time.time() - start_time)+2) +"秒" +"\n更新日誌:" + changelog)
+        messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ['HEROKU_RELEASE_CREATED_AT'].replace("Z","").replace("T"," ") + "GMT+0\n" + "版本:" + os.environ['HEROKU_RELEASE_VERSION']+ "\n此次點名耗費時間:" + str(round(time.time() - start_time)+2) +"秒" +"\n更新日誌:" + changelog)
         wd.close()
     except IndexError:
         messageout = "🟥🟥FATAL ERROR🟥🟥\n可能是由ilearning網頁故障或是輸入錯誤的網址所引起\n請盡快手點和連繫我"
@@ -606,7 +607,10 @@ def handle_message(event) :
             if (event.source.type == "user") :
                 user_quick_reply(event.source.user_id)
 
-
+    elif '要買' in msg :
+        if(event.source.type == "group" and event.source.group_id == groupId[1]):
+            to_do_list_insert(msg,event)
+            to_do_list_show(msg,event)
     else:
         public_msgbuffer = (announce + '無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀')
         if (event.source.type == "group") :
@@ -644,8 +648,9 @@ def handle_message(event) :
         print("不做quick_reply")
     return 
 
+
 def command(msg,event):
-    if '/重新整理' == msg :
+    if '/重新抓取資料庫' == msg :
         get_all_user()
         respond = "已重新抓取"
         print(respond)
@@ -797,7 +802,7 @@ def user_quick_reply(id):
                 action=MessageAction(label="我的uuid",text="/我的uuid")
                 ),
             QuickReplyButton(
-                action=MessageAction(label="重新整理",text="/重新整理")
+                action=MessageAction(label="重新抓取資料庫",text="/重新抓取資料庫")
                 ),
             QuickReplyButton(
                 action=MessageAction(label="清除綁定",text="/清除綁定")
@@ -970,6 +975,47 @@ def register(name,uuid,account,password):
     cursor.close()
     conn.close()
     get_all_user()
+    return
+
+def to_do_list_insert(msg,event):
+    now_time = str(datetime.datetime.fromtimestamp(time.time()+28,800).strftime('%Y-%m-%d %H:%M:%S'))#time.time是秒記數)
+    conn   = psycopg2.connect(DATABASE_URL, sslmode='require')
+    cursor = conn.cursor()
+    records = (msg.replace("要",""), now_time)
+    table_columns = '(name, date)'
+    postgres_insert_query = f"""INSERT INTO shoplist {table_columns} VALUES (%s,%s)"""
+    cursor.execute(postgres_insert_query, records)
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return
+
+def to_do_list_show(msg,event):
+    conn   = psycopg2.connect(DATABASE_URL, sslmode='require')
+    cursor = conn.cursor()
+    postgres_select_query = "SELECT * FROM shoplist"
+    cursor.execute(postgres_select_query)
+    to_do_list = cursor.fetchall()
+    content = ""
+    for i in range(0,len(to_do_list),1):
+        name = str(to_do_list[i][1])
+        date = str(to_do_list[i][2])
+        delete = "/delete_to_do_list " + name
+        print(name)
+        print(date)
+        block = variable_block().replace("%(name)%",name).replace("%(date)%",date).replace("%(order)%",str(i+1)).replace("%(delete_data)%",delete)
+        if content != "":
+            content = content + "," + variable_separator() + "," + block
+        else:
+            content = block
+    with open("json/to_do_list.json") as path:
+                FlexMessage = json.loads(path.read() % {"content" : content})
+    flex_message = FlexSendMessage(
+        alt_text = '(請點擊聊天室已取得更多消息)' ,
+        contents = FlexMessage)
+    
+    print("傳出flexmsg")
+    line_bot_api.reply_message(event.reply_token, flex_message)
     return
 
 def day_off(event):
