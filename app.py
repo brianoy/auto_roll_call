@@ -611,6 +611,11 @@ def handle_message(event) :
         if(event.source.type == "group" and event.source.group_id == groupId[1]):
             to_do_list_insert(msg,event)
             to_do_list_show(msg,event)
+
+    elif '查看清單' in msg :
+        if(event.source.type == "group" and event.source.group_id == groupId[1]):
+            to_do_list_show(msg,event)
+
     else:
         public_msgbuffer = (announce + '無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀')
         if (event.source.type == "group") :
@@ -978,7 +983,7 @@ def register(name,uuid,account,password):
     return
 
 def to_do_list_insert(msg,event):
-    now_time = str(datetime.datetime.fromtimestamp(time.time()+28,800).strftime('%Y-%m-%d %H:%M:%S'))#time.time是秒記數)
+    now_time = str(datetime.datetime.fromtimestamp(time.time()+28800).strftime('%Y-%m-%d %H:%M:%S'))#time.time是秒記數)
     conn   = psycopg2.connect(DATABASE_URL, sslmode='require')
     cursor = conn.cursor()
     records = (msg.replace("要",""), now_time)
