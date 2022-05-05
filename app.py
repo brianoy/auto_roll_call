@@ -1007,14 +1007,14 @@ def to_do_list_show(msg,event):
         date = str(to_do_list[i][2])
         delete = "/delete_to_do_list " + name
         order = str(i+1) + "."
-        print(name)
-        print(date)
+        #print(name)
+        #print(date)
         block = variable_block().replace("name",name).replace("date",date).replace("order",order).replace("delete_data",delete)
         if content != "":
             content = content + "," + variable_separator() + "," + block
         else:
             content = block
-    print(content)
+    #print(content)
     content = variable_main_construct().replace("main_construct", content)
     FlexMessage = json.loads(content, strict=False)
     flex_message = FlexSendMessage(
