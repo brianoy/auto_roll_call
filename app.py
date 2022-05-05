@@ -39,7 +39,7 @@ else:
     LINE_CHANNEL_SECRET = os.environ['LINE_CHANNEL_SECRET']
 DISCORD_WEBHOOK = os.environ['DISCORD_WEBHOOK']
 OPUUID = os.environ['LINE_OP_UUID']
-changelog = "mem leak、點名減速、點名訊息錯誤顯示"#還有成績指令沒寫完、簽到未開放的對列quene、未點名的紀錄
+changelog = "mem leak、點名減速、點名訊息錯誤顯示、我的購物清單"#還有成績指令沒寫完、簽到未開放的對列quene、未點名的紀錄
 client = discord.Client()
 app = Flask(__name__)
 chrome_options = webdriver.ChromeOptions()
@@ -1027,7 +1027,7 @@ def to_do_list_show(event):
         else:
             content = block
     #print(content)
-    content = variable_main_construct().replace("main_construct", content)
+    content = variable_main_construct().replace("main_construct", content)#使用的方式是創建其他py並import 跟上面的%()s格式替代不同
     FlexMessage = json.loads(content, strict=False)
     flex_message = FlexSendMessage(
         alt_text = '(請點擊聊天室已取得更多消息)',
