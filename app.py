@@ -54,7 +54,7 @@ wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=c
 EAT = (["全家","7-11","中原夜市","鍋燒意麵","肉羹","拉麵","炒飯","賣麵庄","雞腿便當","摩斯漢堡","麥當勞","烤肉飯","肯德基","石二鍋",
 "五花馬","燒肉","咖哩飯","牛排","肉燥飯","SUKIYA","霸味薑母鴨","高雄黑輪","丼飯","薩利亞","mint","火雞肉飯","品田牧場","滷味","Mr.三明治",
 "雞柳飯","肉骨茶麵","泡麵","水餃","煎餃","包子","炒麵","鐵板燒","披薩","悟饕","河粉","肉圓","黑宅拉麵","壽司","牛肉麵","鹹酥雞","控肉便當",
-"赤麵廠","早到晚到","大時鐘天香麵","豚骨麻辣燙","後站無名麵店","阿倫炒羊肉","炸螃蟹","烤肉","雞蛋糕"])
+"赤麵廠","早到晚到","大時鐘天香麵","豚骨麻辣燙","後站無名麵店","阿倫炒羊肉","炸螃蟹","烤肉","雞蛋糕","阿燁麵線"])
 
 WHALE =(["\n\n\n\n\n·_______________·","\n\n\n\n\n@_______________@","\n\n\n\n\nX_______________X","\n\n\n\n\nO_______________O","\n\n\n\n\n^_______________^",
 "\n\n\n\n\n*_______________*","\n\n\n⠀⠀⠀⠀⠀∞\n\n·_______________·","\n\n\n\n\n·_______________·"])
@@ -570,7 +570,7 @@ def handle_message(event) :
             else:
                 public_msgbuffer = (announce + '此非itouch網域')
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
-    elif '要吃什麼' in msg or msg == '吃什麼':
+    elif '要吃什麼' in msg or msg == '吃什麼' or msg == 't gk6ak7' or msg == 't g86' or msg == 'ul4t g86':
         line_bot_api.reply_message(event.reply_token, TextSendMessage(EAT[random.randint(0,len(EAT)-1)]))
     elif '要吃啥' in msg or msg == '吃啥':
         line_bot_api.reply_message(event.reply_token, TextSendMessage(EAT[random.randint(0,len(EAT)-1)]))
@@ -582,7 +582,7 @@ def handle_message(event) :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("反正你小王那麼多"))
     elif '暈了' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("寶"))
-    elif 'ok' in msg :
+    elif 'ok' in msg and 'book' not in msg:
         line_bot_api.reply_message(event.reply_token, TextSendMessage("ok"))
     elif '有沒有人' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("沒有"))
