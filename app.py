@@ -179,7 +179,7 @@ def url_login(msg,event,force):
         soup_1.decompose()
         if not_open:
             fail_login_status = len(userlist)
-            messageout = "🟥警告❌，點名並沒有開放，請稍後再試或自行手點，全數點名失敗\n"#反正也傳不出去
+            messageout = "🟥警告❌，點名並沒有開放，請稍後再試或自行手點，全數點名失敗\n"
             not_send_msg = True
             with open("json/limited_class.json") as path:
                 FlexMessage = json.loads(path.read() % {"msg_1" : "偵測到課程點名失敗，是否需要重新點名?" , "unix_time" : now_unix_time , "force_url_login" : url })
@@ -235,9 +235,14 @@ def url_login(msg,event,force):
                         #print(str(soup_2.find_all(stroke="#D06079")))
                         #print(str(soup_2.find_all(stroke="#73AF55")))
                         if str(soup_2.find_all(stroke="#D06079")) != "[]":#fail #將清單強制轉為字串，若清單為空，輸出的字串為"[]"
-                            messageout = (messageout + "\n🟥點名失敗❌，"+ name +"好可憐喔😱\n失敗訊息:" + wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text +'\n\n')
+                            fail_msg = str(wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text)
+                            messageout = (messageout + "\n🟥點名失敗❌，"+ name +"好可憐喔😱\n失敗訊息:" + fail_msg +'\n\n')
                             print("點名失敗\n------------------\n" + messageout)
                             fail_login_status = fail_login_status +1
+                            if "簽到未開放" in fail_msg:
+                                messageout = "🟥警告❌，點名尚未開始，請稍後再試，全數點名失敗\n"
+                                fail_login_status = len(userlist)
+                                break
                         elif str(soup_2.find_all(stroke="#73AF55")) != "[]":#success #將清單強制轉為字串，若清單為空，輸出的字串為"[]"
                             detailmsg = wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text
                             messageout = (messageout + "\n🟩點名成功✅，"+ name +"會非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':').replace('<br>','\n')+'\n\n')
