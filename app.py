@@ -242,6 +242,7 @@ def url_login(msg,event,force):
                             if "簽到未開放" in fail_msg:
                                 messageout = "🟥警告❌，點名尚未開始，請稍後再試，全數點名失敗\n"
                                 fail_login_status = len(userlist)
+                                soup_2.decompose()
                                 break
                         elif str(soup_2.find_all(stroke="#73AF55")) != "[]":#success #將清單強制轉為字串，若清單為空，輸出的字串為"[]"
                             detailmsg = wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text
