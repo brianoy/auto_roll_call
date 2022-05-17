@@ -617,7 +617,8 @@ def handle_message(event) :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("又要約又要約"))
     elif 'waku waku' in msg or 'Waku waku' in msg or 'Wakuwaku' in msg or 'wakuwaku' in msg or 'Waku Waku' in msg:
         img_url = "https://raw.githubusercontent.com/brianoy/auto_roll_call/main/S__16023675.jpg"
-        line_bot_api.reply_message(event.reply_token, ImageSendMessage(original_content_url=img_url, preview_image_url=img_url))
+        lowqlty_img_url = "https://raw.githubusercontent.com/brianoy/auto_roll_call/main/lowqlty_S__16023675.jpg"
+        line_bot_api.reply_message(event.reply_token, ImageSendMessage(original_content_url=img_url, preview_image_url=lowqlty_img_url))
     elif 'spy' in msg:
         line_bot_api.reply_message(event.reply_token, TextSendMessage("waku waku"))
     elif '8+9' == msg:
