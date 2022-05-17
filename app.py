@@ -601,16 +601,27 @@ def handle_message(event) :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("對阿你很怪"))#'笑死' in msg or 
     elif '習近平' in msg  or '習大大' in msg or '習維尼' in msg or '維尼' in msg:
         line_bot_api.reply_message(event.reply_token, TextSendMessage("哈哈很好笑\n⣿⣿⣿⠟⠋⠄⠄⠄⠄⠄⠄⠄⢁⠈⢻⢿⣿⣿⣿⣿⣿\n⣿⣿⣿⠃⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⠈⡀⠭⢿⣿⣿\n⣿⣿⡟⠄⢀⣾⣿⣿⣿⣷⣶⣿⣷⣶⣶⡆⠄⠄⠄⣿⣿\n⣿⣿⡇⢀⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠄⠄⢸⣿⣿\n⣿⣿⣇⣼⣿⣿⠿⠶⠙⣿⡟⠡⣴⣿⣽⣿⣧⠄⢸⣿⣿\n⣿⣿⣿⣾⣿⣿⣟⣭⣾⣿⣷⣶⣶⣴⣶⣿⣿⢄⣿⣿⣿\n⣿⣿⣿⣿⣿⣿⡟⣩⣿⣿⣿⡏⢻⣿⣿⣿⣿⣿⣿⣿⣿\n⣿⣿⣿⣿⣹⡋⠘⠷⣦⣀⣠⡶⠁⠈⠁⠄⣿⣿⣿⣿⣿\n⣿⣿⣿⣿⣍⠃⣴⣶⡔⠒⠄⣠⢀⠄⠄⠄⡨⣿⣿⣿⣿\n⣿⣿⣿⣿⣿⣦⡘⠿⣷⣿⠿⠟⠃⠄⠄⣠⡇⠈⠻⣿⣿\n⣿⣿⡿⠟⠋⢁⣷⣠⠄⠄⠄⠄⣀⣠⣾⡟⠄⠄⠄⠄⠉\n⠋⠁⠄⠄⠄⢸⣿⣿⡯⢓⣴⣾⣿⣿⡟⠄⠄⠄⠄⠄⠄\n⠄⠄⠄⠄⠄⣿⡟⣷⠄⠹⣿⣿⣿⡿⠁⠄⠄⠄⠄⠄⠄\n⠄⠄⠄⠄⣿⣿⠃⣦⣄⣿⣿⣿⠇⠄⠄⠄⠄⠄⠄⠄⠄\n⠄⠄⠄⢸⣿⠗⢈⡶⣷⣿⣿⡏⠄⠄⠄⠄⠄⠄⠄⠄⠄\n去新疆"))
+    elif '烏克蘭' in msg or '普丁' in msg:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("⣿⣿⣻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿\n⣿⣵⣿⣿⣿⠿⡟⣛⣧⣿⣯⣿⣝⡻⢿⣿⣿⣿⣿⣿\n⣿⣿⣿⠋⠁⣴⣶⣿⣿⣿⣿⣿⣿⣿⣦⣍⢿⣿⣿⣿\n⣿⣿⢷⠄⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣏⢼⣿⣿\n⣿⢻⠎⠔⣛⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡏⣿⣿\n⣿⠇⡶⠄⣿⣿⠿⠟⡛⠛⠻⣿⡿⠿⠿⣿⣗⢣⣿⣿\n⣿⡿⣷⣾⣿⣿⣿⣾⣶⣶⣶⣿⣁⣔⣤⣀⣼⢲⣿⣿\n⣿⣿⣿⣾⣟⣿⣿⣿⣿⣿⣿⣿⡿⣿⣿⣿⢟⣾⣿⣿\n⣿⣿⣿⡷⣿⣿⣿⣿⣿⣮⣽⠛⢻⣽⣿⡇⣾⣿⣿⣿\n⣿⣿⣿⡷⠻⢻⡻⣯⣝⢿⣟⣛⣛⣛⠝⢻⣿⣿⣿⣿\n⣿⣿⡟⣹⣦⠄⠋⠻⢿⣶⣶⣶⡾⠃⡂⢾⣿⣿⣿⣿\n⠟⠋⠄⢻⣿⣧⣲⡀⡀⠄⠉⠱⣠⣾⡇⠄⠉⠛⢿⣿\n⠄⠄⠄⠈⣿⣿⣿⣷⣿⣿⢾⣾⣿⣿⣇⠄⠄⠄⠄⠄\n⠄⠄⠄⠄⠸⣿⣿⠟⠃⠄⠄⢈⣻⣿⣿⠄⠄⠄⠄⠄\n⠄⠄⠄⠄⠄⢿⣿⣾⣷⡄⠄⢾⣿⣿⣿⡄⠄⠄⠄⠄\n⠄⠄⠄⠄⠄⠸⣿⣿⣿⠃⠄⠈⢿⣿⣿⠄⠄⠄⠄⠄\nСука блядь"))
     elif '都已讀' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("沒有 是你太邊緣"))
     elif 'peko' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("好油喔"))
     elif '女朋友' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("你沒有女朋友啦幹"))
-    elif '閉嘴' in msg :
+    elif '閉嘴' in msg or 'b嘴' in msg or 'B嘴' in msg or 'b最' in msg or 'B最' in msg or '惦惦' in msg or '安靜啦' in msg:
         line_bot_api.reply_message(event.reply_token, TextSendMessage("你好兇喔"))
+    elif '歐陽' in msg :
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("嗨"))
     elif '約' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("又要約又要約"))
+    elif 'waku waku' in msg or 'Waku waku' in msg or 'Wakuwaku' in msg or 'wakuwaku' in msg or 'Waku Waku' in msg:
+        img_url = "https://raw.githubusercontent.com/brianoy/auto_roll_call/main/S__16023675.jpg"
+        line_bot_api.reply_message(event.reply_token, ImageSendMessage(original_content_url=img_url, preview_image_url=img_url))
+    elif 'spy' in msg:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("waku waku"))
+    elif '8+9' == msg:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("17"))
     elif '三小' in msg or "幹你娘"in msg or "幹妳娘"in msg or "幹您娘"in msg or "耖機掰"in msg:
         line_bot_api.reply_message(event.reply_token, TextSendMessage("好兇"))
     elif '王顥' in msg and '單身' in msg:
