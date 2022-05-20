@@ -333,7 +333,8 @@ def handle_postback(event):
                 print("有不知名的群組")
         elif(event.source.type == "user") :
             if(time_end-time_start<=1800):
-                person_not_send_msg_func(not_send_msg,event.source.user_id,TextSendMessage(recived))
+                line_bot_api.reply_message(event.reply_token, recived)
+                #person_not_send_msg_func(not_send_msg,event.source.user_id,TextSendMessage(recived))
                 msgbuffer = url_login(url,event,force=True)
                 public_msgbuffer = (done + msgbuffer)
                 line_bot_api.push_message(event.source.user_id, TextSendMessage(distinguish(public_msgbuffer)))
@@ -618,9 +619,11 @@ def handle_message(event) :
     elif 'waku waku' in msg or 'Waku waku' in msg or 'Wakuwaku' in msg or 'wakuwaku' in msg or 'Waku Waku' in msg:
         img_url = "https://raw.githubusercontent.com/brianoy/auto_roll_call/main/S__16023675.jpg"
         lowqlty_img_url = "https://raw.githubusercontent.com/brianoy/auto_roll_call/main/lowqlty_S__16023675.jpg"
-        line_bot_api.reply_message(event.reply_token, ImageSendMessage(original_content_url=img_url, preview_image_url=lowqlty_img_url))
+        line_bot_api.reply_message(event.reply_token, ImageSendMessage(original_content_url=img_url, preview_image_url=lowqlty_img_url))#傳圖片
     elif 'spy' in msg:
         line_bot_api.reply_message(event.reply_token, TextSendMessage("waku waku"))
+    elif '可以啦幹' in msg:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("我就覺得不可以咩"))
     elif '8+9' == msg:
         line_bot_api.reply_message(event.reply_token, TextSendMessage("17"))
     elif '三小' in msg or "幹你娘"in msg or "幹妳娘"in msg or "幹您娘"in msg or "耖機掰"in msg:
