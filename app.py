@@ -132,9 +132,11 @@ def time_quene():
     return 
 
 
-@app.route("/chinese_ans", methods=["GET"])#國文的主網頁
+@app.route("/chinese_ans")#國文的主網頁
 def chinese_ans():
-    my_msg("【進入chinese_ans的ip】" + request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr))#傳給我手機點進來的Ip，HTTP_X_REAL_IP不起作用，會變成heroku內部ip
+    ip = request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr)
+    if "147.92.179" not in ip: #忽略Line的固定式ip
+        my_msg("【進入chinese_ans的ip】" + ip)#傳給我手機點進來的Ip，HTTP_X_REAL_IP不起作用，會變成heroku內部ip
     return render_template('chinese_ans.html')
 
 @app.route("/chinese_ques")#國文的副網頁
