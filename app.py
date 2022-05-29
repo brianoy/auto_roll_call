@@ -16,7 +16,6 @@ from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from datetime import datetime
-from PIL import Image
 import requests
 import time
 import os
