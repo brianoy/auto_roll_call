@@ -1,0 +1,164 @@
+{
+    "type": "bubble",
+    "hero": {
+      "type": "image",
+      "url": "https://raw.githubusercontent.com/brianoy/auto_roll_call/main/S__7143513.jpg",
+      "size": "full",
+      "aspectRatio": "20:11",
+      "aspectMode": "cover",
+      "action": {
+        "type": "uri",
+        "uri": "http://linecorp.com/"
+      }
+    },
+    "body": {
+      "type": "box",
+      "layout": "vertical",
+      "contents": [
+        {
+          "type": "text",
+          "text": "王灝",
+          "weight": "bold",
+          "size": "xl"
+        },
+        {
+          "type": "box",
+          "layout": "baseline",
+          "margin": "md",
+          "contents": [
+            {
+              "type": "icon",
+              "size": "sm",
+              "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png"
+            },
+            {
+              "type": "icon",
+              "size": "sm",
+              "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png"
+            },
+            {
+              "type": "icon",
+              "size": "sm",
+              "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gold_star_28.png"
+            },
+            {
+              "type": "icon",
+              "size": "sm",
+              "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gray_star_28.png"
+            },
+            {
+              "type": "icon",
+              "size": "sm",
+              "url": "https://scdn.line-apps.com/n/channel_devcenter/img/fx/review_gray_star_28.png"
+            },
+            {
+              "type": "text",
+              "text": "3.0",
+              "size": "sm",
+              "color": "#999999",
+              "margin": "md",
+              "flex": 0
+            }
+          ]
+        },
+        {
+          "type": "box",
+          "layout": "vertical",
+          "margin": "lg",
+          "spacing": "sm",
+          "contents": [
+            {
+              "type": "box",
+              "layout": "baseline",
+              "spacing": "sm",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "我的星座",
+                  "color": "#aaaaaa",
+                  "size": "sm",
+                  "flex": 2
+                },
+                {
+                  "type": "text",
+                  "text": "量身為妳訂座",
+                  "wrap": true,
+                  "color": "#666666",
+                  "size": "sm",
+                  "flex": 5
+                }
+              ]
+            },
+            {
+              "type": "box",
+              "layout": "baseline",
+              "spacing": "sm",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "我的專長",
+                  "color": "#aaaaaa",
+                  "size": "sm",
+                  "flex": 2
+                },
+                {
+                  "type": "text",
+                  "text": "喜歡妳",
+                  "wrap": true,
+                  "color": "#666666",
+                  "size": "sm",
+                  "flex": 5
+                }
+              ]
+            },
+            {
+              "type": "box",
+              "layout": "baseline",
+              "spacing": "sm",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "已單身",
+                  "color": "#aaaaaa",
+                  "size": "sm",
+                  "flex": 2
+                },
+                {
+                  "type": "text",
+                  "text": "%(single)s",
+                  "wrap": true,
+                  "color": "#666666",
+                  "size": "sm",
+                  "flex": 5
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "footer": {
+      "type": "box",
+      "layout": "vertical",
+      "spacing": "sm",
+      "contents": [
+        {
+          "type": "button",
+          "style": "link",
+          "height": "sm",
+          "action": {
+            "type": "uri",
+            "label": "我想連絡他！",
+            "uri": "http://pornhub.com/"
+          }
+        },
+        {
+          "type": "box",
+          "layout": "vertical",
+          "contents": [],
+          "margin": "sm"
+        }
+      ],
+      "flex": 0
+    }
+  }

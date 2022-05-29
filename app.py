@@ -632,10 +632,17 @@ def handle_message(event) :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("好兇"))
     elif '王顥' in msg and '單身' in msg:
         days = datetime.datetime.today()-datetime.datetime(2019,4,30,16)
-        days = str(days)[0:4]
+        days = str(days)[0:4] 
+        days = days + "天"
+        with open("json/wong_how.json") as path:
+            FlexMessage = json.loads(path.read() % {"single" : days})
+        flex_message = FlexSendMessage(
+                        alt_text = '(請點擊聊天室已取得更多消息)' ,
+                        contents = FlexMessage)
+        print("傳出flexmsg")
+        line_bot_api.reply_message(event.reply_token, flex_message)
         sendbuffer = "小提醒:王顥已單身"+ days +"天"
         print(sendbuffer)
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(sendbuffer))
         
     elif '/' == msg:#fastreply
             if (event.source.type == "group") :
