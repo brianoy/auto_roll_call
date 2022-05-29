@@ -62,6 +62,15 @@
             },
             {
               "type": "text",
+              "text": "例如：我要變更密碼，即輸入「/變更密碼 abcd1234」",
+              "size": "sm",
+              "color": "#EEEEEEBB",
+              "align": "start",
+              "wrap": true,
+              "contents": []
+            },
+            {
+              "type": "text",
               "text": "如需重新抓取資料：/重新整理",
               "size": "sm",
               "color": "#EEEEEEBB",
