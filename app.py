@@ -26,7 +26,7 @@ import json
 import ast #str to mapping
 from to_do_list_variable import variable_separator, variable_block, variable_main_construct
 #from qr_code import qr_code_decode
-
+ 
 mode = "stable"
 GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
 CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
