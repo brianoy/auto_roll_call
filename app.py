@@ -985,7 +985,7 @@ def handle_sticker_message(event):
                 line_bot_api.reply_message(event.reply_token, TextSendMessage(STICKER_LIST.get(stickerid,"No")))
         else:
             print("有不知名的群組傳送了貼圖")
-    return
+    return 
 
 
 @handler.add(MessageEvent, message=ImageMessage)
