@@ -1009,7 +1009,7 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token, TextSendMessage("已自動從圖片偵測到點名的QRcode，點名作業開始"))#mem leak
             roll_call_activity(msg,event)
         else:
-            line_bot_api.reply_message(event.reply_token, TextSendMessage("已自動從圖片偵測到QRcode:\n" + info))
+            line_bot_api.reply_message(event.reply_token, TextSendMessage("已自動從圖片偵測到條碼:\n" + info))
     return
 
 
