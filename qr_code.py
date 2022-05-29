@@ -19,8 +19,10 @@ def qr_code_decode(pic):
     try:
         data = decode(Image.open(pic))
         info = data[0][0].decode("utf-8")
+        print("已偵測到QR Code")
     except IndexError:
         info = ""
+        print("未偵測到QR Code")
     return info
 
 
