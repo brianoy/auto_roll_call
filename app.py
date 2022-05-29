@@ -9,7 +9,6 @@ from linebot.models import *
 from lxml import etree #find with xpath
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
@@ -24,6 +23,8 @@ import psycopg2
 import discord
 import json
 import ast #str to mapping
+from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.core.utils import ChromeType
 from to_do_list_variable import variable_separator, variable_block, variable_main_construct
 from qr_code import qr_code_decode
  
