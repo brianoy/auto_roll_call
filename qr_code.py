@@ -7,12 +7,18 @@ from PIL import Image
 from pyzbar.pyzbar import decode
 data = decode(Image.open('horn.png'))
 print(data[0][0].decode("utf-8"))
+
+Aptfile:#need buildpack apt
+libzbar0
+libzbar-dev
+
 """
 #from PIL import Image
 from pyzbar.pyzbar import decode
+from PIL import Image
 def qr_code_decode(pic):
     try:
-        data = decode(pic)
+        data = decode(Image.open(pic))
         info = data[0][0].decode("utf-8")
     except IndexError:
         info = ""
