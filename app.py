@@ -50,6 +50,7 @@ chrome_options.add_argument('--disable-dev-shm-usage')
 chrome_options.add_argument('user-agent=Mozilla/5.0')
 chrome_options.add_argument('ignore-certificate-errors')
 chrome_options.add_argument("--disable-gpu")
+chrome_options.add_argument("--example-flag")
 wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
 
 EAT = (["全家","7-11","中原夜市","鍋燒意麵","肉羹","拉麵","炒飯","賣麵庄","雞腿便當","摩斯漢堡","麥當勞","烤肉飯","肯德基","石二鍋",
