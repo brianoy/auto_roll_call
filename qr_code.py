@@ -13,7 +13,6 @@ libzbar0
 libzbar-dev
 
 """
-#from PIL import Image
 from pyzbar.pyzbar import decode
 from PIL import Image
 def qr_code_decode(pic):

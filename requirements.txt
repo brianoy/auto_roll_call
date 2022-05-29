@@ -6,4 +6,5 @@ lxml
 discord
 psycopg2
 webdriver-manager
-pyzbar==0.1.8
+pyzbar
+Pillow
