@@ -1009,7 +1009,7 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token, TextSendMessage("已自動從圖片偵測到點名的QRcode，點名作業開始"))#mem leak
             roll_call_activity(msg,event)
         else:
-            line_bot_api.reply_message(event.reply_token, TextSendMessage("已自動從圖片偵測到QRcode" + info))
+            line_bot_api.reply_message(event.reply_token, TextSendMessage("已自動從圖片偵測到QRcode:\n" + info))
     return
 
 
@@ -1102,7 +1102,7 @@ def day_off(event):
     if get_now_user_id in useridlist:#帳號存在#密碼暫時被視為正確
         get_now_user = userlist[useridlist.index(get_now_user_id)]
         get_now_pwd = pwlist[useridlist.index(get_now_user_id)]
-        wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
+        wd = webdriver.Chrome(service=Service(ChromeDriverManager(chrome_type=ChromeType.BRAVE).install()),options=chrome_options)
         wd.get("https://itouch.cycu.edu.tw/active_project/cycu2100h_18/case_09/login.jsp")
         wd.execute_script('document.getElementById("UserNm").value ="' + get_now_user + '"')
         wd.execute_script('document.getElementById("UserPasswd").value ="' + get_now_pwd + '"')
@@ -1137,7 +1137,7 @@ def experiment_course_score(event):
         get_now_user = userlist[useridlist.index(get_now_user_id)]
         get_now_pwd = pwlist[useridlist.index(get_now_user_id)]
         get_now_name = namelist[useridlist.index(get_now_user_id)]
-        wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
+        wd = webdriver.Chrome(service=Service(ChromeDriverManager(chrome_type=ChromeType.BRAVE).install()),options=chrome_options)
         wd.get("https://i-learning.cycu.edu.tw/index.php")
         wd.execute_script('document.getElementById("username").value ="' + get_now_user + '"')
         wd.execute_script('document.getElementById("password").value ="' + get_now_pwd + '"')
