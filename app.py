@@ -996,15 +996,16 @@ def handle_sticker_message(event):
 def handle_message(event):
     SendImage = line_bot_api.get_message_content(event.message.id)
     print(SendImage)
-    local_save = './temporary/' + event.message.id + '.png'
+    local_save = './static/' + event.message.id + '.png'
     with open(local_save, 'wb') as fd:
         for chenk in SendImage.iter_content():
             fd.write(chenk)#heroku會自動清除這些圖片 吧
     info = qr_code_decode(local_save)
+    print(info)
     if info != "":
         if "itouch.cycu.edu.tw" in info and "learning_activity_stusign.jsp" in info:
             msg = info
-            line_bot_api.reply_message(event.reply_token, TextSendMessage("已自動從圖片偵測到QRcode，正在進行點名"))
+            line_bot_api.reply_message(event.reply_token, TextSendMessage("已自動從圖片偵測到QRcode，點名作業開始"))
             roll_call_activity(msg,event)
         else:
             line_bot_api.reply_message(event.reply_token, TextSendMessage("已自動從圖片偵測到QRcode" + info))
