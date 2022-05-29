@@ -6,5 +6,5 @@ lxml
 discord
 psycopg2
 webdriver-manager
-#pyzbar
-#Pillow
+pyzbar
+Pillow

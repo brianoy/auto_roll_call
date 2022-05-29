@@ -25,7 +25,7 @@ import discord
 import json
 import ast #str to mapping
 from to_do_list_variable import variable_separator, variable_block, variable_main_construct
-#from qr_code import qr_code_decode
+from qr_code import qr_code_decode
  
 mode = "stable"
 GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
@@ -51,7 +51,7 @@ chrome_options.add_argument('user-agent=Mozilla/5.0')
 chrome_options.add_argument('ignore-certificate-errors')
 chrome_options.add_argument("--disable-gpu")
 chrome_options.add_argument("--example-flag")
-wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
+wd = webdriver.Chrome(service=Service(ChromeDriverManager(chrome_type=ChromeType.BRAVE).install()),options=chrome_options)
 
 EAT = (["全家","7-11","中原夜市","鍋燒意麵","肉羹","拉麵","炒飯","賣麵庄","雞腿便當","摩斯漢堡","麥當勞","烤肉飯","肯德基","石二鍋",
 "五花馬","燒肉","咖哩飯","牛排","肉燥飯","SUKIYA","霸味薑母鴨","高雄黑輪","丼飯","薩利亞","mint","火雞肉飯","品田牧場","滷味","Mr.三明治",
@@ -166,7 +166,7 @@ def url_login(msg,event,force):
         global not_send_msg
         not_send_msg = False
         now_unix_time = int(event.timestamp/1000)#強制將unix時間取整
-        wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
+        wd = webdriver.Chrome(service=Service(ChromeDriverManager(chrome_type=ChromeType.BRAVE).install()),options=chrome_options)
         start_time = time.time()
         url = str(msg).replace("&afterLogin=true","")
         messageout = ""
@@ -991,7 +991,7 @@ def handle_sticker_message(event):
             print("有不知名的群組傳送了貼圖")
     return 
 
-'''
+
 @handler.add(MessageEvent, message=ImageMessage)
 def handle_message(event):
     SendImage = line_bot_api.get_message_content(event.message.id)
@@ -1010,7 +1010,7 @@ def handle_message(event):
         else:
             line_bot_api.reply_message(event.reply_token, TextSendMessage("已自動從圖片偵測到QRcode" + info))
     return
-'''
+
 
 
 def my_msg(msg_info):#send msg to me
