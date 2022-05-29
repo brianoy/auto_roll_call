@@ -207,8 +207,8 @@ def url_login(msg,event,force):
             else:#確認所有條件都適合點名
                 #my_msg(url)
                 for i in range(0,len(userlist),1):
-                    wd.execute_script("window.open('');")#取一 我也不知道差在哪
-                    #wd.switch_to.new_window('tab')
+                    #wd.execute_script("window.open('');")#取一 我也不知道差在哪
+                    wd.switch_to.new_window('tab')
                     wd.switch_to.window(wd.window_handles[i+1])
                     wd.get(url)#打開所有對應數量的分頁並到網址
                     print("已打開第"+ str(i) + "個分頁")
@@ -382,17 +382,17 @@ def activate():
     print("強迫喚醒成功")
     return '強迫喚醒成功'
 
-def deliver_data(public_msgbuffer, event_temp, text=None) -> dict:
-    if (event_temp.source.type == "user"):
+def deliver_data(public_msgbuffer, event, text=None) -> dict:
+    if (event.source.type == "user"):
 
-        profile = line_bot_api.get_profile(event_temp.source.user_id)
+        profile = line_bot_api.get_profile(event.source.user_id)
         request_data = {
           "content":"------------------------------------------\n\n" + "傳入機器人的訊息:\n" + text + "\n" + "傳出的訊息:\n" + public_msgbuffer + "\n\n------------------------------------------" ,
           "username":"<line 同步訊息><個人使用>   " + profile.display_name,
           "avatar_url":profile.picture_url
           }
-    elif (event_temp.source.type == "group"):
-        profile = line_bot_api.get_group_member_profile(event_temp.source.group_id,event_temp.source.user_id)
+    elif (event.source.type == "group"):
+        profile = line_bot_api.get_group_member_profile(event.source.group_id,event.source.user_id)
         request_data = {
           "content":"------------------------------------------\n\n" + "傳入機器人的訊息:\n" + text + "\n" + "傳出的訊息:\n" + public_msgbuffer + "\n\n------------------------------------------" ,
           "username":"<line 同步訊息><群組訊息>   " + profile.display_name,
@@ -561,7 +561,6 @@ def handle_message(event) :
     msg_type = event.message.type
     #now_unix_time = int(event.timestamp/1000)#強制將unix時間取整
     print(msg_type)
-    event_temp = event
     if 'itouch.cycu.edu.tw' in msg and '/force_url_login' not in msg:
          roll_call_activity(msg,event)#整串轉移到513行roll_call_activity
     elif '/' in msg and msg[0] == "/":#all command
@@ -689,7 +688,7 @@ def handle_message(event) :
                 print("有不知名的群組傳送了非相關訊息")
         else:
             line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
-    request_data = deliver_data(public_msgbuffer, event_temp, event.message.text)
+    request_data = deliver_data(public_msgbuffer, event, event.message.text)
     requests.post(url=discord_webhook, data=request_data)
     
     if (event.source.type == "group") :
