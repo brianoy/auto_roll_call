@@ -992,7 +992,7 @@ def handle_sticker_message(event):
             print("有不知名的群組傳送了貼圖")
     return 
 
-
+'''
 @handler.add(MessageEvent, message=ImageMessage)
 def handle_message(event):
     SendImage = line_bot_api.get_message_content(event.message.id)
@@ -1011,7 +1011,7 @@ def handle_message(event):
         else:
             line_bot_api.reply_message(event.reply_token, TextSendMessage("已自動從圖片偵測到QRcode" + info))
     return
-
+'''
 
 
 def my_msg(msg_info):#send msg to me
