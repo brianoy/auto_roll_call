@@ -990,7 +990,11 @@ def handle_sticker_message(event):
 def handle_message(event):
     SendImage = line_bot_api.get_message_content(event.message.id)
     print(SendImage)
-    url = qr_code_decode(SendImage)
+    local_save = './static/' + event.message.id + '.png'
+    with open(local_save, 'wb') as fd:
+        for chenk in SendImage.iter_content():
+            fd.write(chenk)
+    url = qr_code_decode(local_save)
     if url != "":
         line_bot_api.reply_message(event.reply_token, TextSendMessage(url))
     return
