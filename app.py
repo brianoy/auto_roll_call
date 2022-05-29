@@ -1005,7 +1005,7 @@ def handle_message(event):
     if info != "":
         if "itouch.cycu.edu.tw" in info and "learning_activity_stusign.jsp" in info:
             msg = info
-            line_bot_api.reply_message(event.reply_token, TextSendMessage("已自動從圖片偵測到QRcode，點名作業開始"))
+            line_bot_api.reply_message(event.reply_token, TextSendMessage("已自動從圖片偵測到點名的QRcode，點名作業開始"))#mem leak
             roll_call_activity(msg,event)
         else:
             line_bot_api.reply_message(event.reply_token, TextSendMessage("已自動從圖片偵測到QRcode" + info))
