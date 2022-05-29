@@ -508,6 +508,50 @@ def person_not_send_msg_func(not_send_msg,user_id,payload):
         line_bot_api.push_message(user_id, payload)
     return
 
+
+
+def roll_call_activity(msg,event):
+    if 'learning_activity' in msg :
+        if (event.source.type == "group") :
+            if(event.source.group_id == groupId[0]):
+                headers= {
+                "Authorization": "Bearer " + grouptoken[0], 
+                }
+                requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + recived })#翹課大魔王
+                msgbuffer = url_login(msg,event,force=False)
+                public_msgbuffer = done + msgbuffer
+                payload = {'message': distinguish(public_msgbuffer) }
+                group_not_send_msg_func(not_send_msg,headers,payload)
+            elif(event.source.group_id == groupId[1]):
+                headers= {
+                "Authorization": "Bearer " + grouptoken[1], 
+                }
+                requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + recived })#秘密基地
+                msgbuffer = url_login(msg,event,force=False)
+                public_msgbuffer = done + msgbuffer
+                payload = {'message': distinguish(public_msgbuffer) }
+                group_not_send_msg_func(not_send_msg,headers,payload)
+            else:
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(recived))
+                msgbuffer = url_login(msg,event,force=False)
+                public_msgbuffer = done + msgbuffer
+                payload = {'message': distinguish(public_msgbuffer) }
+                print("有不知名的群組")
+                line_bot_api.push_message(event.source.group_id, TextSendMessage(distinguish(public_msgbuffer)))#除了以上兩個群組
+        elif(event.source.type == "user") :
+            line_bot_api.push_message(event.source.user_id, TextSendMessage(recived))
+            msgbuffer = url_login(msg,event,force=False)
+            public_msgbuffer = (done + msgbuffer)
+            person_not_send_msg_func(not_send_msg,event.source.user_id,TextSendMessage(distinguish(public_msgbuffer)))
+        else:
+            print("錯誤:偵測不到itouch網址訊息類型")
+            line_bot_api.reply_message(event.reply_token, TextSendMessage("偵測不到itouch網址類型，請再試一次"))
+    else:
+        public_msgbuffer = ('請輸入正確的點名網址')
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
+    return
+
+
  #warning! reply token would expired after send msg about 30seconds. use push msg! 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event) :
@@ -518,45 +562,7 @@ def handle_message(event) :
     print(msg_type)
     event_temp = event
     if 'itouch.cycu.edu.tw' in msg and '/force_url_login' not in msg:
-         if 'learning_activity' in msg :
-             if (event.source.type == "group") :
-                 if(event.source.group_id == groupId[0]):
-                      headers= {
-                      "Authorization": "Bearer " + grouptoken[0], 
-                      }
-                      requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + recived })#翹課大魔王
-                      msgbuffer = url_login(msg,event,force=False)
-                      public_msgbuffer = done + msgbuffer
-                      payload = {'message': distinguish(public_msgbuffer) }
-                      group_not_send_msg_func(not_send_msg,headers,payload)
-                 elif(event.source.group_id == groupId[1]):
-                      headers= {
-                      "Authorization": "Bearer " + grouptoken[1], 
-                      }
-                      requests.post("https://notify-api.line.me/api/notify", headers = headers, params = {'message': "\n" + recived })#秘密基地
-                      msgbuffer = url_login(msg,event,force=False)
-                      public_msgbuffer = done + msgbuffer
-                      payload = {'message': distinguish(public_msgbuffer) }
-                      group_not_send_msg_func(not_send_msg,headers,payload)
-                 else:
-                      line_bot_api.reply_message(event_temp.reply_token, TextSendMessage(recived))
-                      msgbuffer = url_login(msg,event,force=False)
-                      public_msgbuffer = done + msgbuffer
-                      payload = {'message': distinguish(public_msgbuffer) }
-                      print("有不知名的群組")
-                      line_bot_api.push_message(event_temp.source.group_id, TextSendMessage(distinguish(public_msgbuffer)))#除了以上兩個群組
-             elif(event.source.type == "user") :
-                  line_bot_api.push_message(event_temp.source.user_id, TextSendMessage(recived))
-                  msgbuffer = url_login(msg,event,force=False)
-                  public_msgbuffer = (done + msgbuffer)
-                  person_not_send_msg_func(not_send_msg,event_temp.source.user_id,TextSendMessage(distinguish(public_msgbuffer)))
-             else:
-                 print("錯誤:偵測不到itouch網址訊息類型")
-                 line_bot_api.reply_message(event.reply_token, TextSendMessage("偵測不到itouch網址類型，請再試一次"))
-         else:
-             public_msgbuffer = ('請輸入正確的點名網址')
-             line_bot_api.reply_message(event.reply_token, TextSendMessage(public_msgbuffer))
-
+         roll_call_activity(msg,event)#整串轉移到513行roll_call_activity
     elif '/' in msg and msg[0] == "/":#all command
         command(msg,event)
 
@@ -990,13 +996,18 @@ def handle_sticker_message(event):
 def handle_message(event):
     SendImage = line_bot_api.get_message_content(event.message.id)
     print(SendImage)
-    local_save = './static/' + event.message.id + '.png'
+    local_save = './temporary/' + event.message.id + '.png'
     with open(local_save, 'wb') as fd:
         for chenk in SendImage.iter_content():
-            fd.write(chenk)
-    url = qr_code_decode(local_save)
-    if url != "":
-        line_bot_api.reply_message(event.reply_token, TextSendMessage(url))
+            fd.write(chenk)#heroku會自動清除這些圖片 吧
+    info = qr_code_decode(local_save)
+    if info != "":
+        if "itouch.cycu.edu.tw" in info and "learning_activity_stusign.jsp" in info:
+            msg = info
+            line_bot_api.reply_message(event.reply_token, TextSendMessage("已自動從圖片偵測到QRcode，正在進行點名"))
+            roll_call_activity(msg,event)
+        else:
+            line_bot_api.reply_message(event.reply_token, TextSendMessage("已自動從圖片偵測到QRcode" + info))
     return
 
 
