@@ -144,12 +144,12 @@
       "contents": [
         {
           "type": "button",
-          "style": "link",
+          "style": "primary",
           "height": "sm",
           "action": {
             "type": "uri",
-            "label": "我想連絡他！",
-            "uri": "http://pornhub.com/"
+            "label": "👉現在就連絡他👈",
+            "uri": "https://www.instagram.com/haowang__922/"
           }
         },
         {
