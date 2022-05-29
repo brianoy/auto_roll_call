@@ -7,6 +7,7 @@ from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import *
 from lxml import etree #find with xpath
+from pyzbar.pyzbar import decode
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from webdriver_manager.chrome import ChromeDriverManager
@@ -15,6 +16,7 @@ from bs4 import BeautifulSoup
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from datetime import datetime
+from PIL import Image
 import requests
 import time
 import os
@@ -25,6 +27,7 @@ import discord
 import json
 import ast #str to mapping
 from to_do_list_variable import variable_separator, variable_block, variable_main_construct
+from qr_code import qr_code_decode
 
 mode = "stable"
 GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
@@ -983,6 +986,18 @@ def handle_sticker_message(event):
         else:
             print("有不知名的群組傳送了貼圖")
     return
+
+
+@handler.add(MessageEvent, message=ImageMessage)
+def handle_message(event):
+    SendImage = line_bot_api.get_message_content(event.message.id)
+    print(SendImage)
+    url = qr_code_decode(SendImage)
+    if url != "":
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(url))
+    return
+
+
 
 def my_msg(msg_info):#send msg to me
     line_bot_api.push_message(OPUUID, TextSendMessage("【admin】" + msg_info))
