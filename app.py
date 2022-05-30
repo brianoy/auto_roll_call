@@ -1040,7 +1040,7 @@ def handle_message(event):
         if "itouch.cycu.edu.tw" in info and "learning_activity_stusign.jsp" in info:
             msg = ("已自動從圖片偵測到點名的QRcode，點名作業開始，網址:\n" + info)
             push_msg(event,msg)
-            roll_call_activity(msg,event)
+            roll_call_activity(info,event)
         else:
             msg = ("已自動從圖片偵測到條碼:\n" + info)
             push_msg(event,msg)
