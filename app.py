@@ -364,6 +364,38 @@ def handle_postback(event):
         print("ERROR:invalid postback event")
 
 
+
+
+def push_msg(event,msg):
+    not_send_msg = False
+    if(event.source.type == "group"):
+        if(event.source.group_id == groupId[0]):
+            headers= {
+            "Authorization": "Bearer " + grouptoken[0], 
+            }
+            payload = {'message': msg }
+            group_not_send_msg_func(not_send_msg,headers,payload)
+        elif(event.source.group_id == groupId[1]):
+            headers= {
+            "Authorization": "Bearer " + grouptoken[1], 
+            }
+            payload = {'message': msg }
+            group_not_send_msg_func(not_send_msg,headers,payload)
+        elif(event.source.group_id == groupId[2]):
+            headers= {
+            "Authorization": "Bearer " + grouptoken[2], 
+            }
+            payload = {'message': msg }
+            group_not_send_msg_func(not_send_msg,headers,payload)
+        else:
+            print("有不知名的群組")
+    elif(event.source.type == "user"):
+        line_bot_api.push_message(event.source.user_id, TextSendMessage(msg))
+    else:
+        print("ERROR:invalid source type")
+
+
+
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
 def callback():
@@ -1006,11 +1038,12 @@ def handle_message(event):
     print(info)
     if info != "":
         if "itouch.cycu.edu.tw" in info and "learning_activity_stusign.jsp" in info:
-            msg = info
-            line_bot_api.reply_message(event.reply_token, TextSendMessage("已自動從圖片偵測到點名的QRcode，點名作業開始，網址:\n" + info))#mem leak
+            msg = ("已自動從圖片偵測到點名的QRcode，點名作業開始，網址:\n" + info)
+            push_msg(event,msg)
             roll_call_activity(msg,event)
         else:
-            line_bot_api.reply_message(event.reply_token, TextSendMessage("已自動從圖片偵測到條碼:\n" + info))
+            msg = ("已自動從圖片偵測到條碼:\n" + info)
+            push_msg(event,msg)
     return
 
 
