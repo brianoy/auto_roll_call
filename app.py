@@ -2,6 +2,7 @@
 #heroku labs:enable log-runtime-metrics #開啟log
 #heroku labs:disable log-runtime-metrics
 #heroku restart
+#v507 全面改用 chrome_type=ChromeType.BRAVE瀏覽器
 from flask import Flask, request, abort, render_template, send_file
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
@@ -41,7 +42,7 @@ else:
     LINE_CHANNEL_SECRET = os.environ['LINE_CHANNEL_SECRET']
 DISCORD_WEBHOOK = os.environ['DISCORD_WEBHOOK']
 OPUUID = os.environ['LINE_OP_UUID']
-changelog = "mem leak、點名減速、點名訊息錯誤顯示、我的購物清單"#還有成績指令沒寫完、簽到未開放的對列quene、未點名的紀錄
+changelog = "mem leak、brave browzer、qrdecoder"#還有成績指令沒寫完、簽到未開放的對列quene、未點名的紀錄
 client = discord.Client()
 app = Flask(__name__)
 chrome_options = webdriver.ChromeOptions()
@@ -266,7 +267,7 @@ def url_login(msg,event,force):
     except IndexError:
         messageout = "🟥🟥FATAL ERROR🟥🟥\n可能是由ilearning網頁故障或是輸入錯誤的網址所引起\n請盡快手點和連繫我"
     except Exception:#記得有Bug的時候一定要把它撤下來 不然會吐不出錯誤訊息
-        messageout = "🟥🟥UNKNOWN ERROR🟥🟥\n可能是由輸入錯誤的網址所引起，或是整體系統出錯，請聯絡我"
+        messageout = "🟥🟥UNKNOWN ERROR🟥🟥\n可能是由輸入錯誤的網址所引起、整體系統出錯，或是傳送的網址為限制的課程，如有問題請聯絡我"
         print('不知道怎麼了，反正發生錯誤')
     return messageout
 
@@ -1006,7 +1007,7 @@ def handle_message(event):
     if info != "":
         if "itouch.cycu.edu.tw" in info and "learning_activity_stusign.jsp" in info:
             msg = info
-            line_bot_api.reply_message(event.reply_token, TextSendMessage("已自動從圖片偵測到點名的QRcode，點名作業開始"))#mem leak
+            line_bot_api.reply_message(event.reply_token, TextSendMessage("已自動從圖片偵測到點名的QRcode，點名作業開始，網址:\n" + info))#mem leak
             roll_call_activity(msg,event)
         else:
             line_bot_api.reply_message(event.reply_token, TextSendMessage("已自動從圖片偵測到條碼:\n" + info))
