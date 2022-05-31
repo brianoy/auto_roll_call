@@ -168,7 +168,7 @@ def url_login(msg,event,force):
         global not_send_msg
         not_send_msg = False
         now_unix_time = int(event.timestamp/1000)#強制將unix時間取整
-        wd = webdriver.Chrome(service=Service(ChromeDriverManager(chrome_type=ChromeType.BRAVE).install()),options=chrome_options)
+        wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
         start_time = time.time()
         url = str(msg).replace("&afterLogin=true","")
         messageout = ""
