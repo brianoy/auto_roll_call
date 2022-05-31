@@ -235,11 +235,8 @@ def url_login(msg,event,force):
                         print("密碼錯誤\n------------------\n" + messageout)
                         fail_login_status = fail_login_status +1
                     else:
-                        soup_2 = BeautifulSoup(wd.page_source, 'html.parser')#疑似要把他強制轉為str並在尾巴decompose#疑似mem leak 不會吐error msg
-                        #print(soup_2.prettify()) #html details
-                        #print(str(soup_2.find_all(stroke="#D06079")))
-                        #print(str(soup_2.find_all(stroke="#73AF55")))
-                        if str(soup_2.find_all(stroke="#D06079")) != "[]":#fail #將清單強制轉為字串，若清單為空，輸出的字串為"[]"
+                        try:#嘗試找尋失敗#D06079
+                            wd.find_element(By.CSS_SELECTOR, "[stroke='#D06079']")#第一次用cssselector 如果沒有紅色就會是成功訊息
                             fail_msg = str(wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text)
                             messageout = (messageout + "\n🟥點名失敗❌，"+ name +"好可憐喔😱\n失敗訊息:" + fail_msg +'\n\n')
                             print("點名失敗\n------------------\n" + messageout)
@@ -247,19 +244,13 @@ def url_login(msg,event,force):
                             if "簽到未開放" in fail_msg:
                                 messageout = "🟥警告❌，點名尚未開始，請稍後再試，全數點名失敗\n"
                                 fail_login_status = len(userlist)
-                                soup_2.decompose()
                                 print("🟥警告❌，點名尚未開始")
                                 break
-                        elif str(soup_2.find_all(stroke="#73AF55")) != "[]":#success #將清單強制轉為字串，若清單為空，輸出的字串為"[]"
+                        except NoSuchElementException:#找不到#D06079就會是成功#73AF55
                             detailmsg = wd.find_element(By.XPATH,"/html/body/div[1]/div[3]/div").text
                             messageout = (messageout + "\n🟩點名成功✅，"+ name +"會非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':').replace('<br>','\n')+'\n\n')
                             print("點名成功\n------------------\n" + messageout)
                             success_login_status = success_login_status +1
-                        else:
-                            messageout = (messageout + name + "\n🟥發生未知的錯誤❌，" + "學號:" + usr + " " + name + "點名失敗😱，趕快聯繫布萊恩，並自行手點" + '\n\n')#unknown failure
-                            print("點名失敗\n------------------\n" + messageout)
-                            fail_login_status = fail_login_status +1
-                        soup_2.decompose()
         messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人\n" + str(time_and_class) + "\n" + str(curriculum_name))
         messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ['HEROKU_RELEASE_CREATED_AT'].replace("Z","").replace("T"," ") + "GMT+0\n" + "版本:" + os.environ['HEROKU_RELEASE_VERSION']+ "\n此次點名耗費時間:" + str(round(time.time() - start_time)+2) +"秒" +"\n更新日誌:" + changelog)
         wd.close()
@@ -472,6 +463,8 @@ def get_curriculum_pros(get_now_user,get_now_pwd):
                 a = ""
             classroom_list.append(str(b))
             curriculum_list.append(str(a))
+    for item in soup:
+        item.decompose()
     wd.quit
     return curriculum_list,classroom_list
 
