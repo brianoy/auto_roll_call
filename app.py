@@ -168,7 +168,7 @@ def url_login(msg,event,force):
         global not_send_msg
         not_send_msg = False
         now_unix_time = int(event.timestamp/1000)#強制將unix時間取整
-        wd = webdriver.Chrome(service=Service(ChromeDriverManager(chrome_type=ChromeType.BRAVE).install()),options=chrome_options)
+        wd = webdriver.Chrome(service=Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()), options=chrome_options)
         start_time = time.time()
         url = str(msg).replace("&afterLogin=true","")
         messageout = ""
@@ -450,11 +450,7 @@ def get_curriculum_pros(get_now_user,get_now_pwd):
     curriculum_list = []
     classroom_list = []
     url="https://itouch.cycu.edu.tw/active_system/login/loginfailt.jsp?User_url=/active_system/quary/s_query_course_list.jsp"
-    #chrome_options = webdriver.ChromeOptions()
-    #chrome_options.add_argument('--headless')
-    #chrome_options.add_argument('--no-sandbox')
-    #chrome_options.add_argument('--disable-dev-shm-usage')
-    #wd = webdriver.Chrome('chromedriver',options=chrome_options)
+    wd = webdriver.Chrome(service=Service(ChromeDriverManager(chrome_type=ChromeType.BRAVE).install()),options=chrome_options)
     wd.get(url)
     wd.execute_script('document.getElementById("UserNm").value ="' + get_now_user + '"')
     wd.execute_script('document.getElementById("UserPasswd").value ="' + get_now_pwd + '"')
