@@ -178,10 +178,10 @@ def url_login(msg,event,force):
         wd.get(url)
         #time.sleep(1)
         not_open = "未開放 QRCODE簽到功能" in wd.page_source
-        xpath = '/html/body/div/div[2]/p/text()[3]'
-        time_and_class = str(wd.find_element(by=By.XPATH, value=xpath).text)
-        xpath = '/html/body/div/div[2]/p/text()[4]'
-        curriculum_name = str(wd.find_element(by=By.XPATH, value=xpath).text)  
+        xpath = '/html/body/div/div[2]/p/text'
+        time_and_classname = str(wd.find_element(by=By.XPATH, value=xpath).text)
+        #xpath = '/html/body/div/div[2]/p/text()[4]'
+        #curriculum_name = str(wd.find_element(by=By.XPATH, value=xpath).text)  
         if not_open:
             fail_login_status = len(userlist)
             messageout = "🟥警告❌，點名並沒有開放，請稍後再試或自行手點，全數點名失敗\n"
@@ -251,7 +251,7 @@ def url_login(msg,event,force):
                             messageout = (messageout + "\n🟩點名成功✅，"+ name +"會非常感謝你\n成功訊息:" + detailmsg.replace('&#x6708;','月').replace('&#x65e5;','日').replace('&#x3a;',':').replace('<br>','\n')+'\n\n')
                             print("點名成功\n------------------\n" + messageout)
                             success_login_status = success_login_status +1
-        messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人\n" + str(time_and_class) + "\n" + str(curriculum_name))
+        messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人\n"  + str(time_and_classname))
         messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ['HEROKU_RELEASE_CREATED_AT'].replace("Z","").replace("T"," ") + "GMT+0\n" + "版本:" + os.environ['HEROKU_RELEASE_VERSION']+ "\n此次點名耗費時間:" + str(round(time.time() - start_time)+2) +"秒" +"\n更新日誌:" + changelog)
         wd.close()
     except IndexError:
