@@ -168,7 +168,7 @@ def url_login(msg,event,force):
         global not_send_msg
         not_send_msg = False
         now_unix_time = int(event.timestamp/1000)#強制將unix時間取整
-        wd = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=chrome_options)
+        wd = webdriver.Chrome(service=Service(ChromeDriverManager(chrome_type=ChromeType.BRAVE).install()),options=chrome_options)
         start_time = time.time()
         url = str(msg).replace("&afterLogin=true","")
         messageout = ""
@@ -264,8 +264,8 @@ def url_login(msg,event,force):
         messageout = (messageout + '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "本次點名人數:" + str(len(userlist)) + "人\n" + "成功點名人數:" + str(success_login_status) + "人\n"+ "失敗點名人數:" + str(fail_login_status)+ "人\n" + str(time_and_class) + "\n" + str(curriculum_name))
         messageout = (messageout + '\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' + "最近一次更新:" + os.environ['HEROKU_RELEASE_CREATED_AT'].replace("Z","").replace("T"," ") + "GMT+0\n" + "版本:" + os.environ['HEROKU_RELEASE_VERSION']+ "\n此次點名耗費時間:" + str(round(time.time() - start_time)+2) +"秒" +"\n更新日誌:" + changelog)
         wd.close()
-    except IndexError:
-        messageout = "🟥🟥FATAL ERROR🟥🟥\n可能是由ilearning網頁故障或是輸入錯誤的網址所引起\n請盡快手點和連繫我"
+    #except IndexError:
+        #messageout = "🟥🟥FATAL ERROR🟥🟥\n可能是由ilearning網頁故障或是輸入錯誤的網址所引起\n請盡快手點和連繫我"
     #except Exception:#記得有Bug的時候一定要把它撤下來 不然會吐不出錯誤訊息
         #messageout = "🟥🟥UNKNOWN ERROR🟥🟥\n可能是由輸入錯誤的網址所引起、整體系統出錯，或是傳送的網址為限制的課程，如有問題請聯絡我"
         #print('不知道怎麼了，反正發生錯誤')
