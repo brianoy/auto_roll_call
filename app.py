@@ -179,7 +179,7 @@ def url_login(msg,event,force):
         #time.sleep(1)
         not_open = "未開放 QRCODE簽到功能" in wd.page_source
         xpath = '/html/body/div/div[2]/p'
-        time_and_classname = str(wd.find_element(by=By.XPATH, value=xpath).text).replace("課程點名", "").replace("  ", "")
+        time_and_classname = str(wd.find_element(by=By.XPATH, value=xpath).text).replace("課程點名", "").replace("　　", " ")
         #xpath = '/html/body/div/div[2]/p/text()[4]'
         #curriculum_name = str(wd.find_element(by=By.XPATH, value=xpath).text)  
         if not_open:
@@ -928,6 +928,9 @@ def quick_reply(id):
                 action=MessageAction(label="請假紀錄",text="/請假紀錄")
                 ),
             QuickReplyButton(
+                action=MessageAction(label="全學年缺課紀錄",text="/未點名到")
+                ),
+            QuickReplyButton(
                 action=MessageAction(label="你今天被實驗助教搞了嗎",text="/你今天被實驗助教搞了嗎")
                 )
         ]
@@ -1216,7 +1219,7 @@ def day_off(event):
                 end_date = wd.find_element(By.XPATH,"/html/body/div[1]/div[2]/table[2]/tbody/tr["+str(1+i)+"]/td[4]").text
                 reason = wd.find_element(By.XPATH,"/html/body/div[1]/div[2]/table[2]/tbody/tr["+str(1+i)+"]/td[7]").text
                 permit = wd.find_element(By.XPATH,"/html/body/div[1]/div[2]/table[2]/tbody/tr["+str(1+i)+"]/td[8]").text
-                msg = "\n\n" + start_date + "~" + end_date + " : " + reason + "(已審核 " + permit + ")" + msg
+                msg = "\n\n" + start_date + "~" + end_date + " : " + reason + "(已審核:" + permit + ")" + msg
                 i+=1
             except NoSuchElementException:
                 if msg == "":
