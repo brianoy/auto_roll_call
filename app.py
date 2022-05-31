@@ -177,12 +177,11 @@ def url_login(msg,event,force):
         fail_login_status = 0
         wd.get(url)
         #time.sleep(1)
-        soup_1 = BeautifulSoup(wd.page_source, 'html.parser')
-        dom = etree.HTML(str(soup_1))
         not_open = "未開放 QRCODE簽到功能" in wd.page_source
-        time_and_class = str(dom.xpath('/html/body/div/div[2]/p/text()[3]')[0])
-        curriculum_name = str(dom.xpath('/html/body/div/div[2]/p/text()[4]')[0])
-        soup_1.decompose()
+        xpath = '/html/body/div/div[2]/p/text()[3]'
+        time_and_class = str(wd.find_element(by=By.XPATH, value=xpath).text)
+        xpath = '/html/body/div/div[2]/p/text()[4]'
+        curriculum_name = str(wd.find_element(by=By.XPATH, value=xpath).text)  
         if not_open:
             fail_login_status = len(userlist)
             messageout = "🟥警告❌，點名並沒有開放，請稍後再試或自行手點，全數點名失敗\n"
