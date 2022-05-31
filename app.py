@@ -42,7 +42,7 @@ else:
     LINE_CHANNEL_SECRET = os.environ['LINE_CHANNEL_SECRET']
 DISCORD_WEBHOOK = os.environ['DISCORD_WEBHOOK']
 OPUUID = os.environ['LINE_OP_UUID']
-changelog = "mem leak、brave browzer、qrdecoder"#還有成績指令沒寫完、簽到未開放的對列quene、未點名的紀錄
+changelog = "mem leak fixed、qrdecoder\n新增指令:\n/點名未到"#還有成績指令沒寫完、簽到未開放的對列quene、未點名的紀錄
 client = discord.Client()
 app = Flask(__name__)
 chrome_options = webdriver.ChromeOptions()
@@ -1001,7 +1001,7 @@ def limited_command(msg,event):
             print("傳出flexmsg")
             line_bot_api.reply_message(event.reply_token, flex_message)
 
-    elif '/整日課表' == msg or '/我的課表' == msg :
+    elif '/整日課表' == msg or '/我的課表' == msg :#尚未完成
         curriculum(event)
 
     elif '/今日課表' == msg or '/今天的課表' == msg :
