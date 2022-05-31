@@ -178,7 +178,7 @@ def url_login(msg,event,force):
         wd.get(url)
         #time.sleep(1)
         not_open = "未開放 QRCODE簽到功能" in wd.page_source
-        xpath = '/html/body/div/div[2]/p/text'
+        xpath = '/html/body/div/div[2]/p'
         time_and_classname = str(wd.find_element(by=By.XPATH, value=xpath).text)
         #xpath = '/html/body/div/div[2]/p/text()[4]'
         #curriculum_name = str(wd.find_element(by=By.XPATH, value=xpath).text)  
