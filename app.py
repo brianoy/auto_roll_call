@@ -266,9 +266,9 @@ def url_login(msg,event,force):
         wd.close()
     except IndexError:
         messageout = "🟥🟥FATAL ERROR🟥🟥\n可能是由ilearning網頁故障或是輸入錯誤的網址所引起\n請盡快手點和連繫我"
-    except Exception:#記得有Bug的時候一定要把它撤下來 不然會吐不出錯誤訊息
-        messageout = "🟥🟥UNKNOWN ERROR🟥🟥\n可能是由輸入錯誤的網址所引起、整體系統出錯，或是傳送的網址為限制的課程，如有問題請聯絡我"
-        print('不知道怎麼了，反正發生錯誤')
+    #except Exception:#記得有Bug的時候一定要把它撤下來 不然會吐不出錯誤訊息
+        #messageout = "🟥🟥UNKNOWN ERROR🟥🟥\n可能是由輸入錯誤的網址所引起、整體系統出錯，或是傳送的網址為限制的課程，如有問題請聯絡我"
+        #print('不知道怎麼了，反正發生錯誤')
     return messageout
 
 @handler.add(PostbackEvent)
