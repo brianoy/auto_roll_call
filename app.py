@@ -548,7 +548,7 @@ def roll_call_fail(username,password):#全學年點名未到
   wd.execute_script("document.getElementsByClassName('button12')[0].click();")
   url = "https://itouch.cycu.edu.tw/active_system/query_data/board/s_history_course_board.jsp"
   wd.get(url)
-  msg = "歷年修課清單\n"
+  msg = "的未到清單\n"
   order = 2
   while(True):
     try:
