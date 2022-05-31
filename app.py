@@ -609,6 +609,7 @@ def roll_call_fail(username,password):#全學年點名未到
         print("結束")
         break#真的已經到表格最底部了 #跳脫while
   #print(msg)
+  wd.quit()
   return msg
 
 def roll_call_activity(msg,event):
