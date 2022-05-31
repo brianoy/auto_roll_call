@@ -28,7 +28,7 @@ from webdriver_manager.chrome import ChromeDriverManager
 from webdriver_manager.core.utils import ChromeType
 from to_do_list_variable import variable_separator, variable_block, variable_main_construct
 from qr_code import qr_code_decode
- 
+from roll_call_fail import roll_call_fail
 mode = "stable"
 GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
 CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
@@ -830,8 +830,12 @@ def command(msg,event):
             line_bot_api.push_message(event.source.user_id, TextSendMessage(distinguish(public_msgbuffer)))
         else:
             print("ERROR:invalid source type during force login")
-
-
+    elif("/未點到名" in msg):#以明語訊息強制把訊息force_login
+        get_now_user_id = event.source.user_id
+        get_now_name = namelist[useridlist.index(get_now_user_id)]
+        get_now_user = userlist[useridlist.index(get_now_user_id)]
+        get_now_password = pwlist[useridlist.index(get_now_user_id)]
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(get_now_name + roll_call_fail(get_now_user,get_now_password)))
     else:
         if (event.source.type == "user") :
             limited_command(msg,event)
@@ -1068,6 +1072,7 @@ def delete_on_database_via_uuid(delete_uuid):
 def change_password_via_uuid(change_password , uuid):
     conn   = psycopg2.connect(DATABASE_URL, sslmode='require')
     cursor = conn.cursor()
+    change_password = change_password.replace("[","").replace("]","").replace(" ","")
     postgres_update_query = f"""UPDATE all_info set password = %s WHERE uuid = %s"""
     cursor.execute(postgres_update_query, (change_password, uuid))
     conn.commit()
