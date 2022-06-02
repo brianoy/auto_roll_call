@@ -1,0 +1,64 @@
+<svg
+                        width="25"
+                        height="24"
+                        viewBox="0 0 25 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g clip-path="url(#clip0_179:99)">
+                          <path
+                            d="M1.85596 4V8C1.85596 9.657 4.54196 11 7.85596 11C11.17 11 13.856 9.657 13.856 8V4"
+                            stroke="#3D60C5"
+                            stroke-width="2"
+                            stroke-miterlimit="10"
+                          />
+                          <path
+                            d="M1.85596 8V12C1.85596 13.657 4.54196 15 7.85596 15C9.39296 15 10.794 14.71 11.856 14.235"
+                            stroke="#3D60C5"
+                            stroke-width="2"
+                            stroke-miterlimit="10"
+                          />
+                          <path
+                            d="M1.85596 12V16C1.85596 17.657 4.54196 19 7.85596 19C9.39296 19 10.795 18.711 11.856 18.236"
+                            stroke="#3D60C5"
+                            stroke-width="2"
+                            stroke-miterlimit="10"
+                          />
+                          <path
+                            d="M7.85596 7C11.1697 7 13.856 5.65685 13.856 4C13.856 2.34315 11.1697 1 7.85596 1C4.54225 1 1.85596 2.34315 1.85596 4C1.85596 5.65685 4.54225 7 7.85596 7Z"
+                            stroke="#3D60C5"
+                            stroke-width="2"
+                            stroke-miterlimit="10"
+                            stroke-linecap="square"
+                          />
+                          <path
+                            d="M11.856 12V16C11.856 17.657 14.542 19 17.856 19C21.17 19 23.856 17.657 23.856 16V12"
+                            stroke="#3D60C5"
+                            stroke-width="2"
+                            stroke-miterlimit="10"
+                          />
+                          <path
+                            d="M11.856 16V20C11.856 21.657 14.542 23 17.856 23C21.17 23 23.856 21.657 23.856 20V16"
+                            stroke="#3D60C5"
+                            stroke-width="2"
+                            stroke-miterlimit="10"
+                          />
+                          <path
+                            d="M17.856 15C21.1697 15 23.856 13.6569 23.856 12C23.856 10.3431 21.1697 9 17.856 9C14.5422 9 11.856 10.3431 11.856 12C11.856 13.6569 14.5422 15 17.856 15Z"
+                            stroke="#3D60C5"
+                            stroke-width="2"
+                            stroke-miterlimit="10"
+                            stroke-linecap="square"
+                          />
+                        </g>
+                        <defs>
+                          <clipPath id="clip0_179:99">
+                            <rect
+                              width="24"
+                              height="24"
+                              fill="white"
+                              transform="translate(0.855957)"
+                            />
+                          </clipPath>
+                        </defs>
+                      </svg>
