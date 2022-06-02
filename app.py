@@ -76,7 +76,7 @@ handler = WebhookHandler(LINE_CHANNEL_SECRET)# Channel Secret
 discord_webhook = DISCORD_WEBHOOK
 grouptoken = ["4C0ZkJflAfexSpelBcoEYVobqbbSD0aGFNvpGAVcdUX","vUQ1xrf4cIp7kFlWifowMJf4XHdtUSHeXi1QeUKARa9","WCIuPhhETZysoA6qjdx59kblgzbc6gQuVscBKS91Fi5"]
 groupId = ['Cc97a91380e09611261010e4c5c682711','C0041b628a8712ace35095f505520c0bd','Cdebd7e16f5b52db01c3efd20b12ddd35']
-recived = '已收到網址，正在點名中，請靜待約20~30秒，若看見此訊息後請盡量不要重複傳送相同的訊息，以免造成系統塞車'
+recived = "已收到網址，正在點名中，請靜待約20~30秒，若看見此訊息後請盡量不要重複傳送相同的訊息，以免造成系統塞車"
 done = '點名結束\n每次過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n仍在測試中，不建議將此系統作為正式使用，在系統回覆點名狀態前建議不要離開本對話框，以免失效時來不及通知其他人手動點名\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' 
 announce = '▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n由於line bot官方限制緣故，每個月對於機器人傳送訊息有一定的限額，如超過系統配額，此機器人將會失效\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n'
 msgbuffer = ""
@@ -208,8 +208,8 @@ def url_login(msg,event,force):
             else:#確認所有條件都適合點名
                 #my_msg(url)
                 for i in range(0,len(userlist),1):
-                    #wd.execute_script("window.open('');")#取一 我也不知道差在哪
-                    wd.switch_to.new_window('tab')
+                    wd.execute_script("window.open('');")#取一 我也不知道差在哪
+                    #wd.switch_to.new_window('tab')
                     wd.switch_to.window(wd.window_handles[i+1])
                     wd.get(url)#打開所有對應數量的分頁並到網址
                     print("已打開第"+ str(i) + "個分頁")
@@ -329,7 +329,7 @@ def handle_postback(event):
                 print("有不知名的群組")
         elif(event.source.type == "user") :
             if(time_end-time_start<=1800):
-                line_bot_api.reply_message(event.reply_token, recived)
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(recived))
                 #person_not_send_msg_func(not_send_msg,event.source.user_id,TextSendMessage(recived))
                 msgbuffer = url_login(url,event,force=True)
                 public_msgbuffer = (done + msgbuffer)
