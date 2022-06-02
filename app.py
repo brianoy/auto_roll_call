@@ -209,11 +209,11 @@ def url_login(msg,event,force):
                 #my_msg(url)
                 for i in range(0,len(userlist),1):
                     wd.execute_script("window.open('');")#取一 我也不知道差在哪
-                    #wd.switch_to.new_window('tab')
+                    #wd.switch_to.new_window('tab')#但是這個就是會當掉，run到登入完頁面就會停止
                     wd.switch_to.window(wd.window_handles[i+1])
                     wd.get(url)#打開所有對應數量的分頁並到網址
                     print("已打開第"+ str(i) + "個分頁")
-                for i in range(0,len(userlist),1):
+                for i in range(0,len(userlist),1):#輸入帳號密碼 並登入
                     wd.switch_to.window(wd.window_handles[i+1])#先跑到對應的視窗
                     usr =  userlist[i]
                     pwd = pwlist[i]
