@@ -14,7 +14,7 @@ libzbar-dev
 
 """
 
-'''
+
 from pyzbar.pyzbar import decode
 from PIL import Image
 def qr_code_decode(pic):
@@ -26,6 +26,6 @@ def qr_code_decode(pic):
         info = ""
         print("未偵測到QR Code")
     return info
-'''
+
 
 
