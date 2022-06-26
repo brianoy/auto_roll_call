@@ -1090,7 +1090,11 @@ def handle_sticker_message(event):
             print("有不知名的群組傳送了貼圖")
     return 
 
-
+#查看heroku資料夾的內容
+#heroku run bash -a auto-roll-call
+#cd 你要的資料夾
+#ls -lh
+#exit 
 @handler.add(MessageEvent, message=ImageMessage)
 def handle_message(event):
     SendImage = line_bot_api.get_message_content(event.message.id)

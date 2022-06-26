@@ -35,7 +35,7 @@
           "type": "box",
           "layout": "vertical",
           "spacing": "md",
-          "margin": "sm",
+          "margin": "sm", 
           "paddingAll": "8px",
           "backgroundColor": "#FFFFFF44",
           "borderColor": "#FFFFFF44",
