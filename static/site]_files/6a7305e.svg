@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>fok</title>
+    <g id="首页-行情-买币" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="画板备份-16" transform="translate(-966.000000, -1053.000000)">
+            <g id="编组-55备份-4" transform="translate(966.000000, 1053.000000)">
+                <path d="M8,4 L27,4 C28.1045695,4 29,4.8954305 29,6 L29,30 C29,31.1045695 28.1045695,32 27,32 L8,32 C6.8954305,32 6,31.1045695 6,30 L6,6 C6,4.8954305 6.8954305,4 8,4 Z" id="形状结合" fill="#1A90A2"></path>
+                <line x1="10" y1="9.5" x2="19.5833333" y2="9.5" id="路径-93" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"></line>
+                <line x1="10" y1="15.5" x2="16.5" y2="15.5" id="路径-93备份-2" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"></line>
+                <polygon id="路径-2" fill="#FFFFFF" points="29.935527 13.1615978 13.3582316 25.2510115 12.7916667 28.2964526 15.6963259 28.2964526 32.1432852 16.2145678"></polygon>
+                <polygon id="路径-2" fill="#FFFFFF" points="29.8323567 13 13.5562704 24.9816944 13 28 15.8518816 28 32 16.0257674"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

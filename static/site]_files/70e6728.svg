@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>币币交易-黑</title>
+    <g id="首页-导航" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="画板备份-15" transform="translate(-129.000000, -164.000000)">
+            <g id="编组-58" transform="translate(129.000000, 164.000000)">
+                <rect id="矩形备份-89" fill="#1A90A2" x="2" y="3" width="24" height="26" rx="2"></rect>
+                <circle id="椭圆形备份-12" fill="#FFFFFF" cx="27.5" cy="24.5" r="7.5"></circle>
+                <polyline id="路径-94" stroke="#1A90A2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="27 20.8186675 24.712465 23.2110231 30.72928 23.2110231"></polyline>
+                <polyline id="路径-94" stroke="#1A90A2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="translate(27.720872, 27.014845) scale(-1, -1) translate(-27.720872, -27.014845) " points="27 25.8186675 24.712465 28.2110231 30.72928 28.2110231"></polyline>
+                <path d="M10.5,11 L16.0714286,11 C17.4521404,11 18.5714286,12.1192881 18.5714286,13.5 C18.5714286,14.8807119 17.4521404,16 16.0714286,16 L10,16 L10,16 L10,11.5 C10,11.2238576 10.2238576,11 10.5,11 Z" id="矩形" stroke="#FFFFFF" stroke-width="3"></path>
+                <path d="M10,16 L16.0714286,16 C17.4521404,16 18.5714286,17.1192881 18.5714286,18.5 C18.5714286,19.8807119 17.4521404,21 16.0714286,21 L10.5,21 C10.2238576,21 10,20.7761424 10,20.5 L10,16 L10,16 Z" id="矩形备份-94" stroke="#FFFFFF" stroke-width="3"></path>
+            </g>
+        </g>
+    </g>
+</svg>

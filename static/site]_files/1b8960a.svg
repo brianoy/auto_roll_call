@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>专业合约跟单-黑</title>
+    <g id="首页-导航" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="画板备份-15" transform="translate(-129.000000, -720.000000)">
+            <g id="编组-62" transform="translate(129.000000, 720.000000)">
+                <g id="编组-47备份" transform="translate(0.000000, 6.000000)">
+                    <path d="M15.4136378,0 L32.567484,0 C33.6720535,-2.16501571e-15 34.567484,0.8954305 34.567484,2 L34.567484,23 C34.567484,24.1045695 33.6720535,25 32.567484,25 L11.4905609,25 L11.4905609,25 L13.4136378,18.9815541 L13.4136378,2 C13.4136378,0.8954305 14.3090683,2.02906125e-16 15.4136378,0 Z" id="矩形" fill="#1A90A2"></path>
+                    <polygon id="矩形备份-89" fill="#FFFFFF" transform="translate(8.383043, 16.412305) rotate(20.000000) translate(-8.383043, -16.412305) " points="2.38304343 8.38679048 14.3830434 8.38679048 14.3830434 23.3867905 11.4953636 24.43782 11.5227886 15.8867905 2.38304343 15.8867905 4.41335228 12.1367905"></polygon>
+                    <line x1="19.4905609" y1="5.5" x2="29.0738943" y2="5.5" id="路径-93" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"></line>
+                    <line x1="19.4905609" y1="11.5" x2="29.0738943" y2="11.5" id="路径-93备份-2" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"></line>
+                    <line x1="23.9905609" y1="17.5" x2="29.0360155" y2="17.5" id="路径-93备份-3" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round"></line>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

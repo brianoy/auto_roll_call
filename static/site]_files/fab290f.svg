@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1411 700" class="design-iconfont">
+  <defs>
+    <linearGradient x1="74.1823019%" y1="50%" x2="14.2679769%" y2="50.0887323%" id="hgkgux9jya">
+      <stop stop-color="#FFF" stop-opacity="0" offset="0%"/>
+      <stop stop-color="#8D8D8D" offset="100%"/>
+    </linearGradient>
+    <linearGradient x1="84.5795979%" y1="50.0600848%" x2="8.51434176%" y2="50.1036968%" id="ku33eu3ewc">
+      <stop stop-color="#DCDCDC" stop-opacity="0" offset="0%"/>
+      <stop stop-color="#B7B7B7" offset="100%"/>
+    </linearGradient>
+    <linearGradient x1="96.4417947%" y1="50%" x2="50%" y2="50.0036164%" id="gvb5il590d">
+      <stop stop-color="#CBCBCB" stop-opacity="0" offset="0%"/>
+      <stop stop-color="#9C9C9C" offset="100%"/>
+    </linearGradient>
+    <linearGradient x1="23.0055202%" y1="44.6271315%" x2="-12.620872%" y2="77.4300181%" id="y760k382zf">
+      <stop stop-color="#EEE" stop-opacity="0" offset="0%"/>
+      <stop stop-color="#BCBCBC" offset="100%"/>
+    </linearGradient>
+    <path d="M0,21 L0,66.5737767 L0,66.5737767 L1461.85915,66.5737767 L1461.85915,0 L21,0 C9.40202025,-1.42219936e-15 -4.97305656e-15,9.40202025 0,21 Z" id="3uq20w30ub"/>
+  </defs>
+  <g fill="none" fill-rule="evenodd" opacity=".43580337">
+    <path fill="url(#hgkgux9jya)" opacity=".4656234" d="M18 634L1461.27215 634 1814 526 651.622793 526z" transform="translate(0 -2)"/>
+    <g opacity=".50232733" transform="translate(0 631.426223)">
+      <mask id="5aujx9i2we" fill="#fff">
+        <use xlink:href="#3uq20w30ub"/>
+      </mask>
+      <use fill="url(#ku33eu3ewc)" xlink:href="#3uq20w30ub"/>
+      <path fill="url(#gvb5il590d)" opacity=".36112903" mask="url(#5aujx9i2we)" d="M0 2.31481501e-14L0 12 1411 12 1411 0z"/>
+    </g>
+    <path fill="url(#y760k382zf)" opacity=".34854707" d="M673 526L673 0 1411 0 1411 526z" transform="translate(0 -2)"/>
+  </g>
+</svg>
