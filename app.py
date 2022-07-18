@@ -185,7 +185,7 @@ def url_login(msg,event,force):
             fail_login_status = len(userlist)
             messageout = "🟥警告❌，點名並沒有開放，請稍後再試或自行手點，全數點名失敗\n"
             not_send_msg = True
-            with open("json/limited_class.json") as path:
+            with open("json/limited_class.json",encoding="utf-8") as path:
                 FlexMessage = json.loads(path.read() % {"msg_1" : "偵測到課程點名失敗，是否需要重新點名?" , "unix_time" : now_unix_time , "force_url_login" : url })
                 flex_message = FlexSendMessage(
                                 alt_text = '(請點擊聊天室已取得更多消息)' ,
@@ -196,7 +196,7 @@ def url_login(msg,event,force):
             #break
         else:
             if (("英文" in time_and_classname or "化學實驗" in time_and_classname) and force != True):
-                with open("json/limited_class.json") as path:
+                with open("json/limited_class.json",encoding="utf-8") as path:
                     FlexMessage = json.loads(path.read() % {"msg_1" : "此課程不建議全體點名，確定要點名?" , "unix_time" : now_unix_time , "force_url_login" :  url })
                     flex_message = FlexSendMessage(
                                 alt_text = '(請點擊聊天室已取得更多消息)' ,
@@ -273,7 +273,7 @@ def handle_postback(event):
         if get_now_user_id in useridlist:#帳號存在
             change_password = postback_msg.replace("/changepassword","").replace(" ","")
             change_password_via_uuid(change_password , get_now_user_id)
-            with open("json/changed_password.json") as path:
+            with open("json/changed_password.json",encoding="utf-8") as path:
                     FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id})
             flex_message = FlexSendMessage(
                                alt_text = '(請點擊聊天室已取得更多消息)' ,
@@ -474,7 +474,7 @@ def curriculum(event):
         get_now_user = userlist[useridlist.index(get_now_user_id)]
         get_now_pwd = pwlist[useridlist.index(get_now_user_id)]
         curriculum_list,classroom_list = get_curriculum_pros(get_now_user,get_now_pwd)
-        with open("json/curriculum.json") as path:
+        with open("json/curriculum.json",encoding="utf-8") as path:
             FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id})
             flex_message = FlexSendMessage(
                 alt_text = '(請點擊聊天室已取得更多消息)' ,
@@ -505,7 +505,7 @@ def today_curriculum(event):
         substitute = ast.literal_eval(substitute)
         #print(substitute)
         #print(type(substitute))
-        with open("json/today_curriculum.json") as path:
+        with open("json/today_curriculum.json",encoding="utf-8") as path:
             FlexMessage = json.loads(path.read() % substitute)
             flex_message = FlexSendMessage(
                 alt_text = '(請點擊聊天室已取得更多消息)' ,
@@ -656,8 +656,7 @@ def handle_message(event) :
     if 'itouch.cycu.edu.tw' in msg and '/force_url_login' not in msg:
          roll_call_activity(msg,event)#整串轉移到513行roll_call_activity
     elif '/' in msg and msg[0] == "/":#all command
-        command(msg,event)
-
+         command(msg,event)
     elif 'https://' in msg or '.com' in msg :
         public_msgbuffer = (announce + '此非itouch網域')
         if (event.source.type == "group") :
@@ -733,7 +732,7 @@ def handle_message(event) :
         days = datetime.datetime.today()-datetime.datetime(2019,4,30,16)
         days = str(days)[0:4] 
         days = days + "天"
-        with open("json/wong_how.json") as path:
+        with open("json/wong_how.json",encoding="utf-8") as path:
             FlexMessage = json.loads(path.read() % {"single" : days})
         flex_message = FlexSendMessage(
                         alt_text = '(請點擊聊天室已取得更多消息)' ,
@@ -827,7 +826,7 @@ def command(msg,event):
         if get_now_user_id in useridlist:#帳號存在
             get_now_name = namelist[useridlist.index(get_now_user_id)]
             get_now_user = userlist[useridlist.index(get_now_user_id)]
-            with open("json/my_account.json") as path:
+            with open("json/my_account.json",encoding="utf-8") as path:
                 FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id,"get_now_name" : get_now_name,"get_now_user" : get_now_user})
             flex_message = FlexSendMessage(
                            alt_text = '(請點擊聊天室已取得更多消息)' ,
@@ -835,7 +834,7 @@ def command(msg,event):
             print("傳出flexmsg")
             line_bot_api.reply_message(event.reply_token, flex_message)
         else:#帳號不存在
-            with open("json/account_not_exist.json") as path:
+            with open("json/account_not_exist.json",encoding="utf-8") as path:
                 FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id})
             flex_message = FlexSendMessage(
                            alt_text = '(請點擊聊天室已取得更多消息)' ,
@@ -844,7 +843,7 @@ def command(msg,event):
             line_bot_api.reply_message(event.reply_token, flex_message)
 
     elif '/help' == msg or '/幫助' == msg or '/開始綁定帳號' == msg or '/我要綁定帳號' == msg or '/我想要綁定帳號' == msg or '指令列表' == msg or '/指令' == msg or '/指令列表' == msg: 
-        with open("json/help.json") as path:
+        with open("json/help.json",encoding="utf-8") as path:
                 FlexMessage = json.loads(path.read())
         flex_message = FlexSendMessage(
                        alt_text = '(請點擊聊天室已取得更多消息)' ,
@@ -984,7 +983,7 @@ def limited_command(msg,event):
             if change_password == "":
                 line_bot_api.reply_message(event.reply_token, TextSendMessage("警告 密碼不能為空"))  
             else:
-                with open("json/change_password.json") as path:
+                with open("json/change_password.json",encoding="utf-8") as path:
                     FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id , "change_password" : change_password})
                 flex_message = FlexSendMessage(
                             alt_text = '(請點擊聊天室已取得更多消息)' ,
@@ -992,7 +991,7 @@ def limited_command(msg,event):
                 print("傳出flexmsg")
                 line_bot_api.reply_message(event.reply_token, flex_message)
         else:#帳號不存在
-            with open("json/account_not_exist.json") as path:
+            with open("json/account_not_exist.json",encoding="utf-8") as path:
                 FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id})
             flex_message = FlexSendMessage(
                            alt_text = '(請點擊聊天室已取得更多消息)' ,
@@ -1010,7 +1009,7 @@ def limited_command(msg,event):
         get_now_user_id = event.source.user_id
         #get_now_name = namelist[useridlist.index(get_now_user_id)]
         #get_now_user = userlist[useridlist.index(get_now_user_id)]
-        with open("json/comfirmed_delete.json") as path:
+        with open("json/comfirmed_delete.json",encoding="utf-8") as path:
                 FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id})
         flex_message = FlexSendMessage(
                         alt_text = '(請點擊聊天室已取得更多消息)' ,
@@ -1031,7 +1030,7 @@ def limited_command(msg,event):
                 try:
                     set_now_account = int(split_msg[2])
                     register(set_now_name, get_now_user_id, set_now_account, set_now_password)
-                    with open("json/create_account.json") as path:
+                    with open("json/create_account.json",encoding="utf-8") as path:
                         FlexMessage = json.loads(path.read() % {"get_now_user_id" : get_now_user_id,"get_now_name" : set_now_name,"get_now_user" : set_now_account,"get_now_password" : set_now_password})
                     flex_message = FlexSendMessage(
                                     alt_text = '(請點擊聊天室已取得更多消息)' ,

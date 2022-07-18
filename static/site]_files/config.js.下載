@@ -1,6 +1,0 @@
-
-window[window["TiktokAnalyticsObject"]].instance("C8SKDFTV1H48C4QE8F60").setAdvancedMatchingAvailableProperties({"email":true,"phone_number":true,"auto_email":true,"auto_phone_number":true});
-window[window["TiktokAnalyticsObject"]].instance("C8SKDFTV1H48C4QE8F60").setPixelInfo && window[window["TiktokAnalyticsObject"]].instance("C8SKDFTV1H48C4QE8F60").setPixelInfo({status: 0, name: "bitget_web_04_web", advertiserID: "7054752074180902913", setupMode: 1, partner: "", is_onsite: false });
-window[window["TiktokAnalyticsObject"]].setPCMDomain && window[window["TiktokAnalyticsObject"]].setPCMDomain("bitget.site");
-window[window["TiktokAnalyticsObject"]].setPCMConfig && window[window["TiktokAnalyticsObject"]].setPCMConfig([]);
-window[window["TiktokAnalyticsObject"]].enableFirstPartyCookie && window[window["TiktokAnalyticsObject"]].enableFirstPartyCookie(true);
