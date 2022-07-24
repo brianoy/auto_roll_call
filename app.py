@@ -137,7 +137,7 @@ def time_quene():
 
 @app.route("/msg.html")#快速回復
 def quick_msg():
-    arg_msg = request.args.get('arg_msg')
+    arg_msg = request.args.get('訊息傳出')
     print(arg_msg)
     return render_template('msg.html')
 
