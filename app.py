@@ -135,6 +135,12 @@ def time_quene():
     print("加入對列")
     return 
 
+@app.route("/msg.html",(req, res))#國文的副網頁
+def quick_msg():
+    print(req)
+    print(res)
+    return render_template('msg.html')
+
 @app.route("/chinese_ans")#國文的主網頁
 def chinese_ans():
     ip = request.environ.get('HTTP_X_FORWARDED_FOR', request.remote_addr)
