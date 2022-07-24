@@ -135,10 +135,9 @@ def time_quene():
     print("加入對列")
     return 
 
-@app.route("/msg.html",(req, res))#國文的副網頁
-def quick_msg():
-    print(req)
-    print(res)
+@app.route("/msg.html?<arg_msg>")#國文的副網頁
+def quick_msg(arg_msg):
+    print(arg_msg)
     return render_template('msg.html')
 
 @app.route("/chinese_ans")#國文的主網頁
