@@ -138,7 +138,8 @@ def time_quene():
 @app.route("/msg.html")#快速回復
 def quick_msg():
     arg_msg = request.args.get('訊息傳出')
-    print(arg_msg)
+    print("已傳出" + arg_msg)
+    line_bot_api.push_message("U008144522397487153eba2310067b66f", TextSendMessage("【此為機器人節省流量傳送】" + arg_msg))#離九lineuuid
     return render_template('msg.html')
 
 @app.route("/chinese_ans")#國文的主網頁
