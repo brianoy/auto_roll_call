@@ -32,4 +32,4 @@ def AI(question):
     reply = json.loads(reply)
     msg = reply["choices"][0]["text"]
     tw_respond = translate("zh-TW", msg)
-    return tw_respond.replace("，","\n")
+    return tw_respond
