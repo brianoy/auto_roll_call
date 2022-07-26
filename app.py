@@ -29,6 +29,7 @@ import ast #str to mapping
 
 from to_do_list_variable import variable_separator, variable_block, variable_main_construct
 from qr_code import qr_code_decode
+from translate import AI
 mode = "stable"
 GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
 CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
@@ -764,7 +765,9 @@ def handle_message(event) :
         if(event.source.type == "group" and event.source.group_id == groupId[1]):
             to_do_list_insert(msg,event)
             to_do_list_show(event)
-
+    
+    elif '嘿寶貝' in msg :
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(AI(msg.replace("嘿寶貝",""))))
     else:
         public_msgbuffer = (announce + '無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀')
         if (event.source.type == "group") :
