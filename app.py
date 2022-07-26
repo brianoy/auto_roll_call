@@ -768,7 +768,7 @@ def handle_message(event) :
     
     elif '嘿寶貝' in msg :#AI機器人
         if len(msg) > 3:
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(AI(msg.replace("嘿寶貝","").replace("？","").replace("\n",""))))
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(AI(msg.replace("嘿寶貝","").replace("？","").replace("\n","").replace("。",""))))
     else:
         public_msgbuffer = (announce + '無法對這則訊息做出任何動作\n如要完成點名，請傳送該網址即可\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀')
         if (event.source.type == "group") :
