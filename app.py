@@ -3,7 +3,7 @@
 #heroku labs:disable log-runtime-metrics
 #heroku restart
 #v507 全面改用 chrome_type=ChromeType.BRAVE瀏覽器
-from flask import Flask, request, abort, render_template, send_file
+from flask import Flask, request, abort, render_template, send_file#基本上web app就是靠flask
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import *
@@ -757,7 +757,7 @@ def handle_message(event) :
             if (event.source.type == "user") :
                 user_quick_reply(event.source.user_id)
 
-    elif '查看清單' in msg or '要買啥' in msg or '買啥' in msg:
+    elif '查看清單' in msg or '要買啥' in msg or '買啥' in msg or '要買什麼' in msg or '購物清單' in msg or 'list' in msg:
         if(event.source.type == "group" and event.source.group_id == groupId[1]):
             to_do_list_show(event)
 
