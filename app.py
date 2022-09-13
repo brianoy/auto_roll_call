@@ -54,7 +54,7 @@ chrome_options.add_argument('user-agent=Mozilla/5.0')
 chrome_options.add_argument('ignore-certificate-errors')
 chrome_options.add_argument("--disable-gpu")
 chrome_options.add_argument("--example-flag")
-wd = webdriver.Chrome(service=Service(ChromeDriverManager(version="104.0.5112.79",chrome_type=ChromeType.BRAVE).install()),options=chrome_options)
+wd = webdriver.Chrome(service=Service(ChromeDriverManager(chrome_type=ChromeType.BRAVE).install()),options=chrome_options) #version="104.0.5112.79",
 
 EAT = (["全家","7-11","中原夜市","鍋燒意麵","肉羹","拉麵","炒飯","賣麵庄","雞腿便當","摩斯漢堡","麥當勞","烤肉飯","肯德基","石二鍋",
 "五花馬","燒肉","咖哩飯","牛排","肉燥飯","SUKIYA","霸味薑母鴨","高雄黑輪","丼飯","薩利亞","mint","火雞肉飯","品田牧場","滷味","Mr.三明治",
