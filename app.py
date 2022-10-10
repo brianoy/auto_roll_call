@@ -719,6 +719,8 @@ def handle_message(event) :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("好油喔"))
     elif '女朋友' in msg :
         line_bot_api.reply_message(event.reply_token, TextSendMessage("你沒有女朋友啦幹"))
+    elif '瑟瑟' in msg or '色色' in msg or '要色色' in msg or '澀澀' in msg:
+        line_bot_api.reply_message(event.reply_token, TextSendMessage("不可以澀澀"))
     elif '閉嘴' in msg or 'b嘴' in msg or 'B嘴' in msg or 'b最' in msg or 'B最' in msg or '惦惦' in msg or '安靜啦' in msg:
         line_bot_api.reply_message(event.reply_token, TextSendMessage("你好兇喔"))
     elif '歐陽' in msg :
