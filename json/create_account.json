@@ -1,0 +1,107 @@
+{
+    "type": "bubble",
+    "direction": "ltr",
+    "header": {
+      "type": "box",
+      "layout": "vertical",
+      "spacing": "none",
+      "margin": "none",
+      "paddingAll": "0px",
+      "width": "0px",
+      "height": "0px",
+      "backgroundColor": "#00ff9f",
+      "borderColor": "#00ff9f",
+      "contents": [
+        {
+          "type": "filler"
+        }
+      ]
+    },
+    "hero": {
+      "type": "image",
+      "url": "https://raw.githubusercontent.com/brianoy/auto_roll_call/main/88888888.png",
+      "size": "full",
+      "aspectRatio": "2:1",
+      "aspectMode": "cover",
+      "backgroundColor": "#464F69"
+    },
+    "body": {
+      "type": "box",
+      "layout": "vertical",
+      "backgroundColor": "#227d51",
+      "borderColor": "#227d51",
+      "contents": [
+        {
+          "type": "box",
+          "layout": "vertical",
+          "spacing": "md",
+          "margin": "sm",
+          "paddingAll": "8px",
+          "backgroundColor": "#FFFFFF11",
+          "borderColor": "#FFFFFF11",
+          "contents": [
+            {
+              "type": "text",
+              "text": "綁定成功",
+              "weight": "bold",
+              "size": "lg",
+              "color": "#EFEFEF",
+              "align": "start",
+              "position": "relative"
+            },
+            {
+              "type": "text",
+              "text": "Line隱碼：%(get_now_user_id)s",
+              "size": "sm",
+              "color": "#FFFFFFFF",
+              "align": "start"
+            },
+            {
+              "type": "separator",
+              "color": "#999999"
+            },
+            {
+              "type": "text",
+              "text": "名字：%(get_now_name)s",
+              "size": "sm",
+              "color": "#FFFFFFFF",
+              "align": "start"
+            },
+            {
+              "type": "separator",
+              "color": "#999999"
+            },
+            {
+              "type": "text",
+              "text": "學號：%(get_now_user)s",
+              "size": "sm",
+              "color": "#FFFFFFFF",
+              "align": "start"
+            },
+            {
+              "type": "separator",
+              "color": "#999999"
+            },
+            {
+              "type": "text",
+              "text": "密碼：%(get_now_password)s",
+              "size": "sm",
+              "color": "#FFFFFFFF",
+              "align": "start"
+            }
+          ]
+        }
+      ]
+    },
+    "footer": {
+      "type": "box",
+      "layout": "horizontal",
+      "backgroundColor": "#227d51",
+      "contents": [
+        {
+          "type": "filler"
+        }
+      ],
+      "borderColor": "#227d51"
+    }
+  }
