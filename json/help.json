@@ -19,7 +19,7 @@
     },
     "hero": {
       "type": "image",
-      "url": "https://raw.githubusercontent.com/brianoy/auto_roll_call/main/2109.w023.n001.1042B.p1.1042.jpg",
+      "url": "https://raw.githubusercontent.com/brianoy/auto_roll_call/main/image/2109.w023.n001.1042B.p1.1042.jpg",
       "size": "full",
       "aspectRatio": "2.19:1",
       "aspectMode": "cover",

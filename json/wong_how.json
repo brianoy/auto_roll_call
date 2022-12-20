@@ -2,7 +2,7 @@
     "type": "bubble",
     "hero": {
       "type": "image",
-      "url": "https://raw.githubusercontent.com/brianoy/auto_roll_call/main/S__7143513.jpg",
+      "url": "https://raw.githubusercontent.com/brianoy/auto_roll_call/main/image/S__7143513.jpg",
       "size": "full",
       "aspectRatio": "20:11",
       "aspectMode": "cover",

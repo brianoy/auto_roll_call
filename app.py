@@ -27,9 +27,9 @@ import discord
 import json
 import ast #str to mapping
 
-from to_do_list_variable import variable_separator, variable_block, variable_main_construct
-from qr_code import qr_code_decode
-from translate import AI
+from modules.to_do_list_variable import variable_separator, variable_block, variable_main_construct
+from modules.qr_code import qr_code_decode
+from modules.translate import AI
 mode = "stable"
 GOOGLE_CHROME_PATH = '/app/.apt/usr/bin/google_chrome'
 CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
@@ -75,8 +75,8 @@ STICKER_LIST = {'465400171':'ㄌㄩㄝ','465400158':'才不美','465400159':'Woo
 line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)# Channel Access Token
 handler = WebhookHandler(LINE_CHANNEL_SECRET)# Channel Secret
 discord_webhook = DISCORD_WEBHOOK
-grouptoken = ["4C0ZkJflAfexSpelBcoEYVobqbbSD0aGFNvpGAVcdUX","vUQ1xrf4cIp7kFlWifowMJf4XHdtUSHeXi1QeUKARa9","WCIuPhhETZysoA6qjdx59kblgzbc6gQuVscBKS91Fi5"]
-groupId = ['Cc97a91380e09611261010e4c5c682711','C0041b628a8712ace35095f505520c0bd','Cdebd7e16f5b52db01c3efd20b12ddd35']
+grouptoken = ["4C0ZkJflAfexSpelBcoEYVobqbbSD0aGFNvpGAVcdUX","vUQ1xrf4cIp7kFlWifowMJf4XHdtUSHeXi1QeUKARa9","WCIuPhhETZysoA6qjdx59kblgzbc6gQuVscBKS91Fi5"]#公開的
+groupId = ['Cc97a91380e09611261010e4c5c682711','C0041b628a8712ace35095f505520c0bd','Cdebd7e16f5b52db01c3efd20b12ddd35']#公開的
 #recived = "已收到網址，正在點名中，請靜待約20~30秒，若看見此訊息後請盡量不要重複傳送相同的訊息，以免造成系統塞車"
 recived = "警告，機器人已停止更新，將不會進行點名動作"
 done = '點名結束\n每次過程將會持續20~30秒\n(視點名人數及當前礙觸摸網路狀況而定)\n仍在測試中，不建議將此系統作為正式使用，在系統回覆點名狀態前建議不要離開本對話框，以免失效時來不及通知其他人手動點名\n▀▀▀▀▀▀▀▀▀▀▀▀▀▀\n' 
@@ -151,22 +151,6 @@ def chinese_ans():
     if "147.92.179" not in ip: #忽略Line的固定式ip
         my_msg("【進入chinese_ans的ip】" + ip)#傳給我手機點進來的Ip，HTTP_X_REAL_IP不起作用，會變成heroku內部ip
     return render_template('chinese_ans.html')
-
-@app.route("/chinese_ques")#國文的副網頁
-def chinese_ques():
-    return render_template('chinese_ques.html')
-
-@app.route('/chinese_test_files/title_on_01.gif')#國文的圖案
-def title_on_01():
-    return send_file("chinese_test_files/title_on_01.gif", mimetype='image/gif')
-
-@app.route('/chinese_test_files/title_on_03.gif')
-def title_on_03():
-    return send_file("chinese_test_files/title_on_03.gif", mimetype='image/gif')
-
-@app.route('/chinese_test_files/icon_wrong.gif')
-def icon_wrong():
-    return send_file("chinese_test_files/icon_wrong.gif", mimetype='image/gif')
 
 def quene(url,time):#將未開始的點名加入對列#未完成
     print("已成功加入")
