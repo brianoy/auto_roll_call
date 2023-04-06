@@ -18,10 +18,12 @@ Copy the CHANNEL_SECRET and CHANNEL_ACCESS_TOKEN into the env config
 ![image](https://user-images.githubusercontent.com/24865458/172822152-c5c3c5ee-c135-4857-a692-052e23556956.png)
 
 ## Add the build pack
-```heroku/python
+```
+heroku/python
 https://github.com/heroku/heroku-buildpack-chromedriver
 https://github.com/heroku/heroku-buildpack-apt
-https://github.com/heroku/heroku-buildpack-google-chrome```
+https://github.com/heroku/heroku-buildpack-google-chrome
+```
 
 ![image](https://user-images.githubusercontent.com/24865458/209175654-15cae34f-9076-4641-b9c0-faa79f7dc0b1.png)
 
