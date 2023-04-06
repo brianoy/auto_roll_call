@@ -30,23 +30,23 @@ https://github.com/heroku/heroku-buildpack-google-chrome
 ## Steps
 1. Copy this repo
 
-```gh repo clone brianoy/auto_roll_call```
+    ```gh repo clone brianoy/auto_roll_call```
 
 2. Set the remote to the heroku
 
-```heroku login```
+    ```heroku login```
 
-```heroku git:remote -a [your_app_name]```
+    ```heroku git:remote -a [your_app_name]```
 
 3. Deploy the app on heroku
 
-Save all the file```Ctrl + S```
+    Save all the file```Ctrl + S```
 
-```git add .```
+    ```git add .```
 
-```git commit -m "update"```
+    ```git commit -m "update"```
 
-```git push -u heroku```
+    ```git push -u heroku```
 
 
 ## Result
